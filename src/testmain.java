@@ -1,3 +1,4 @@
+// Dummy Klasse zu Testzwecken
 public class testmain {
 
 	field testfield;

@@ -6,11 +6,13 @@ public class field
 	public field()
 	{
 		EMPTY = 0; FREE = 1; WALL = 2; EXIT = 3; BOMB = 4; PLAYER = 5;
+		//Bezeichnungen werden in allen Spielfelddateien beibehalten 
 	}
 	
 	public void insertMap(fieldContent newMap[][])
 	{
 		Map = newMap;
+		//zum einfügen von mit "fieldGenerator" erzeugten Karten
 	}
 	
 	public int iGetContent(int iXCoord, int iYCoord)
@@ -22,6 +24,7 @@ public class field
 		{
 			return -1;		
 		}
+		//gibt den Inhalt der entsprechenden Zelle zurück. Falls die Zelle nicht existiert wird -1 zurückgegeben
 	}
 	
 	public void setBomb(bomb newBomb, int iXCoord, int iYCoord)
@@ -33,6 +36,7 @@ public class field
 		{
 			return;		
 		}
+		//fügt neue Bombe in entsprechender Zelle ein, falls die Zelle existiert
 	}
 	
 	public void setPlayer(player newPlayer, int iXCoord, int iYCoord)
@@ -44,6 +48,7 @@ public class field
 		{
 			return;		
 		}
+		//fügt Spieler in entsprechender Zelle ein, falls die Zelle existiert
 	}
 	
 	public boolean bInBounds (int iXCoord, int iYCoord)
@@ -55,6 +60,6 @@ public class field
 		{
 			return false;		
 		}
-		
+		//testet ob gewählte Zelle existiert
 	}
 }
