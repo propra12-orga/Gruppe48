@@ -1,1 +1,0 @@
-Hier kann jeder die Funktionen seiner Klassen mit Parametern und Effekt reinschreiben.
