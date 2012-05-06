@@ -11,7 +11,7 @@ public class fieldGenerator
 		//Bezeichnungen werden in allen Spielfelddateien beibehalten 
 	}
 	
-	public fieldContent[][] createSquareMap(int iXSize, int iYSize)
+	public fieldContent[][] createRectangleMap(int iXSize, int iYSize)
 	{
 		Map = null;
 		Map = new fieldContent[iXSize][iYSize];
@@ -49,6 +49,12 @@ public class fieldGenerator
 		createRandomExit();
 		//Ausgang wird an zufälliger Stelle eingefügt
 		return Map;
+	}
+	
+	public fieldContent[][] createSquareMap(int iSize)
+	{
+	return createRectangleMap(iSize,iSize);	
+	//gibt Quadratische Map zurück
 	}
 	
 	private int iCountFreeSpace()
