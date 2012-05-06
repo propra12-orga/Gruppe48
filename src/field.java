@@ -1,8 +1,8 @@
-
 public class field 
-{
+{  
+	public static int x,y;
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
-	fieldContent Map[][];	
+	static fieldContent Map[][];	
 	public field()
 	{
 		EMPTY = 0; FREE = 1; WALL = 2; EXIT = 3; BOMB = 4; PLAYER = 5;
@@ -27,7 +27,7 @@ public class field
 		//gibt den Inhalt der entsprechenden Zelle zurück. Falls die Zelle nicht existiert wird -1 zurückgegeben
 	}
 	
-	public void setBomb(bomb newBomb, int iXCoord, int iYCoord)
+	public static void setBomb(bomb newBomb, int iXCoord, int iYCoord)
 	{
 		if(bInBounds(iXCoord, iYCoord))
 		{
@@ -44,6 +44,8 @@ public class field
 		if(bInBounds(iXCoord, iYCoord))
 		{
 			Map[iXCoord][iYCoord].insertPlayer(newPlayer);
+			x = iXCoord;
+			y = iYCoord;
 		}else
 		{
 			return;		
@@ -51,7 +53,7 @@ public class field
 		//fügt Spieler in entsprechender Zelle ein, falls die Zelle existiert
 	}
 	
-	public boolean bInBounds (int iXCoord, int iYCoord)
+	public static boolean bInBounds (int iXCoord, int iYCoord)
 	{
 		if((iXCoord >= 0) && (iXCoord < Map.length) && (iYCoord >= 0) && (iYCoord < Map[0].length))
 		{
