@@ -34,10 +34,18 @@ public class fieldContent
 	{
 		Player = pPlayer;
 		iContent = PLAYER;
-		Bomb = null;
 		//fügt Spieler hinzu und löscht Referenz auf Bomben
 	}
 	
+	public void removeBomb ()
+	{
+		Bomb = null;
+	}
+	
+	public void removePlayer ()
+	{
+		Player = null;
+	}
 	public int getContent ()
 	{
 		return iContent;

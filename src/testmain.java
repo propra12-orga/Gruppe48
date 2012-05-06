@@ -7,7 +7,7 @@ public class testmain {
 	{
 		testGenerator = new fieldGenerator();
 		testfield = new field();
-		testfield.insertMap(testGenerator.createSquareMap(7,7));
+		testfield.insertMap(testGenerator.createSquareMap(7));
 		for (int i = 0; i < 7; i++)
 		{
 			for (int j = 0; j < 7; j++)
