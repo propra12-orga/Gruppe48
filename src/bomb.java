@@ -1,4 +1,4 @@
-public class bomb {
+public class bomb extends field{
 	public int xKoordinate; 
 	public int yKoordinate;
 	public bomb()
@@ -9,7 +9,7 @@ public class bomb {
 	public void createBomb(){  //erzeugt eine Bombe abhängig von der Spielerposition
 		getPlayerPosition();
 		bomb s = new bomb();
-		field.setBomb(s,xKoordinate,yKoordinate);
+		setBomb(s,xKoordinate,yKoordinate);
 	}
 	public void getPlayerPosition(){ //greift auf die Spielerposition im field.java zurück
 		xKoordinate = field.x;
@@ -18,31 +18,18 @@ public class bomb {
 	}
 	public void BOOM(){
 		//timer schreiben
-		/*if (fieldGenerator.Map[radius1()][yKoordinate]==2){
-			fieldContent.setContent(0);
-			
+	
 		}
-		*/
-	}
-	public int radius1() {
-		int a = xKoordinate +1;	
 		
-		return  a;
-	}
-	public int radius2() {
-	    int b = xKoordinate -1;		
+	
+	public int radius(int x) {  //radius verstellbar für später aufgaben +1... erhöhen
+		int a[] = new int[3];
+		a[0] = xKoordinate +1;   //rechts vom spieler
+		a[1] = xKoordinate -1;   //links vom spieler
+		a[2] = yKoordinate +1;   //über dem spieler
+		a[3] = yKoordinate -1;   //unter dem spieler
 		
-		return  b;
+		return  a[x];
 	}
-	public int radius3() {
-		int c = yKoordinate +1;
-		
-		
-		return  c;
-	}
-	public int radius4() {
-		int d = yKoordinate -1;
-		
-		return  d;
-	}
+	
 }

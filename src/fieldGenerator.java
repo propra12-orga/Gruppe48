@@ -2,7 +2,7 @@
 
 public class fieldGenerator 
 {
-	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
+	private int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
 	fieldContent Map[][];
 	
 	public fieldGenerator()
