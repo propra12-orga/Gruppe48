@@ -20,21 +20,21 @@ public class fieldContent
 		iContent = iNewContent;
 		Bomb = null;
 		Player = null;
-		//setzt den Inhalt auf den gewünschten Wert und löscht etwaige Spieler- oder Bombenreferenzen.
+		//setzt den Inhalt auf den gewuenschten Wert und loescht etwaige Spieler- oder Bombenreferenzen.
 	}
 	
 	public void insertBomb (bomb bBomb)
 	{
 		Bomb = bBomb;
 		iContent = BOMB;	
-		//fügt Bombe hinzu
+		//fuegt Bombe hinzu
 	}
 	
 	public void insertPlayer (player pPlayer)
 	{
 		Player = pPlayer;
 		iContent = PLAYER;
-		//fügt Spieler hinzu und löscht Referenz auf Bomben
+		//fuegt Spieler hinzu und loescht Referenz auf Bomben
 	}
 	
 	public void removeBomb ()
@@ -49,19 +49,19 @@ public class fieldContent
 	public int getContent ()
 	{
 		return iContent;
-		//gibt Inhalt als int zurück
+		//gibt Inhalt als int zurueck
 	}
 	
 	public bomb getBomb()
 	{
 		return Bomb;
-		//gibt Referenz auf Bombe zurück falls vorhanden, gibt sonst null zurück
+		//gibt Referenz auf Bombe zurueck falls vorhanden, gibt sonst null zurueck
 	}
 	
 	public player getPlayer()
 	{
 		return Player;
-		//gibt Referenz auf Spieler zurück falls vorhanden, gibt sonst null zurück
+		//gibt Referenz auf Spieler zurueck falls vorhanden, gibt sonst null zurueck
 	}
 	
 	

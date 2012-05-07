@@ -1,13 +1,22 @@
-
+import java.util.*;
 
 public class fieldGenerator 
 {
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
-	fieldContent Map[][];
-	
+	private fieldContent Map[][];
+	private float fRandomChance;
+	private int iModus, iRandomAmount;
 	public fieldGenerator()
 	{
+		
 		EMPTY = 0; FREE = 1; WALL = 2; EXIT = 3; BOMB = 4; PLAYER = 5;
+		iModus = 0;
+		//Anzahl der Modi: 3
+		//Modus 0: Jedes 2. Feld in jeder 2. Spalte wird mit einer Mauer belegt
+		//Modus 1: Jedes 2. Feld in jeder 2. Spalte wird mit einer Chance von fRandomChance % mit einer Mauer belegt
+		//Modus 2: Von allen mit Mauern belegbaren Feldern, (jedes 2. Feld in jeder 2. Spalte), werden so lange zufaellig Felder mit Mauern belegt bis iRandomAmount Felder belegt sind
+		fRandomChance = 0;
+		iRandomAmount = 0;
 		//Bezeichnungen werden in allen Spielfelddateien beibehalten 
 	}
 	
@@ -22,7 +31,15 @@ public class fieldGenerator
 				Map[i][j] = new fieldContent();
 			}
 		}
-		//Initialisierung des Spielfeldes
+		
+		for (int i = 0; i < iXSize; i++)
+		{
+			for (int j = 0; j < iYSize; j++)
+			{
+				Map[i][j].setContent(FREE);
+			}			
+		}		
+		//Initialisierung des Spielfeldes		
 		for (int i = 0; i < iXSize; i++)
 		{
 			for (int j = 0; j < iYSize; j++)
@@ -30,31 +47,62 @@ public class fieldGenerator
 				if((i == 0) || (i == iXSize - 1) || (j == 0) || (j == iYSize -1))
 				{
 					Map[i][j].setContent(WALL);
-					//Ränder der Karte werden mit Mauern belegt
-				} else
-				{
-				
-					if((i % 2 == 0) && (j % 2 == 0))
-					{
-						Map[i][j].setContent(WALL);
-						//jedes 2. Feld wird Mauern belegt
-					} else
-					{
-						Map[i][j].setContent(FREE);
-						//alle anderen Felder sind begehbar
-					}
-				}
-			}			
+					//Raender der Karte werden mit Mauern belegt
+				} 
+			}
 		}
+		setWalls();
 		createRandomExit();
-		//Ausgang wird an zufälliger Stelle eingefügt
+		//Ausgang wird an zufaelliger Stelle eingefuegt
 		return Map;
 	}
+		
+	
 	
 	public fieldContent[][] createSquareMap(int iSize)
 	{
 	return createRectangleMap(iSize,iSize);	
-	//gibt Quadratische Map zurück
+	//gibt Quadratische Map zurueck
+	}
+	
+	public void setRandomChance (float fChance)
+	{
+		fRandomChance = fChance / 100;
+		//erwartet Prozentangabe. Setzt die Zufallschance fuer Modus 1 auf die angegebene Groesse
+	}
+	
+	public void setRandomAmount (int iAmount)
+	{
+		iRandomAmount = iAmount;
+		//setzt die Anzahl der zu setzenden Bloecke fuer Modus 2 auf den angegebenen Wert
+	}
+	
+	public void setModus(int iStatus)
+	{
+		iModus = iStatus;
+		//aendert den Modus der Spielfeldgenerierung
+	}
+	
+	private boolean checkSurroundings(int iCheckWhereX, int iCheckWhereY, int iCheckHowFar, int iCheckForWhat, boolean bCheckIfThere)
+	{
+		for (int i = iCheckWhereX - iCheckHowFar; i <= iCheckWhereX + iCheckHowFar; i++)
+		{
+			for (int j = iCheckWhereY - iCheckHowFar; j <= iCheckWhereY + iCheckHowFar; j++)
+			{
+				if((i >= 0) && (j >= 0))
+				{
+					if(Map[i][j].getContent() == iCheckForWhat == bCheckIfThere)					
+					{
+						return true;
+					}
+				}
+			}
+				
+		}
+		return false;
+		//in allen Feldern, die sich in einem Abstand von maximal iCheckHowFar von [iCheckWhereX][iCheckWhereY] befinden wird das Vorhandensein von iCheckForWhat geprueft.
+		//ist bCheckIfThere auf true zurueckgesetzt, so wird true zurueckgegeben, wenn das gesuchte Element mindestens einmal gefunden wurde.
+		//ist bCheckIfThere auf false gesetzt, so wird true zurueckgegeben, wenn das gesuchte Element mindestens einmal nicht gefunden wurde. 
 	}
 	
 	private int iCountFreeSpace()
@@ -71,13 +119,13 @@ public class fieldGenerator
 			}
 		}
 		return iCount;
-		//zählt Anzahl leerer Stellen in Map 
+		//zaehlt Anzahl leerer Stellen in Map 
 	}
 	
 	private void createRandomExit()
 	{
 		int iRand = (int)(Math.random() * iCountFreeSpace());
-		//wählt das x-te freie Feld für den Ausgang aus
+		//waehlt das x-te freie Feld fuer den Ausgang aus
 		for (int i = 0; i < Map.length; i++)
 		{
 			for (int j = 0; j < Map[0].length; j++)
@@ -92,6 +140,84 @@ public class fieldGenerator
 				}
 			}
 		}
-		//geht das Spielfeld von oben links nach unten rechts durch und fügt abhängig von iRand an der x.ten Stelle einen Ausgang ein. Terminiert nach hinzufügen des Ausgangs
+		//geht das Spielfeld von oben links nach unten rechts durch und fuegt abhaengig von iRand an der x.ten Stelle einen Ausgang ein. Terminiert nach hinzufuegen des Ausgangs
+	}
+	
+	private void setWalls()
+	{
+		switch(iModus)
+		{
+		case 0:
+			for (int i = 0; i < Map.length; i++)
+			{
+				for (int j = 0; j < Map[0].length; j++)
+				{	
+					if((i % 2 == 0) && (j % 2 == 0) && (Map[i][j].getContent() != EMPTY))
+					{
+							Map[i][j].setContent(WALL);
+							//jedes 2. Feld wird Mauern belegt					
+					}
+				}			
+			}		
+		break;
+		
+		case 1:
+			if(iModus == 1)
+			{
+				for (int i = 0; i < Map.length; i++)
+				{
+					for (int j = 0; j < Map[0].length; j++)
+					{			
+						if(checkSurroundings(i, j, 1, WALL, true) == false)
+						{
+							if(Math.random() <= fRandomChance)
+							{
+								Map[i][j].setContent(WALL);
+								//Feld wird mit einer x-prozentigen Chance mit einer Mauer belegt, wenn auf keinem Umliegenden Feld eine Mauer ist
+							} 
+						}
+					}				
+				}
+			}	
+		break;
+		
+		case 2:
+			if(iModus == 2)
+			{							
+				int iPosition = 0;
+				int iRandomPosition;
+				int iRandom[] = new int[2];
+				int iTmpRandomAmount = iRandomAmount;
+				List<int[]> iRandomList = new ArrayList<int[]>();
+				for (int i = 2; i < Map.length - 2; i++)
+				{
+					for (int j = 2; j < Map[0].length - 2; j++)
+					{			
+						if((i % 2 == 0) && (j % 2 == 0))
+						{
+							iRandomList.add(new int[2]);
+							iRandomList.get(iPosition)[0]=i;
+							iRandomList.get(iPosition)[1]=j;
+							iPosition++;
+						}															
+					} 					
+					//die Koordinaten aller moeglichen Mauerstuecke werden in einer Liste gespeichert 
+				}											
+				if(iTmpRandomAmount > iRandomList.size())
+				{
+					iTmpRandomAmount = iRandomList.size();
+					//falls die Anzahl der zu setzenden Mauerstuecke > der Anzahl der moeglichen Plaetze ist, wird die Anzahl reduziert 
+				}									
+				while(iTmpRandomAmount > 0)
+				{
+					iRandomPosition = (int)(Math.random() * iRandomList.size());
+					iRandom = iRandomList.get(iRandomPosition);
+					Map[iRandom[0]][iRandom[1]].setContent(WALL);
+					iRandomList.remove(iRandomPosition);
+					iTmpRandomAmount--;
+					//aus der Liste werden zufaellig Koordinaten ausgewaehlt an deren Stellen Mauerstuecke platziert werden, bis die gewuenschte Anzahl erreicht ist
+				}
+			}
+		}		
 	}
 }

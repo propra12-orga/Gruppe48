@@ -14,7 +14,7 @@ public class field
 	public void insertMap(fieldContent newMap[][])
 	{
 		Map = newMap;
-		//zum einfügen von mit "fieldGenerator" erzeugten Karten
+		//zum einfuegen von mit "fieldGenerator" erzeugten Karten
 	}
 	
 	public int iGetContent(int iXCoord, int iYCoord)
@@ -26,7 +26,7 @@ public class field
 		{
 			return -1;		
 		}
-		//gibt den Inhalt der entsprechenden Zelle zurück. Falls die Zelle nicht existiert wird -1 zurückgegeben
+		//gibt den Inhalt der entsprechenden Zelle zurueck. Falls die Zelle nicht existiert wird -1 zurueckgegeben
 	}
 	
 	
@@ -39,7 +39,7 @@ public class field
 		{
 			return;		
 		}
-		//fügt neue Bombe in entsprechender Zelle ein, falls die Zelle existiert
+		//fuegt neue Bombe in entsprechender Zelle ein, falls die Zelle existiert
 	}
 	
 	public void setPlayer(player newPlayer, int iXCoord, int iYCoord)
@@ -51,7 +51,7 @@ public class field
 		{
 			return;		
 		}
-		//fügt Spieler in entsprechender Zelle ein, falls die Zelle existiert
+		//fuegt Spieler in entsprechender Zelle ein, falls die Zelle existiert
 	}
 	
 	public boolean bInBounds (int iXCoord, int iYCoord)
@@ -63,17 +63,17 @@ public class field
 		{
 			return false;		
 		}
-		//testet ob gewählte Zelle existiert
+		//testet ob gewaehlte Zelle existiert
 	}
 
 
-public void updatePlayer (int[] iOldPos, player updPlayer)
+/*public void updatePlayer (int[] iOldPos, player updPlayer)
 {
 	Map[iOldPos[0]][iOldPos[1]].removePlayer();
 	Map[updPlayer.getPosition()[0]][updPlayer.getPosition()[1]].insertPlayer(updPlayer);
-}
+}*/
 
-// die folgende Methode ist als Überlegung zur flüssigen Bewegung des Spielers entstanden
+// die folgende Methode ist als ueberlegung zur fluessigen Bewegung des Spielers entstanden
 
 /*public void updatePlayer(float fOldPos[], player updPlayer)
 {

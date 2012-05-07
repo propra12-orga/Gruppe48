@@ -7,10 +7,13 @@ public class testmain {
 	{
 		testGenerator = new fieldGenerator();
 		testfield = new field();
-		testfield.insertMap(testGenerator.createSquareMap(7));
-		for (int i = 0; i < 7; i++)
+		testGenerator.setRandomAmount(5);
+		testGenerator.setRandomChance(50);
+		testGenerator.setModus(0);
+		testfield.insertMap(testGenerator.createSquareMap(11));
+		for (int i = 0; i < 11; i++)
 		{
-			for (int j = 0; j < 7; j++)
+			for (int j = 0; j < 11; j++)
 			{
 				System.out.print(testfield.iGetContent(i,j));
 			}
