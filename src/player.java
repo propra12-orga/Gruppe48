@@ -1,4 +1,4 @@
-public class player {
+public class player extends field {
 	public static int x, y;
 
 	public player() {
@@ -15,6 +15,44 @@ public class player {
 	}
 
 	public void move() {
+		if (/*tastendruck w=true*/){ 
+			moveUP();
+		  }else if(/*tastendruck s=true*/){
+			  moveDOWN(); 
+		  	}else if(/*tastendruck a=true*/){ 
+		  		moveLEFT(); 
+		  		}else if(/*tastendruck d=true*/){
+		  			moveRIGHT(); 
+			  
+		  }
+		 
+	}
 
+	public int moveUP() {
+		int u;
+		u = getPosition(1) + 1;
+		y = u;
+		return y;
+	}
+
+	public int moveDOWN() {
+		int d;
+		d = getPosition(1) - 1;
+		y = d;
+		return y;
+	}
+
+	public int moveLEFT() {
+		int l;
+		l = getPosition(0) - 1;
+		x = l;
+		return x;
+	}
+
+	public int moveRIGHT() {
+		int r;
+		r = getPosition(0) + 1;
+		x = r;
+		return x;
 	}
 }
