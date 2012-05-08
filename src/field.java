@@ -66,7 +66,10 @@ public class field
 		//testet ob gewaehlte Zelle existiert
 	}
 
-
+	public fieldContent[][] getMap()
+	{
+		return Map;
+	}
 /*public void updatePlayer (int[] iOldPos, player updPlayer)
 {
 	Map[iOldPos[0]][iOldPos[1]].removePlayer();

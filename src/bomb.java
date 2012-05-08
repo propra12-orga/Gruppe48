@@ -7,15 +7,15 @@ public class bomb {
 		BOOM();
 	}
 	public void createBomb(){  //erzeugt eine Bombe abhängig von der Spielerposition
-		getPlayerPosition();
+		//getPlayerPosition();
 		bomb s = new bomb();
-		field.setBomb(s,xKoordinate,yKoordinate);
+	//	field.setBomb(s,xKoordinate,yKoordinate);
 	}
-	public void getPlayerPosition(){ //greift auf die Spielerposition im field.java zurück
+	/*public void getPlayerPosition(){ //greift auf die Spielerposition im field.java zurück
 		xKoordinate = field.x;
 		yKoordinate = field.y;
 		
-	}
+	}*/
 	public void BOOM(){
 		//timer schreiben
 		/*if (fieldGenerator.Map[radius1()][yKoordinate]==2){

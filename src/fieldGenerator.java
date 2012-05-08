@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class fieldGenerator 
 {
@@ -83,6 +84,70 @@ public class fieldGenerator
 		//aendert den Modus der Spielfeldgenerierung
 	}
 	
+	public fieldContent[][] readMap(String sInputFile)
+	{
+		int iCounter = 0;
+		FileReader inputFile;
+		BufferedReader reader;
+		List<String> mapList = new ArrayList<String>();
+		try{
+			inputFile = new FileReader(sInputFile);
+		}catch(FileNotFoundException e)
+		{
+			System.out.println(e);
+			return null;
+		}		
+		reader = new BufferedReader(inputFile);		
+		try
+		{
+			while(reader.ready())
+			{
+				mapList.add(reader.readLine());
+				
+			}			
+		}catch(IOException e)
+		{
+			return null;
+		}		
+		Map = null;
+		Map = new fieldContent[mapList.size()][mapList.get(0).length()];
+		for (int i = 0; i < mapList.size();  i++)
+		{
+			for (int j = 0; j < mapList.get(0).length(); j++)
+			{
+				Map[i][j] = new fieldContent();
+			}
+		}		
+		System.out.println(mapList.size());
+		System.out.println(mapList.get(0).length());
+		while(mapList.size() > 0)
+		{
+			for(int i = 0; i < mapList.get(0).length(); i++)
+			{
+				switch(mapList.get(0).charAt(i))
+				{
+					case 32: //' '
+						Map[iCounter][i].setContent(EMPTY);
+						break;
+					case 35: //'#'
+						Map[iCounter][i].setContent(WALL);
+						break;
+					case 46: //'.'
+						Map[iCounter][i].setContent(FREE);
+						break;
+					case 69: //'E'
+						Map[iCounter][i].setContent(EXIT);
+						break;
+					default:
+						Map[iCounter][i].setContent(EMPTY);
+						break;
+				}				
+			}
+			iCounter++;
+			mapList.remove(0);
+		}
+		return Map;
+	}
 	private boolean checkSurroundings(int iCheckWhereX, int iCheckWhereY, int iCheckHowFar, int iCheckForWhat, boolean bCheckIfThere)
 	{
 		for (int i = iCheckWhereX - iCheckHowFar; i <= iCheckWhereX + iCheckHowFar; i++)

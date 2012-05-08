@@ -10,10 +10,11 @@ public class testmain {
 		testGenerator.setRandomAmount(5);
 		testGenerator.setRandomChance(50);
 		testGenerator.setModus(0);
-		testfield.insertMap(testGenerator.createSquareMap(11));
-		for (int i = 0; i < 11; i++)
+		//testfield.insertMap(testGenerator.createSquareMap(11));
+		testfield.insertMap(testGenerator.readMap("C:\\TestMap.txt"));
+		for (int i = 0; i < testfield.getMap().length; i++)
 		{
-			for (int j = 0; j < 11; j++)
+			for (int j = 0; j < testfield.getMap()[0].length; j++)
 			{
 				System.out.print(testfield.iGetContent(i,j));
 			}
