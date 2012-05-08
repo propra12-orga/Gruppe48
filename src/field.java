@@ -74,6 +74,9 @@ public class field
 	
 	public void saveMap(String sFileName, int iSaveModus)
 	{
+		//Anzahl der Modi: 2
+		//Modus 0: Wandelt die Map in lesbareres Format um und speichert sie als Datei
+		//Modus 1: Komprimiert die Map und speichert sie als Datei
 		FileWriter output;
 		BufferedWriter writer;
 		try
@@ -85,31 +88,50 @@ public class field
 			return;
 		}
 		//eine neue Datei wird erstellt und zum Schreiben bereit gehalten
-		try
+		switch(iSaveModus)
 		{
-			for(int i = 0; i < Map.length; i++)
-			{
-				for (int j = 0; j < Map[0].length; j++)
-				{				
-					switch(Map[i][j].getContent())
+			case 0:
+				try
+				{
+					for(int i = 0; i < Map.length; i++)
 					{
-						case 0:
-							writer.write(32); //' '
-							break;
-						case 1:
-							writer.write(46); //'.'
-							break;
-						case 2:
-							writer.write(35); //'#'
-							break;
-						case 3:
-							writer.write(69); //'E'
-							break;
-					}				
-				}
-			writer.newLine();
-			//die Karte wir Feld fuer Feld ausgelesen, umgewandelt und in die Datei geschrieben
-			}			
+						for (int j = 0; j < Map[0].length; j++)
+						{						
+							switch(Map[i][j].getContent())
+							{
+								case 0:
+									writer.write(32); //' '
+									break;
+								case 1:
+									writer.write(46); //'.'
+									break;
+								case 2:
+									writer.write(35); //'#'
+									break;
+								case 3:
+									writer.write(69); //'E'
+									break;
+							}				
+						}	
+						writer.newLine();
+						//die Karte wir Feld fuer Feld ausgelesen, umgewandelt und in die Datei geschrieben
+					}
+				}catch(IOException e)
+				{
+					System.out.println(e);
+					return;
+				}		
+				break;
+			case 1:
+				try
+				{
+					writer.write(compressMap());
+				}catch(IOException e)
+				{
+					return;
+				}			
+		}
+		try{
 			writer.flush();
 			writer.close();
 			output.close();
@@ -119,6 +141,73 @@ public class field
 			System.out.println(e);
 			return;
 		}		
+	}
+	
+	public String compressMap()
+	{
+		String sOutput = "c";
+		int iCounter = 1;
+		for(int i = 0; i < Map.length; i++)
+		{
+			for(int j = 0; j < Map[0].length; j++)
+			{
+				if((j + 1) < Map[0].length) 
+				{
+					if(Map[i][j].getContent() == Map[i][j+1].getContent())
+					{
+						iCounter++;
+					}
+					else
+					{
+						if(iCounter > 1)
+						{
+							sOutput += String.valueOf(iCounter);	
+							iCounter = 1;
+						}
+						switch(Map[i][j].getContent())
+						{
+							case 0:
+								sOutput += " ";
+								break;
+							case 1:
+								sOutput += ".";
+								break;
+							case 2:
+								sOutput += "#";
+								break;
+							case 3:
+								sOutput += "E";
+								break;
+						}				
+					}
+				}
+				else
+				{
+					if(iCounter > 1)
+					{
+						sOutput += String.valueOf(iCounter);	
+						iCounter = 1;
+					}
+					switch(Map[i][j].getContent())
+					{
+						case 0:
+							sOutput += " ";
+							break;
+						case 1:
+							sOutput += ".";
+							break;
+						case 2:
+							sOutput += "#";
+							break;
+						case 3:
+							sOutput += "E";
+							break;
+					}				
+				}
+			}
+			sOutput += "&";
+		}
+		return sOutput;
 	}
 /*public void updatePlayer (int[] iOldPos, player updPlayer)
 {

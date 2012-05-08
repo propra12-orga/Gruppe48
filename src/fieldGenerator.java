@@ -98,9 +98,18 @@ public class fieldGenerator
 			return null;
 		}		
 		reader = new BufferedReader(inputFile);	
-		//erstellt neuen Stream zum Zugriff auf Input Datei
+		//erstellt neuen Stream zum Zugriff auf Input Datei		
 		try
 		{
+			reader.mark(1);
+			if(reader.read() == 99)
+			{
+				return readCompressedMap(reader);
+			}
+			else
+			{
+				reader.reset();
+			}
 			while(reader.ready())
 			{
 				mapList.add(reader.readLine());
@@ -169,6 +178,129 @@ public class fieldGenerator
 		}		
 		return Map;
 	}
+	
+	private fieldContent[][] readCompressedMap(BufferedReader reader)
+	{
+		String sInputPart;
+		String sCount = "";
+		StringTokenizer tokenizer;
+		int iCounterX = 0;
+		int iCounterY = 0;
+		int iInsert;
+		try
+		{
+			tokenizer = new StringTokenizer(reader.readLine(),"&");			
+		}catch(IOException e)
+		{
+			return null;
+		}
+		sInputPart = tokenizer.nextToken();
+		for(int i = 0; i < sInputPart.length(); i++)
+		{
+			if((sInputPart.charAt(i) > 47) && (sInputPart.charAt(i) < 58))
+			{
+				sCount += String.valueOf(sInputPart.charAt(i));
+			}
+			else
+			{
+				if(sCount != "")
+				{
+					iCounterX += Integer.parseInt(sCount);
+				}
+				else
+				{
+					iCounterX++;
+					sCount = "";
+				}
+
+			}
+		}
+		Map = null;
+		Map = new fieldContent[tokenizer.countTokens() + 1][iCounterX];
+		for (int i = 0; i < tokenizer.countTokens() + 1;  i++)
+		{
+			for (int j = 0; j < iCounterX; j++)
+			{
+				Map[i][j] = new fieldContent();
+				Map[i][j].setContent(EMPTY);
+			}
+			//initialliesiert die Karte und setzt alle Felder auf Leer
+		}		
+		iCounterX = 0;
+		sCount = "";
+		while(tokenizer.hasMoreTokens())
+		{			
+			if(iCounterY > 0)
+			{
+				sInputPart = tokenizer.nextToken();
+			}
+			for(int i = 0; i < sInputPart.length(); i++)
+			{
+				if((sInputPart.charAt(i) > 47) && (sInputPart.charAt(i) < 58))
+				{
+					sCount += String.valueOf(sInputPart.charAt(i));
+				}
+				else
+				{
+					if(sCount == "")
+					{
+						switch (sInputPart.charAt(i))
+						{
+							case 32: //' '
+								Map[iCounterY][iCounterX].setContent(EMPTY);
+								break;
+							case 35: //'#'
+								Map[iCounterY][iCounterX].setContent(WALL);
+								break;
+							case 46: //'.'
+								Map[iCounterY][iCounterX].setContent(FREE);
+								break;
+							case 69: //'E'
+								Map[iCounterY][iCounterX].setContent(EXIT);
+								break;
+							default:
+								Map[iCounterY][iCounterX].setContent(EMPTY);
+								break;								
+						}
+						iCounterX++;
+					}
+					else
+					{					
+						switch (sInputPart.charAt(i))
+						{
+							case 32: //' '
+								iInsert = EMPTY;
+								break;
+							case 35: //'#'
+								iInsert = WALL;
+								break;
+							case 46: //'.'
+								iInsert = FREE;
+								break;
+							case 69: //'E'
+								iInsert = EXIT;
+								
+								break;
+							default:
+								iInsert = EMPTY;
+								break;	
+						}						
+						for(int j = iCounterX; j < (iCounterX + Integer.parseInt(sCount)); j++)
+						{						
+							Map[iCounterY][j].setContent(iInsert);			
+						}
+						iCounterX += Integer.parseInt(sCount);
+						sCount = "";
+					}
+				}
+							
+			}
+			iCounterX = 0;	
+			iCounterY++;			
+		}		
+		return Map;
+	}
+	
 	private boolean checkSurroundings(int iCheckWhereX, int iCheckWhereY, int iCheckHowFar, int iCheckForWhat, boolean bCheckIfThere)
 	{
 		for (int i = iCheckWhereX - iCheckHowFar; i <= iCheckWhereX + iCheckHowFar; i++)
