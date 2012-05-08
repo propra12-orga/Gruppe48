@@ -14,8 +14,8 @@ import javax.swing.GroupLayout.Alignment;
 
 public class fenster implements ActionListener {
      
-	
-	
+
+
      JFrame applikation;
      Container container;
      
@@ -93,7 +93,7 @@ public class fenster implements ActionListener {
                System.out.println("New Game wurde angeklickt");
           }
           if (object.getSource() == quit){
-        	  System.exit(0);
+         System.exit(0);
           }
           if (object.getSource() == dummy){
                System.out.println("dummy wurde angeklickt");
@@ -104,11 +104,11 @@ public class fenster implements ActionListener {
      }
      
      public static void main(String[] args) {
-	   
-    	 
-    	 new fenster();
+
+    
+     new fenster();
      }
 
-	
-	
+
+
 }

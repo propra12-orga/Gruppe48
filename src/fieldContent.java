@@ -1,4 +1,3 @@
-
 public class fieldContent 
 {
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
