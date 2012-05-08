@@ -30,6 +30,18 @@ public class field
 		//gibt den Inhalt der entsprechenden Zelle zurueck. Falls die Zelle nicht existiert wird -1 zurueckgegeben
 	}
 	
+	public fieldContent getField(int iXCoord, int iYCoord)
+	{
+		if(bInBounds(iXCoord, iYCoord))
+		{
+			return Map[iXCoord][iYCoord];
+		}
+		else
+		{
+			return null;
+		}
+		//gibt angegebene Zelle zurueck. Gibt null zurueck, falls die Zelle nicht existiert
+	}
 	
 	public void setBomb(bomb newBomb, int iXCoord, int iYCoord)
 	{
