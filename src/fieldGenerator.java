@@ -179,6 +179,16 @@ public class fieldGenerator
 		return Map;
 	}
 	
+	public fieldContent[][] readFillEmptyMap(String sInputFile)
+	{
+		Map = readMap(sInputFile);
+		setWalls();
+		createRandomExit();
+		return Map;
+		//liest Map ein und fuellt sie danach mit Waenden und Ausgang
+		//gedacht zum Einlesen von Maps, bei denen nur die Form der Map gegeben wurde 
+	}
+	
 	private fieldContent[][] readCompressedMap(BufferedReader reader)
 	{
 		String sInputPart;
@@ -194,6 +204,7 @@ public class fieldGenerator
 		{
 			return null;
 		}
+		//schreibt den gesamten Input in einen StringTokenizer und trennt die einzelnen Elemente bei jedem &
 		sInputPart = tokenizer.nextToken();
 		for(int i = 0; i < sInputPart.length(); i++)
 		{
@@ -215,6 +226,7 @@ public class fieldGenerator
 
 			}
 		}
+		//berechnet die Anzahl an Elementen in der 1. Zeile um die Spielfeldgroeße berechnen zu können
 		Map = null;
 		Map = new fieldContent[tokenizer.countTokens() + 1][iCounterX];
 		for (int i = 0; i < tokenizer.countTokens() + 1;  i++)
@@ -239,6 +251,7 @@ public class fieldGenerator
 				if((sInputPart.charAt(i) > 47) && (sInputPart.charAt(i) < 58))
 				{
 					sCount += String.valueOf(sInputPart.charAt(i));
+					//Wird eine Zahl eingelesen, so wird sie zu einem String hinzugefuegt um die Anzahl der zu schreibenden Zeichen zu erhalten
 				}
 				else
 				{
@@ -263,6 +276,7 @@ public class fieldGenerator
 								break;								
 						}
 						iCounterX++;
+						//wurde nur eine Zeichen ohne vorherige Zahl eingelesen, so wird dieses an die entsprechende Stelle in die Map geschrieben
 					}
 					else
 					{					
@@ -291,6 +305,7 @@ public class fieldGenerator
 						}
 						iCounterX += Integer.parseInt(sCount);
 						sCount = "";
+						//wurde ein Zeichen mit vorheriger Zahl eingelesen, so werden sowohl das aktuelle Feld als auch die naechsten sCount - 1 Felder mit dem Zeichen beschrieben 
 					}
 				}
 							

@@ -156,13 +156,15 @@ public class field
 					if(Map[i][j].getContent() == Map[i][j+1].getContent())
 					{
 						iCounter++;
+						//ueberprueft, ob das aktuell betrachtete Zeichen und das naechste Zeichen in der Reihe identisch sind
+						//erhoeht einen counter, falls ja
 					}
 					else
 					{
 						if(iCounter > 1)
 						{
 							sOutput += String.valueOf(iCounter);	
-							iCounter = 1;
+							iCounter = 1;							
 						}
 						switch(Map[i][j].getContent())
 						{
@@ -180,6 +182,8 @@ public class field
 								break;
 						}				
 					}
+					//wurde mehr als 1 gleiches Zeichen am Stueck gefunden, so wird die gefundene Anzahl in den Outputstring geschrieben 
+					//unanhaengig davon wird anschliessend das letzte gefundene Zeichen selbst geschrieben
 				}
 				else
 				{
@@ -202,7 +206,9 @@ public class field
 						case 3:
 							sOutput += "E";
 							break;
-					}				
+					}	
+					//gleiche Abfrage wie weiter oben, wird aber nur aufgerufen, wenn das Ende einer Zeile erreicht ist.
+					//wird benoetigt um einen Zugriffsfehler zu vermeiden
 				}
 			}
 			sOutput += "&";
