@@ -97,29 +97,49 @@ public class fieldGenerator
 			System.out.println(e);
 			return null;
 		}		
-		reader = new BufferedReader(inputFile);		
+		reader = new BufferedReader(inputFile);	
+		//erstellt neuen Stream zum Zugriff auf Input Datei
 		try
 		{
 			while(reader.ready())
 			{
 				mapList.add(reader.readLine());
-				
+				//schreibt die gesamte Eingabe in eine Liste. Jeder Listeneintrag entspricht einer Zeile
 			}			
+			
 		}catch(IOException e)
 		{
 			return null;
-		}		
+		}				
+		try
+		{
+			reader.close();
+			inputFile.close();
+		}catch(IOException e)
+		{
+			System.out.println(e);
+		}
 		Map = null;
-		Map = new fieldContent[mapList.size()][mapList.get(0).length()];
+		iCounter = mapList.get(0).length();
+		for (int i = 1; i < mapList.size(); i++)
+		{
+			if(iCounter < mapList.get(i).length())
+			{
+				iCounter = mapList.get(i).length();
+			}
+			//vergleicht die Breiten aller Zeilen und schreibt den Maximalwert in iCounter. Wird benoetigt, falls nicht rechteckige Muster eingelesen werden
+		}
+		Map = new fieldContent[mapList.size()][iCounter];
 		for (int i = 0; i < mapList.size();  i++)
 		{
-			for (int j = 0; j < mapList.get(0).length(); j++)
+			for (int j = 0; j < iCounter; j++)
 			{
 				Map[i][j] = new fieldContent();
+				Map[i][j].setContent(EMPTY);
 			}
+			//initialliesiert die Karte und setzt alle Felder auf Leer
 		}		
-		System.out.println(mapList.size());
-		System.out.println(mapList.get(0).length());
+		iCounter = 0;
 		while(mapList.size() > 0)
 		{
 			for(int i = 0; i < mapList.get(0).length(); i++)
@@ -145,7 +165,8 @@ public class fieldGenerator
 			}
 			iCounter++;
 			mapList.remove(0);
-		}
+			//schreibt den Inhalt der eingelesenen Datei angepasst in das Outputarray
+		}		
 		return Map;
 	}
 	private boolean checkSurroundings(int iCheckWhereX, int iCheckWhereY, int iCheckHowFar, int iCheckForWhat, boolean bCheckIfThere)

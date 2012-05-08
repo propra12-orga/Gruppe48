@@ -1,3 +1,4 @@
+import java.io.*;
 
 public class field 
 {
@@ -69,6 +70,55 @@ public class field
 	public fieldContent[][] getMap()
 	{
 		return Map;
+	}
+	
+	public void saveMap(String sFileName, int iSaveModus)
+	{
+		FileWriter output;
+		BufferedWriter writer;
+		try
+		{
+		output = new FileWriter(sFileName);
+		writer = new BufferedWriter(output);
+		}catch(IOException e)
+		{
+			return;
+		}
+		//eine neue Datei wird erstellt und zum Schreiben bereit gehalten
+		try
+		{
+			for(int i = 0; i < Map.length; i++)
+			{
+				for (int j = 0; j < Map[0].length; j++)
+				{				
+					switch(Map[i][j].getContent())
+					{
+						case 0:
+							writer.write(32); //' '
+							break;
+						case 1:
+							writer.write(46); //'.'
+							break;
+						case 2:
+							writer.write(35); //'#'
+							break;
+						case 3:
+							writer.write(69); //'E'
+							break;
+					}				
+				}
+			writer.newLine();
+			//die Karte wir Feld fuer Feld ausgelesen, umgewandelt und in die Datei geschrieben
+			}			
+			writer.flush();
+			writer.close();
+			output.close();
+			//die Aenderungen werden geschrieben und die Datei wird geschlossen
+		}catch(IOException e)
+		{
+			System.out.println(e);
+			return;
+		}		
 	}
 /*public void updatePlayer (int[] iOldPos, player updPlayer)
 {

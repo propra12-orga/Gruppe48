@@ -12,6 +12,7 @@ public class testmain {
 		testGenerator.setModus(0);
 		//testfield.insertMap(testGenerator.createSquareMap(11));
 		testfield.insertMap(testGenerator.readMap("C:\\TestMap.txt"));
+		testfield.saveMap("savetest.txt", 0);
 		for (int i = 0; i < testfield.getMap().length; i++)
 		{
 			for (int j = 0; j < testfield.getMap()[0].length; j++)
