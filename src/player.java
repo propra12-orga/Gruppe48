@@ -15,17 +15,17 @@ public class player extends field {
 	}
 
 	public void move() {
-		if (/*tastendruck w=true*/){ 
+		if (x == y/* tastendruck w=true */) {
 			moveUP();
-		  }else if(/*tastendruck s=true*/){
-			  moveDOWN(); 
-		  	}else if(/*tastendruck a=true*/){ 
-		  		moveLEFT(); 
-		  		}else if(/*tastendruck d=true*/){
-		  			moveRIGHT(); 
-			  
-		  }
-		 
+		} else if (x == y/* tastendruck s=true */) {
+			moveDOWN();
+		} else if (x == y/* tastendruck a=true */) {
+			moveLEFT();
+		} else if (x == y/* tastendruck d=true */) {
+			moveRIGHT();
+
+		}
+
 	}
 
 	public int moveUP() {

@@ -36,5 +36,4 @@ public class bomb extends player {
 
 		return a[x];
 	}
-
 }
