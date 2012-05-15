@@ -5,6 +5,7 @@ public class field
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
 	private fieldContent Map[][];	
 	private int iOldPos[];
+	public static int x,y;
 	public field()
 	{
 		EMPTY = 0; FREE = 1; WALL = 2; EXIT = 3; BOMB = 4; PLAYER = 5;
@@ -60,6 +61,8 @@ public class field
 		if(bInBounds(iXCoord, iYCoord))
 		{
 			Map[iXCoord][iYCoord].insertPlayer(newPlayer);
+			x=iXCoord;
+			y=iYCoord;
 		}else
 		{
 			return;		
