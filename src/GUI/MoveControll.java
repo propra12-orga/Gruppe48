@@ -50,40 +50,5 @@ public class MoveControll {
     public void setY(int y) {
         this.y = y;
     }
-/*
-    public boolean isLeftCollision(MoveControll movecontroll) {
-        if (((this.x() - SPACE) == movecontroll.x()) &&
-            (this.y() == movecontroll.y())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    public boolean isRightCollision(MoveControll movecontroll) {
-        if (((this.x() + SPACE) == movecontroll.x())
-                && (this.y() == movecontroll.y())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isTopCollision(MoveControll movecontroll) {
-        if (((this.y() - SPACE) == movecontroll.y()) &&
-            (this.x() == movecontroll.x())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isBottomCollision(MoveControll movecontroll) {
-        if (((this.y() + SPACE) == movecontroll.y())
-                && (this.x() == movecontroll.x())) {
-            return true;
-        } else {
-            return false;
-        }
-    }*/
 }
