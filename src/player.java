@@ -2,6 +2,7 @@ public class player {
 	public static int x, y;
 	//public static float a,b;
 	public boolean stillAlive = true;
+	
 
 	public player() {
 		x = field.x;
@@ -50,19 +51,7 @@ public class player {
 		
 	}*/
 
-	public void move() {
-		if (x == y/* tastendruck w=true&& wand im weg? */) {
-			moveUP();
-		} else if (x == y/* tastendruck s=true && wand im weg? */) {
-			moveDOWN();
-		} else if (x == y/* tastendruck a=true && wand im weg? */) {
-			moveLEFT();
-		} else if (x == y/* tastendruck d=true && wand im weg? */) {
-			moveRIGHT();
-
-		}
-
-	}
+	
 
 	public int moveUP() {
 		int u;
