@@ -5,8 +5,8 @@ public class player {
 	
 
 	public player() {
-		x = field.x;
-		y = field.y;
+		x =field.x;
+		y =field.y;
 	}
 
 	public int[] getPosition() {
@@ -14,6 +14,12 @@ public class player {
 		getPosition[0] = x;
 		getPosition[1] = y;
 		return getPosition;
+	}
+	public void placeBomb(){  // erzeugt eine Bombe abhängig von der Spielerposition
+		getPosition();
+		field a = new field();
+		bomb s = new bomb();
+		//a.setBomb(s, x, y);
 	}
 
 	/*public float[] getPositionfloat() {                Für eine flüssige Bewegung anstatt int mit float bewegen
@@ -80,4 +86,5 @@ public class player {
 		x = r;
 		return x;
 	}
+	
 }
