@@ -1,6 +1,6 @@
 public class fieldContent 
 {
-	private int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
+	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
 	private int iContent;
 	private bomb Bomb;
 	private player Player;
