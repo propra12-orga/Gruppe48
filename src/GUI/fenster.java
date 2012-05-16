@@ -83,6 +83,7 @@ public class fenster implements ActionListener {
 
 		JPanel Hintergrund = new JPanel();
 		Hintergrund.setBackground(Color.RED);
+		applikation.add(Hintergrund);
 
 	}
 

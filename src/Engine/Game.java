@@ -16,13 +16,7 @@ public class Game implements Runnable {
 		testGenerator.setRandomAmount(5);
 		testGenerator.setRandomChance(50);
 		testGenerator.setModus(0);
-		// testfield.insertMap(testGenerator.createSquareMap(11));
 		testfield.insertMap(testGenerator.readMap("TestMap.txt"));
-		// testfield.saveMap("savetest.txt", 1);
-		// FieldGenerator testGenerator = new FieldGenerator(0, 50, 5);
-		// gameField = new Field(testGenerator.createSquareMap(11));
-		// gameField.setPlayer(1, 1);
-		// gameField.setRandomEnemies(5);
 		gameState = GameStates.INITIALIZED;
 	}
 
@@ -32,15 +26,28 @@ public class Game implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		while (true) {
-			// GAME LOGIC
-			if (gameState == GameStates.STARTED)
+			switch (gameState) {
+			case STARTED:
+				start();
 				System.out.println("Game started");
-			// gameField.printField();
-			if (gameState == GameStates.PAUSED)
+				break;
+			case PAUSED:
 				System.out.println("Game paused");
-			// etc.
+				pauseGame();
+				break;
+			case VICTORY:
+				System.out.println("VICTORY");
+				break;
+			case GAMEOVER:
+				System.out.println("GAMEOVER");
+				break;
+			case INITIALIZED:
+				System.out.println("INITIALIZED");
+				break;
+			default:
+				System.out.println("default");
+			}
 		}
 	}
 
