@@ -8,10 +8,11 @@ public class player {
 	public boolean stillAlive = true;
 
 	public player() {
-		/*
-		 * x = Field.x; y = Field.y;
-		 */
-	}
+		
+	//	 x = Field.x; y = Field.y;
+		x = 0;
+		y = 0;
+			}
 
 	public int[] getPosition() {
 		int[] getPosition = new int[2];

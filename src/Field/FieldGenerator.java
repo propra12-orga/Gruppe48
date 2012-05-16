@@ -37,9 +37,9 @@ public class FieldGenerator {
 	/**
 	 * Erzeugt rechteckige Map abhaengig von iModus
 	 * 
-	 * @param int iWidth: Breite der zu erstellenden Map
-	 * @param int iHeight: Hoehe der zu erstellenden Map
-	 * @return FieldContent[][]: erzeugte Map
+	 * @param iWidth: Breite der zu erstellenden Map
+	 * @param iHeight: Hoehe der zu erstellenden Map
+	 * @return erzeugte Map
 	 */
 	public FieldContent[][] createRectangleMap(int iWidth, int iHeight) {
 		Map = null;
@@ -71,8 +71,8 @@ public class FieldGenerator {
 	/**
 	 * Erzeugt quadratische Map
 	 * 
-	 * @param int iSize: Seitenlaenge der zu erzeugenden Map
-	 * @return FieldContent[][]: erzeugte Map
+	 * @param iSize: Seitenlaenge der zu erzeugenden Map
+	 * @return erzeugte Map
 	 */
 	public FieldContent[][] createSquareMap(int iSize) {
 		return createRectangleMap(iSize, iSize);
@@ -81,7 +81,7 @@ public class FieldGenerator {
 	/**
 	 * Setzt Zufallschance fuer Modus 1 auf angegebenen Wert
 	 * 
-	 * @param float fChance: Chance in Prozent
+	 * @param fChance: Chance in Prozent
 	 */
 	public void setRandomChance(float fChance) {
 		fRandomChance = fChance / 100;
@@ -90,7 +90,7 @@ public class FieldGenerator {
 	/**
 	 * Setzt Anzahl der Bloecke fuer Modus 2 auf angegebenen Wert
 	 * 
-	 * @param int iAmount: Anzahl der zu setzenden Bloecke
+	 * @param iAmount: Anzahl der zu setzenden Bloecke
 	 */
 	public void setRandomAmount(int iAmount) {
 		iRandomAmount = iAmount;
@@ -103,7 +103,7 @@ public class FieldGenerator {
 	 * versehen Modus 2: Es werden auf zufaelligen Feldern feste Bloecke
 	 * platziert, bis das Spielfeld voll ist oder iAmount erreicht wurde
 	 * 
-	 * @param int iStatus: Gewuenschter Modus. Wird zu 0, wenn iStatus < 0 oder
+	 * @param iStatus: Gewuenschter Modus. Wird zu 0, wenn iStatus < 0 oder
 	 *        iStatus > 2
 	 */
 	public void setModus(int iStatus) {
@@ -118,9 +118,8 @@ public class FieldGenerator {
 	 * Liest Map aus Datei aus und gibt sie als FieldContent[][] zurueck.
 	 * Erkennt automatisch ob die Map komprimiert oder unkomprimiert vorliegt.
 	 * 
-	 * @param String
-	 *            sInputFile: Name der auszulesenden Datei
-	 * @return FieldContent[][]: Eingelesene Map
+	 * @param  sInputFile: Name der auszulesenden Datei
+	 * @return Eingelesene Map
 	 */
 	public FieldContent[][] readMap(String sInputFile) {
 		int iCounter = 0;
@@ -200,18 +199,14 @@ public class FieldGenerator {
 	 * unkomprimiert vorliegt. Zum einlesene von Maps gedacht, bei denen nur der
 	 * Rand, nicht aber der Inhalt festgelegt ist.
 	 * 
-	 * @param String
-	 *            sInputFile: Name der auszulesenden Datei
-	 * @return FieldContent[][]: Eingelesene Map
+	 * @param  sInputFile: Name der auszulesenden Datei
+	 * @return Eingelesene Map
 	 */
 	public FieldContent[][] readFillEmptyMap(String sInputFile) {
 		Map = readMap(sInputFile);
 		setWalls();
 		createRandomExit();
 		return Map;
-		// liest Map ein und fuellt sie danach mit Waenden und Ausgang
-		// gedacht zum Einlesen von Maps, bei denen nur die Form der Map gegeben
-		// wurde
 	}
 
 	/**
@@ -219,7 +214,7 @@ public class FieldGenerator {
 	 * 
 	 * @param BufferedReader
 	 *            reader: BufferedReader mit eingelesener Map als Inhalt
-	 * @return FieldContent[][]: Eingelesene Map
+	 * @return Eingelesene Map
 	 */
 	private FieldContent[][] readCompressedMap(BufferedReader reader) {
 		String sInputPart;
@@ -322,14 +317,14 @@ public class FieldGenerator {
 	 * interne Methode zum Ueberpruefen aller Felder in einem angegebenen Radius
 	 * auf vorkommen oder nicht vorkommen eines Blocks.
 	 * 
-	 * @param int iCheckWhereX: x-Koordinate des Suchstarts
-	 * @param int iCheckWhereY: y-Koordinate des Suchstarts
-	 * @param int iCheckHowFar: Radius der Suche
-	 * @param int iCheckForWhat: Typ des zu suchenden Blocks
-	 * @param boolean bCheckIfThere: Wird hier true angegeben, so wird
+	 * @param iCheckWhereX: x-Koordinate des Suchstarts
+	 * @param iCheckWhereY: y-Koordinate des Suchstarts
+	 * @param iCheckHowFar: Radius der Suche
+	 * @param iCheckForWhat: Typ des zu suchenden Blocks
+	 * @param bCheckIfThere: Wird hier true angegeben, so wird
 	 *        ueberprueft, ob der angegebene Block vorhanden ist. Wird false
 	 *        angegeben, so wird ueberprueft ob der Block nicht vorhanden ist.
-	 * @return boolean: gibt true zurueck wenn der gesuchte Block gefunden wurde
+	 * @return gibt true zurueck wenn der gesuchte Block gefunden wurde
 	 *         und bCheckIfThere = true oder wenn der gesuchte Block nicht
 	 *         gefunden wurde und bCheckIfThere = false. Gibt sonst false
 	 *         zurueck.
@@ -354,7 +349,7 @@ public class FieldGenerator {
 	/**
 	 * Zaehlt die Anzahl der freien Felder
 	 * 
-	 * @return int: Anzahl der freien Felder
+	 * @return Anzahl der freien Felder
 	 */
 	private int iCountFreeSpace() {
 		int iCount = 0;

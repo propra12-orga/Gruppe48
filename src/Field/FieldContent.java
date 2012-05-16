@@ -33,7 +33,7 @@ public class FieldContent {
 	/**
 	 * Setzt Wert des Feldes auf angegebenen Wert
 	 * 
-	 * @param int iNewContent: Zu setzender Wert
+	 * @param iNewContent: Zu setzender Wert
 	 */
 	public void setContent(int iNewContent) {
 		iContent = iNewContent;
@@ -46,8 +46,7 @@ public class FieldContent {
 	/**
 	 * Fuegt Bombe in Feld ein
 	 * 
-	 * @param bomb
-	 *            bBomb: einzufuegende Bombe
+	 * @param bBomb: einzufuegende Bombe
 	 */
 	public void insertBomb(bomb bBomb) {
 		Bomb = bBomb;
@@ -58,8 +57,7 @@ public class FieldContent {
 	/**
 	 * Fuegt Spieler in Feld ein
 	 * 
-	 * @param player
-	 *            pPlayer: einzufuegender Spieler
+	 * @param pPlayer: einzufuegender Spieler
 	 */
 	public void insertPlayer(player pPlayer) {
 		Player = pPlayer;
@@ -84,7 +82,7 @@ public class FieldContent {
 	/**
 	 * Gibt Inhalt des Feldes zurueck
 	 * 
-	 * @return int: Gibt Inhalt des Feldes zurueck
+	 * @return Gibt Inhalt des Feldes zurueck
 	 */
 	public int getContent() {
 		return iContent;
@@ -94,8 +92,7 @@ public class FieldContent {
 	/**
 	 * Gibt angelegte Bombe zurueck
 	 * 
-	 * @return bomb: Gibt Bombe zurueck, falls vorhanden. Gibt sonst null
-	 *         zurueck;
+	 * @return Gibt Bombe zurueck, falls vorhanden. Gibt sonst null zurueck;
 	 */
 	public bomb getBomb() {
 		return Bomb;
@@ -106,8 +103,7 @@ public class FieldContent {
 	/**
 	 * Gibt angelegten Spieler zurueck
 	 * 
-	 * @return player: Gibt Spieler zurueck, falls vorhanden. Gibt sonst null
-	 *         zurueck;
+	 * @return Gibt Spieler zurueck, falls vorhanden. Gibt sonst null zurueck;
 	 */
 	public player getPlayer() {
 		return Player;

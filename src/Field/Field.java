@@ -33,8 +33,7 @@ public class Field {
 	/**
 	 * Fuegt neue Map in field ein
 	 * 
-	 * @param FieldContent
-	 *            [][] newMap: einzufuegende Map
+	 * @param newMap: einzufuegende Map
 	 */
 	public void insertMap(FieldContent newMap[][]) {
 		map = newMap;
@@ -43,9 +42,9 @@ public class Field {
 	/**
 	 * Gibt Wert des angegebenen Feldes als int zurueck
 	 * 
-	 * @param int iXCoord: xKoordinate des Feldes
-	 * @param int iYCoord: yKoordinate des Feldes
-	 * @return int: Wert des angegeben Feldes. Gibt -1 zurueck, falls das Feld
+	 * @param iXCoord: xKoordinate des Feldes
+	 * @param iYCoord: yKoordinate des Feldes
+	 * @return Wert des angegeben Feldes. Gibt -1 zurueck, falls das Feld
 	 *         nicht existiert
 	 */
 	public int iGetContent(int iXCoord, int iYCoord) {
@@ -59,9 +58,9 @@ public class Field {
 	/**
 	 * Gibt Wert des angegebenen Feldes als FieldContent zurueck
 	 * 
-	 * @param int iXCoord: x-Koordinate des Feldes
-	 * @param int iYCoord: y-Koordinate des Feldes
-	 * @return FieldContent: Inhalt des angegebenen Feldes. Gibt null zurueck,
+	 * @param iXCoord: x-Koordinate des Feldes
+	 * @param iYCoord: y-Koordinate des Feldes
+	 * @return Inhalt des angegebenen Feldes. Gibt null zurueck,
 	 *         falls das Feld nicht existiert
 	 */
 	public FieldContent getField(int iXCoord, int iYCoord) {
@@ -75,10 +74,9 @@ public class Field {
 	/**
 	 * Fuegt Bombe an angegebener Stelle ein
 	 * 
-	 * @param bomb
-	 *            newBomb: einzufuegende Bombe
-	 * @param int iXCoord: x-Koordinate des Feldes
-	 * @param int iYCoord: y-Koordinate des Feldes
+	 * @param newBomb: einzufuegende Bombe
+	 * @param iXCoord: x-Koordinate des Feldes
+	 * @param iYCoord: y-Koordinate des Feldes
 	 */
 	public void setBomb(bomb newBomb, int iXCoord, int iYCoord) {
 		if (bInBounds(iXCoord, iYCoord)) {
@@ -92,10 +90,9 @@ public class Field {
 	 * 
 	 * Fuegt Spieler an angegebener Stelle ein
 	 * 
-	 * @param player
-	 *            newPlayer: einzufuegender Spieler
-	 * @param int iXCoord: x-Koordinate des Feldes
-	 * @param int iYCoord: y-Koordinate des Feldes
+	 * @param newPlayer: einzufuegender Spieler
+	 * @param iXCoord: x-Koordinate des Feldes
+	 * @param iYCoord: y-Koordinate des Feldes
 	 */
 	public void setPlayer(player newPlayer, int iXCoord, int iYCoord) {
 		if (bInBounds(iXCoord, iYCoord)) {
@@ -108,10 +105,9 @@ public class Field {
 	/**
 	 * Ueberprueft ob angegebene Zelle existiert
 	 * 
-	 * @param int iXCoord: x-Koordinate des Feldes
-	 * @param int iYCoord: y-Koordinate des Feldes
-	 * @return boolean: gibt true zurueck, falls Zelle existiert. Gibt sonst
-	 *         false zurueck
+	 * @param iXCoord: x-Koordinate des Feldes
+	 * @param iYCoord: y-Koordinate des Feldes
+	 * @return gibt true zurueck, falls Zelle existiert. Gibt sonst false zurueck
 	 */
 	public boolean bInBounds(int iXCoord, int iYCoord) {
 		if ((iXCoord >= 0) && (iXCoord < map.length) && (iYCoord >= 0)
@@ -125,8 +121,7 @@ public class Field {
 	/**
 	 * Gibt komplette Map zurueck
 	 * 
-	 * @return FieldContent[][]: gibt komplette Map zurueck. Gibt null zurueck,
-	 *         falls keine Map existiert.
+	 * @return gibt komplette Map zurueck. Gibt null zurueck falls keine Map existiert.
 	 */
 	public FieldContent[][] getMap() {
 		return map;
@@ -135,9 +130,8 @@ public class Field {
 	/**
 	 * Speichert Map als Datei
 	 * 
-	 * @param String
-	 *            sFileName: Name der Datei
-	 * @param int iSaveModus: Legt fest wie die Datei gespeichert werden soll.
+	 * @param sFileName: Name der Datei
+	 * @param iSaveModus: Legt fest wie die Datei gespeichert werden soll.
 	 *        0: normale Speicherung, 1: komprimierte Speicherung. Geht von 0
 	 *        aus, wenn Angabe != 0 oder 1
 	 */
@@ -222,7 +216,7 @@ public class Field {
 	/**
 	 * Gibt die Map komprimiert zurueck
 	 * 
-	 * @return String: Gibt Map im komprimierten Format zurueck
+	 * @return Gibt Map im komprimierten Format zurueck
 	 */
 	private String compressMap() {
 		String sOutput = "c";
