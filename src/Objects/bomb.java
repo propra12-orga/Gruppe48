@@ -2,7 +2,9 @@ package Objects;
 
 import java.util.Timer;
 
-public class bomb extends field {
+import Field.Field;
+
+public class bomb extends Field {
 	public int xKoordinate = player.x;
 	public int yKoordinate = player.y;
 	public static boolean isExploded = false;

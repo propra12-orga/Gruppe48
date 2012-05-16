@@ -1,13 +1,16 @@
 package Objects;
 
+import Field.Field;
+
 public class player {
 	public static int x, y;
 	// public static float a,b;
 	public boolean stillAlive = true;
 
 	public player() {
-		x = field.x;
-		y = field.y;
+		/*
+		 * x = Field.x; y = Field.y;
+		 */
 	}
 
 	public int[] getPosition() {
@@ -20,7 +23,7 @@ public class player {
 	public void placeBomb() { // erzeugt eine Bombe abhängig von der
 								// Spielerposition
 		getPosition();
-		field a = new field();
+		Field a = new Field();
 		bomb s = new bomb();
 		// a.setBomb(s, x, y);
 	}
