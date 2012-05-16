@@ -1,67 +1,114 @@
-public class fieldContent 
-{
+/*
+ * FieldContent.java
+ * 
+ * Version 1
+ * 
+ * © Alexander Hering
+ */
+
+public class FieldContent {
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
 	private int iContent;
 	private bomb Bomb;
 	private player Player;
-	public fieldContent () 
-	
+
+	public FieldContent()
+
 	{
-		EMPTY = 0; FREE = 1; WALL = 2; EXIT = 3; BOMB = 4; PLAYER = 5;
-		//Bezeichnungen werden in allen Spielfelddateien beibehalten 
+		EMPTY = 0;
+		FREE = 1;
+		WALL = 2;
+		EXIT = 3;
+		BOMB = 4;
+		PLAYER = 5;
 		iContent = EMPTY;
 		Bomb = null;
 		Player = null;
 	}
-	
-	public void setContent (int iNewContent)
-	{
+
+	/**
+	 * Setzt Wert des Feldes auf angegebenen Wert
+	 * 
+	 * @param int iNewContent: Zu setzender Wert
+	 */
+	public void setContent(int iNewContent) {
 		iContent = iNewContent;
 		Bomb = null;
 		Player = null;
-		//setzt den Inhalt auf den gewuenschten Wert und loescht etwaige Spieler- oder Bombenreferenzen.
+		// setzt den Inhalt auf den gewuenschten Wert und loescht etwaige
+		// Spieler- oder Bombenreferenzen.
 	}
-	
-	public void insertBomb (bomb bBomb)
-	{
+
+	/**
+	 * Fuegt Bombe in Feld ein
+	 * 
+	 * @param bomb
+	 *            bBomb: einzufuegende Bombe
+	 */
+	public void insertBomb(bomb bBomb) {
 		Bomb = bBomb;
-		iContent = BOMB;	
-		//fuegt Bombe hinzu
+		iContent = BOMB;
+		// fuegt Bombe hinzu
 	}
-	
-	public void insertPlayer (player pPlayer)
-	{
+
+	/**
+	 * Fuegt Spieler in Feld ein
+	 * 
+	 * @param player
+	 *            pPlayer: einzufuegender Spieler
+	 */
+	public void insertPlayer(player pPlayer) {
 		Player = pPlayer;
 		iContent = PLAYER;
-		//fuegt Spieler hinzu und loescht Referenz auf Bomben
+		// fuegt Spieler hinzu und loescht Referenz auf Bomben
 	}
-	
-	public void removeBomb ()
-	{
+
+	/**
+	 * Entfernt Bombe aus Feld
+	 */
+	public void removeBomb() {
 		Bomb = null;
 	}
-	
-	public void removePlayer ()
-	{
+
+	/**
+	 * Entfernt Spieler aus Feld
+	 */
+	public void removePlayer() {
 		Player = null;
 	}
-	public int getContent ()
-	{
+
+	/**
+	 * Gibt Inhalt des Feldes zurueck
+	 * 
+	 * @return int: Gibt Inhalt des Feldes zurueck
+	 */
+	public int getContent() {
 		return iContent;
-		//gibt Inhalt als int zurueck
+		// gibt Inhalt als int zurueck
 	}
-	
-	public bomb getBomb()
-	{
+
+	/**
+	 * Gibt angelegte Bombe zurueck
+	 * 
+	 * @return bomb: Gibt Bombe zurueck, falls vorhanden. Gibt sonst null
+	 *         zurueck;
+	 */
+	public bomb getBomb() {
 		return Bomb;
-		//gibt Referenz auf Bombe zurueck falls vorhanden, gibt sonst null zurueck
+		// gibt Referenz auf Bombe zurueck falls vorhanden, gibt sonst null
+		// zurueck
 	}
-	
-	public player getPlayer()
-	{
+
+	/**
+	 * Gibt angelegten Spieler zurueck
+	 * 
+	 * @return player: Gibt Spieler zurueck, falls vorhanden. Gibt sonst null
+	 *         zurueck;
+	 */
+	public player getPlayer() {
 		return Player;
-		//gibt Referenz auf Spieler zurueck falls vorhanden, gibt sonst null zurueck
+		// gibt Referenz auf Spieler zurueck falls vorhanden, gibt sonst null
+		// zurueck
 	}
-	
-	
+
 }

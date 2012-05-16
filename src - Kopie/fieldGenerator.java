@@ -1,11 +1,3 @@
-/*
- * FieldContent.java
- * 
- * Version 1
- * 
- * © Alexander Hering
- */
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,13 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class FieldGenerator {
+public class fieldGenerator {
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
-	private FieldContent Map[][];
+	private fieldContent Map[][];
 	private float fRandomChance;
 	private int iModus, iRandomAmount;
 
-	public FieldGenerator() {
+	public fieldGenerator() {
 
 		EMPTY = 0;
 		FREE = 1;
@@ -29,99 +21,71 @@ public class FieldGenerator {
 		BOMB = 4;
 		PLAYER = 5;
 		iModus = 0;
+		// Anzahl der Modi: 3
+		// Modus 0: Jedes 2. Feld in jeder 2. Spalte wird mit einer Mauer belegt
+		// Modus 1: Jedes 2. Feld in jeder 2. Spalte wird mit einer Chance von
+		// fRandomChance % mit einer Mauer belegt
+		// Modus 2: Von allen mit Mauern belegbaren Feldern, (jedes 2. Feld in
+		// jeder 2. Spalte), werden so lange zufaellig Felder mit Mauern belegt
+		// bis iRandomAmount Felder belegt sind
 		fRandomChance = 0;
 		iRandomAmount = 0;
+		// Bezeichnungen werden in allen Spielfelddateien beibehalten
 	}
 
-	/**
-	 * Erzeugt rechteckige Map abhaengig von iModus
-	 * 
-	 * @param int iWidth: Breite der zu erstellenden Map
-	 * @param int iHeight: Hoehe der zu erstellenden Map
-	 * @return FieldContent[][]: erzeugte Map
-	 */
-	public FieldContent[][] createRectangleMap(int iWidth, int iHeight) {
+	public fieldContent[][] createRectangleMap(int iXSize, int iYSize) {
 		Map = null;
-		Map = new FieldContent[iWidth][iHeight];
-		for (int i = 0; i < iWidth; i++) {
-			for (int j = 0; j < iHeight; j++) {
-				Map[i][j] = new FieldContent();
+		Map = new fieldContent[iXSize][iYSize];
+		for (int i = 0; i < iXSize; i++) {
+			for (int j = 0; j < iYSize; j++) {
+				Map[i][j] = new fieldContent();
 			}
 		}
 
-		for (int i = 0; i < iWidth; i++) {
-			for (int j = 0; j < iHeight; j++) {
+		for (int i = 0; i < iXSize; i++) {
+			for (int j = 0; j < iYSize; j++) {
 				Map[i][j].setContent(FREE);
 			}
 		}
-		for (int i = 0; i < iWidth; i++) {
-			for (int j = 0; j < iHeight; j++) {
-				if ((i == 0) || (i == iWidth - 1) || (j == 0)
-						|| (j == iHeight - 1)) {
+		// Initialisierung des Spielfeldes
+		for (int i = 0; i < iXSize; i++) {
+			for (int j = 0; j < iYSize; j++) {
+				if ((i == 0) || (i == iXSize - 1) || (j == 0)
+						|| (j == iYSize - 1)) {
 					Map[i][j].setContent(WALL);
+					// Raender der Karte werden mit Mauern belegt
 				}
 			}
 		}
 		setWalls();
 		createRandomExit();
+		// Ausgang wird an zufaelliger Stelle eingefuegt
 		return Map;
 	}
 
-	/**
-	 * Erzeugt quadratische Map
-	 * 
-	 * @param int iSize: Seitenlaenge der zu erzeugenden Map
-	 * @return FieldContent[][]: erzeugte Map
-	 */
-	public FieldContent[][] createSquareMap(int iSize) {
+	public fieldContent[][] createSquareMap(int iSize) {
 		return createRectangleMap(iSize, iSize);
+		// gibt Quadratische Map zurueck
 	}
 
-	/**
-	 * Setzt Zufallschance fuer Modus 1 auf angegebenen Wert
-	 * 
-	 * @param float fChance: Chance in Prozent
-	 */
 	public void setRandomChance(float fChance) {
 		fRandomChance = fChance / 100;
+		// erwartet Prozentangabe. Setzt die Zufallschance fuer Modus 1 auf die
+		// angegebene Groesse
 	}
 
-	/**
-	 * Setzt Anzahl der Bloecke fuer Modus 2 auf angegebenen Wert
-	 * 
-	 * @param int iAmount: Anzahl der zu setzenden Bloecke
-	 */
 	public void setRandomAmount(int iAmount) {
 		iRandomAmount = iAmount;
+		// setzt die Anzahl der zu setzenden Bloecke fuer Modus 2 auf den
+		// angegebenen Wert
 	}
 
-	/**
-	 * Aendert Modus der Spielfeldgenerierung Modus 0: Jedes 2. Feld in jeder 2.
-	 * Zeile wird mit einem festen Block versehen Modus 1: Jedes 2. Feld in
-	 * jeder 2. Zeile wird mit einer Chance von fChance % mit einem festen Block
-	 * versehen Modus 2: Es werden auf zufaelligen Feldern feste Bloecke
-	 * platziert, bis das Spielfeld voll ist oder iAmount erreicht wurde
-	 * 
-	 * @param int iStatus: Gewuenschter Modus. Wird zu 0, wenn iStatus < 0 oder
-	 *        iStatus > 2
-	 */
 	public void setModus(int iStatus) {
-		if ((iStatus >= 0) && (iStatus <= 2)) {
-			iModus = iStatus;
-		} else {
-			iModus = 0;
-		}
+		iModus = iStatus;
+		// aendert den Modus der Spielfeldgenerierung
 	}
 
-	/**
-	 * Liest Map aus Datei aus und gibt sie als FieldContent[][] zurueck.
-	 * Erkennt automatisch ob die Map komprimiert oder unkomprimiert vorliegt.
-	 * 
-	 * @param String
-	 *            sInputFile: Name der auszulesenden Datei
-	 * @return FieldContent[][]: Eingelesene Map
-	 */
-	public FieldContent[][] readMap(String sInputFile) {
+	public fieldContent[][] readMap(String sInputFile) {
 		int iCounter = 0;
 		FileReader inputFile;
 		BufferedReader reader;
@@ -133,6 +97,7 @@ public class FieldGenerator {
 			return null;
 		}
 		reader = new BufferedReader(inputFile);
+		// erstellt neuen Stream zum Zugriff auf Input Datei
 		try {
 			reader.mark(1);
 			if (reader.read() == 99) {
@@ -142,6 +107,8 @@ public class FieldGenerator {
 			}
 			while (reader.ready()) {
 				mapList.add(reader.readLine());
+				// schreibt die gesamte Eingabe in eine Liste. Jeder
+				// Listeneintrag entspricht einer Zeile
 			}
 		} catch (IOException e) {
 			return null;
@@ -158,13 +125,17 @@ public class FieldGenerator {
 			if (iCounter < mapList.get(i).length()) {
 				iCounter = mapList.get(i).length();
 			}
+			// vergleicht die Breiten aller Zeilen und schreibt den Maximalwert
+			// in iCounter. Wird benoetigt, falls nicht rechteckige Muster
+			// eingelesen werden
 		}
-		Map = new FieldContent[mapList.size()][iCounter];
+		Map = new fieldContent[mapList.size()][iCounter];
 		for (int i = 0; i < mapList.size(); i++) {
 			for (int j = 0; j < iCounter; j++) {
-				Map[i][j] = new FieldContent();
+				Map[i][j] = new fieldContent();
 				Map[i][j].setContent(EMPTY);
 			}
+			// initialliesiert die Karte und setzt alle Felder auf Leer
 		}
 		iCounter = 0;
 		while (mapList.size() > 0) {
@@ -189,21 +160,13 @@ public class FieldGenerator {
 			}
 			iCounter++;
 			mapList.remove(0);
+			// schreibt den Inhalt der eingelesenen Datei angepasst in das
+			// Outputarray
 		}
 		return Map;
 	}
 
-	/**
-	 * Liest Map aus Datei aus, erzeugt Bloecke und Ausgang und gibt sie als
-	 * FieldContent[][] zurueck. Erkennt automatisch ob die Map komprimiert oder
-	 * unkomprimiert vorliegt. Zum einlesene von Maps gedacht, bei denen nur der
-	 * Rand, nicht aber der Inhalt festgelegt ist.
-	 * 
-	 * @param String
-	 *            sInputFile: Name der auszulesenden Datei
-	 * @return FieldContent[][]: Eingelesene Map
-	 */
-	public FieldContent[][] readFillEmptyMap(String sInputFile) {
+	public fieldContent[][] readFillEmptyMap(String sInputFile) {
 		Map = readMap(sInputFile);
 		setWalls();
 		createRandomExit();
@@ -213,14 +176,7 @@ public class FieldGenerator {
 		// wurde
 	}
 
-	/**
-	 * Interne Mothode zum einlesen komprimierter Maps.
-	 * 
-	 * @param BufferedReader
-	 *            reader: BufferedReader mit eingelesener Map als Inhalt
-	 * @return FieldContent[][]: Eingelesene Map
-	 */
-	private FieldContent[][] readCompressedMap(BufferedReader reader) {
+	private fieldContent[][] readCompressedMap(BufferedReader reader) {
 		String sInputPart;
 		String sCount = "";
 		StringTokenizer tokenizer;
@@ -232,6 +188,8 @@ public class FieldGenerator {
 		} catch (IOException e) {
 			return null;
 		}
+		// schreibt den gesamten Input in einen StringTokenizer und trennt die
+		// einzelnen Elemente bei jedem &
 		sInputPart = tokenizer.nextToken();
 		for (int i = 0; i < sInputPart.length(); i++) {
 			if ((sInputPart.charAt(i) > 47) && (sInputPart.charAt(i) < 58)) {
@@ -245,13 +203,16 @@ public class FieldGenerator {
 				}
 			}
 		}
+		// berechnet die Anzahl an Elementen in der 1. Zeile um die
+		// Spielfeldgroeße berechnen zu können
 		Map = null;
-		Map = new FieldContent[tokenizer.countTokens() + 1][iCounterX];
+		Map = new fieldContent[tokenizer.countTokens() + 1][iCounterX];
 		for (int i = 0; i < tokenizer.countTokens() + 1; i++) {
 			for (int j = 0; j < iCounterX; j++) {
-				Map[i][j] = new FieldContent();
+				Map[i][j] = new fieldContent();
 				Map[i][j].setContent(EMPTY);
 			}
+			// initialliesiert die Karte und setzt alle Felder auf Leer
 		}
 		iCounterX = 0;
 		sCount = "";
@@ -262,6 +223,9 @@ public class FieldGenerator {
 			for (int i = 0; i < sInputPart.length(); i++) {
 				if ((sInputPart.charAt(i) > 47) && (sInputPart.charAt(i) < 58)) {
 					sCount += String.valueOf(sInputPart.charAt(i));
+					// Wird eine Zahl eingelesen, so wird sie zu einem String
+					// hinzugefuegt um die Anzahl der zu schreibenden Zeichen zu
+					// erhalten
 				} else {
 					if (sCount == "") {
 						switch (sInputPart.charAt(i)) {
@@ -282,6 +246,9 @@ public class FieldGenerator {
 							break;
 						}
 						iCounterX++;
+						// wurde nur eine Zeichen ohne vorherige Zahl
+						// eingelesen, so wird dieses an die entsprechende
+						// Stelle in die Map geschrieben
 					} else {
 						switch (sInputPart.charAt(i)) {
 						case 32: // ' '
@@ -307,6 +274,10 @@ public class FieldGenerator {
 						}
 						iCounterX += Integer.parseInt(sCount);
 						sCount = "";
+						// wurde ein Zeichen mit vorheriger Zahl eingelesen, so
+						// werden sowohl das aktuelle Feld als auch die
+						// naechsten sCount - 1 Felder mit dem Zeichen
+						// beschrieben
 					}
 				}
 
@@ -317,22 +288,6 @@ public class FieldGenerator {
 		return Map;
 	}
 
-	/**
-	 * interne Methode zum Ueberpruefen aller Felder in einem angegebenen Radius
-	 * auf vorkommen oder nicht vorkommen eines Blocks.
-	 * 
-	 * @param int iCheckWhereX: x-Koordinate des Suchstarts
-	 * @param int iCheckWhereY: y-Koordinate des Suchstarts
-	 * @param int iCheckHowFar: Radius der Suche
-	 * @param int iCheckForWhat: Typ des zu suchenden Blocks
-	 * @param boolean bCheckIfThere: Wird hier true angegeben, so wird
-	 *        ueberprueft, ob der angegebene Block vorhanden ist. Wird false
-	 *        angegeben, so wird ueberprueft ob der Block nicht vorhanden ist.
-	 * @return boolean: gibt true zurueck wenn der gesuchte Block gefunden wurde
-	 *         und bCheckIfThere = true oder wenn der gesuchte Block nicht
-	 *         gefunden wurde und bCheckIfThere = false. Gibt sonst false
-	 *         zurueck.
-	 */
 	private boolean checkSurroundings(int iCheckWhereX, int iCheckWhereY,
 			int iCheckHowFar, int iCheckForWhat, boolean bCheckIfThere) {
 		for (int i = iCheckWhereX - iCheckHowFar; i <= iCheckWhereX
@@ -348,13 +303,16 @@ public class FieldGenerator {
 
 		}
 		return false;
+		// in allen Feldern, die sich in einem Abstand von maximal iCheckHowFar
+		// von [iCheckWhereX][iCheckWhereY] befinden wird das Vorhandensein von
+		// iCheckForWhat geprueft.
+		// ist bCheckIfThere auf true zurueckgesetzt, so wird true
+		// zurueckgegeben, wenn das gesuchte Element mindestens einmal gefunden
+		// wurde.
+		// ist bCheckIfThere auf false gesetzt, so wird true zurueckgegeben,
+		// wenn das gesuchte Element mindestens einmal nicht gefunden wurde.
 	}
 
-	/**
-	 * Zaehlt die Anzahl der freien Felder
-	 * 
-	 * @return int: Anzahl der freien Felder
-	 */
 	private int iCountFreeSpace() {
 		int iCount = 0;
 		for (int i = 0; i < Map.length; i++) {
@@ -365,13 +323,12 @@ public class FieldGenerator {
 			}
 		}
 		return iCount;
+		// zaehlt Anzahl leerer Stellen in Map
 	}
 
-	/**
-	 * Erzeugt auf einem zufaelligen freien Feld einen Ausgang
-	 */
 	private void createRandomExit() {
 		int iRand = (int) (Math.random() * iCountFreeSpace());
+		// waehlt das x-te freie Feld fuer den Ausgang aus
 		for (int i = 0; i < Map.length; i++) {
 			for (int j = 0; j < Map[0].length; j++) {
 				if (Map[i][j].getContent() == FREE) {
@@ -383,12 +340,11 @@ public class FieldGenerator {
 				}
 			}
 		}
+		// geht das Spielfeld von oben links nach unten rechts durch und fuegt
+		// abhaengig von iRand an der x.ten Stelle einen Ausgang ein. Terminiert
+		// nach hinzufuegen des Ausgangs
 	}
 
-	/**
-	 * Erzeugt Abhaengig von iModus, Waende auf der Map. Fuer genauere
-	 * Beschreibung der Modi siehe setModus()
-	 */
 	private void setWalls() {
 		switch (iModus) {
 		case 0:
@@ -397,6 +353,7 @@ public class FieldGenerator {
 					if ((i % 2 == 0) && (j % 2 == 0)
 							&& (Map[i][j].getContent() != EMPTY)) {
 						Map[i][j].setContent(WALL);
+						// jedes 2. Feld wird Mauern belegt
 					}
 				}
 			}
@@ -409,6 +366,9 @@ public class FieldGenerator {
 						if (checkSurroundings(i, j, 1, WALL, true) == false) {
 							if (Math.random() <= fRandomChance) {
 								Map[i][j].setContent(WALL);
+								// Feld wird mit einer x-prozentigen Chance mit
+								// einer Mauer belegt, wenn auf keinem
+								// Umliegenden Feld eine Mauer ist
 							}
 						}
 					}
@@ -432,9 +392,14 @@ public class FieldGenerator {
 							iPosition++;
 						}
 					}
+					// die Koordinaten aller moeglichen Mauerstuecke werden in
+					// einer Liste gespeichert
 				}
 				if (iTmpRandomAmount > iRandomList.size()) {
 					iTmpRandomAmount = iRandomList.size();
+					// falls die Anzahl der zu setzenden Mauerstuecke > der
+					// Anzahl der moeglichen Plaetze ist, wird die Anzahl
+					// reduziert
 				}
 				while (iTmpRandomAmount > 0) {
 					iRandomPosition = (int) (Math.random() * iRandomList.size());
@@ -442,6 +407,9 @@ public class FieldGenerator {
 					Map[iRandom[0]][iRandom[1]].setContent(WALL);
 					iRandomList.remove(iRandomPosition);
 					iTmpRandomAmount--;
+					// aus der Liste werden zufaellig Koordinaten ausgewaehlt an
+					// deren Stellen Mauerstuecke platziert werden, bis die
+					// gewuenschte Anzahl erreicht ist
 				}
 			}
 		}
