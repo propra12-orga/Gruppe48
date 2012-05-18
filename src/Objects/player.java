@@ -2,17 +2,15 @@ package Objects;
 
 import Field.Field;
 
-public class player {
-	public static int x, y;
+public class Player {
+	public int x, y;
 	// public static float a,b;
 	public boolean stillAlive = true;
 
-	public player() {
-		
-	//	 x = Field.x; y = Field.y;
-		x = 0;
-		y = 0;
-			}
+	public Player(int iXPos, int iYPos) {
+		x = iXPos;
+		y = iYPos;
+	}
 
 	public int[] getPosition() {
 		int[] getPosition = new int[2];
@@ -20,13 +18,31 @@ public class player {
 		getPosition[1] = y;
 		return getPosition;
 	}
+	
+	public void setPosition(int iXPos, int iYPos)
+	{
+		x = iXPos;
+		y = iYPos;
+	}
 
-	public void placeBomb() { // erzeugt eine Bombe abhängig von der
-								// Spielerposition
-		getPosition();
-		Field a = new Field();
-		bomb s = new bomb();
-		// a.setBomb(s, x, y);
+	public void moveUp()
+	{
+		x -= 1;
+	}
+	
+	public void moveDown()
+	{
+		x += 1;
+	}
+	
+	public void moveLeft()
+	{
+		y -= 1;
+	}
+	
+	public void moveRight()
+	{
+		y += 1;
 	}
 
 	/*

@@ -1,6 +1,6 @@
 package Field;
-import Objects.bomb;
-import Objects.player;
+import Objects.Bomb;
+import Objects.Player;
 
 /*
  * FieldContent.java
@@ -13,8 +13,8 @@ import Objects.player;
 public class FieldContent {
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
 	private int iContent;
-	private bomb Bomb;
-	private player Player;
+	private Bomb Bomb;
+	private Player Player;
 
 	public FieldContent()
 
@@ -48,9 +48,8 @@ public class FieldContent {
 	 * 
 	 * @param bBomb: einzufuegende Bombe
 	 */
-	public void insertBomb(bomb bBomb) {
+	public void insertBomb(Bomb bBomb) {
 		Bomb = bBomb;
-		iContent = BOMB;
 		// fuegt Bombe hinzu
 	}
 
@@ -59,9 +58,8 @@ public class FieldContent {
 	 * 
 	 * @param pPlayer: einzufuegender Spieler
 	 */
-	public void insertPlayer(player pPlayer) {
+	public void insertPlayer(Player pPlayer) {
 		Player = pPlayer;
-		iContent = PLAYER;
 		// fuegt Spieler hinzu und loescht Referenz auf Bomben
 	}
 
@@ -94,7 +92,7 @@ public class FieldContent {
 	 * 
 	 * @return Gibt Bombe zurueck, falls vorhanden. Gibt sonst null zurueck;
 	 */
-	public bomb getBomb() {
+	public Bomb getBomb() {
 		return Bomb;
 		// gibt Referenz auf Bombe zurueck falls vorhanden, gibt sonst null
 		// zurueck
@@ -105,7 +103,7 @@ public class FieldContent {
 	 * 
 	 * @return Gibt Spieler zurueck, falls vorhanden. Gibt sonst null zurueck;
 	 */
-	public player getPlayer() {
+	public Player getPlayer() {
 		return Player;
 		// gibt Referenz auf Spieler zurueck falls vorhanden, gibt sonst null
 		// zurueck

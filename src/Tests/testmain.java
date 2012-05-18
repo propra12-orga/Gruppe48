@@ -14,7 +14,7 @@ public class testmain {
 		testGenerator.setRandomAmount(5);
 		testGenerator.setRandomChance(50);
 		testGenerator.setModus(0);
-		 testfield.insertMap(testGenerator.createSquareMap(11));
+		 testfield.insertMap(testGenerator.createSquareMap(21));
 		// testfield.insertMap(testGenerator.readMap("TestMap.txt"));
 		// testfield.saveMap("savetest.txt", 1);
 		for (int i = 0; i < testfield.getMap().length; i++) {

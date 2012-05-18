@@ -1,73 +1,101 @@
 package GUI;
+import Field.*;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+//import javax.swing.ImageIcon;
+import java.util.ArrayList;
+//import javax.swing.JPanel;
+//import javax.swing.JFrame;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+public class GUI extends JFrame { 
 
-import Field.Field;
+    private final int OFFSET = 20;
+    private final int SPACE = 32;
+   
+ //   private Player bomber;
+    private int w = 0;
+    private int h = 0;
+    Field gameField;
+    BufferedImage imgExit;
+    BufferedImage imgWall;
+    BufferedImage imgFree;
+    public  boardPanel panel; 
+    /* Ich kann leider immer noch keine "fieldgenerator-Map" benutzen
+     * deshalb steht hier noch eine Testmap.
+     */
 
-// hier wird das Fenster erstellt. 
+    public GUI(Field field) {
+    	gameField = field;
+        setFocusable(true);
+        panel = new boardPanel(field);
+        this.setSize((gameField.getMap().length + 1 )* 32, (gameField.getMap()[0].length + 1 )* 32);
+        this.add(panel);
+        //initWorld()
+        
+    }
 
-public class GUI {
-	Field testfield;
+    public void insertField(Field field)
+    {
+    	gameField = field;
+    	panel.insertField(field);
+    }
+    
+    public int getBoardWidth() {
+        return gameField.getMap().length;
+    }
 
-	// Legt die Größe des Feldes fest:
-	// public static int mapHeight = 11;
-	// public static int mapWidth = 11;
+    public int getBoardHeight() {
+        return gameField.getMap()[0].length;
+    }
 
-	// Legt gie Größe der einzelnen Kacheln fest:
-	// public static int tileHeight = 32;
-	// public static int tileWidth = 32;
+   /* public final void initWorld() {
+        
+        int x = OFFSET;
+        int y = OFFSET;
+        
+        Wall wall;
+        Exit e;
+        Free f;
 
-	public static void main(String[] args) {
 
-		JFrame applikation = new JFrame("Bomberman Gruppe 48");
-		int frameWidth = 1000; // Breite des frames
-		int frameHeight = 800;// Höhe des frames
-		applikation.setSize(frameWidth, frameHeight);
-		applikation.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		applikation.setResizable(true); // Größe kann (noch) verändert werden
-		applikation.setVisible(true);
-		applikation.setLocationRelativeTo(null); // Fenster öffnet in der Mitte
-													// des Bildschirms
-	}
+        for (int i = 0; i < level.length(); i++) {
 
-	private final Image[] tileImage;
-	{
-		testfield = new Field();
+            char item = level.charAt(i);
 
-		// GUI.tileHeight = tileHeight;
-		// GUI.tileWidth = tileWidth;
+            if (item == '\n') {
+                y += SPACE;
+                if (this.w < x) {
+                    this.w = x;
+                }
 
-		// hier werden die images aus dem Ordner "/images" geladen. diese sehen
-		// natürlich nur zu Testzwecken so dämlich aus.
-		this.tileImage = new Image[6];
-		this.tileImage[0] = new ImageIcon(this.getClass().getResource(
-				"/images/empty.png")).getImage();
-		this.tileImage[1] = new ImageIcon(this.getClass().getResource(
-				"/images/free.png")).getImage();
-		this.tileImage[2] = new ImageIcon(this.getClass().getResource(
-				"/images/wall.png")).getImage();
-		this.tileImage[3] = new ImageIcon(this.getClass().getResource(
-				"/images/exit.png")).getImage();
-		this.tileImage[4] = new ImageIcon(this.getClass().getResource(
-				"/images/bomb.png")).getImage();
-		this.tileImage[5] = new ImageIcon(this.getClass().getResource(
-				"/images/player.png")).getImage();
+                x = OFFSET;
+            } else if (item == '2') {
+                wall = new Wall(x, y);
+                walls.add(wall);
+                x += SPACE;
+            } else if (item == '1') {
+                f = new Free(x, y);
+                frees.add(f);
+                x += SPACE;
+            } else if (item == '3') {
+                e = new Exit(x, y);
+                exits.add(e);
+                x += SPACE;
+            } else if (item == '@') {
+                bomber = new Player(x, y);
+                x += SPACE;
+                   
+            }
 
-	}
-
-	public void draw(Graphics g) {
-
-		for (int iXCoord = 0; iXCoord < testfield.getMap().length; iXCoord++) {
-			for (int iYCoord = 0; iYCoord < testfield.getMap()[0].length; iYCoord++) {
-				g.drawImage(tileImage[testfield.iGetContent(iXCoord, iYCoord)],
-						iXCoord, iYCoord, null);
-			}
-		}
-
-	}
-
+            h = y;
+        }
+    }*/
 }

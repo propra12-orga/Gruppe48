@@ -12,8 +12,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import Objects.bomb;
-import Objects.player;
+import Objects.Bomb;
+import Objects.Player;
 
 public class Field {
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
@@ -78,9 +78,9 @@ public class Field {
 	 * @param iXCoord: x-Koordinate des Feldes
 	 * @param iYCoord: y-Koordinate des Feldes
 	 */
-	public void setBomb(bomb newBomb, int iXCoord, int iYCoord) {
-		if (bInBounds(iXCoord, iYCoord)) {
-			map[iXCoord][iYCoord].insertBomb(newBomb);
+	public void setBomb(Bomb newBomb) {
+		if (bInBounds(newBomb.getPosition()[1],newBomb.getPosition()[0])) {
+			map[newBomb.getPosition()[1]][newBomb.getPosition()[0]].insertBomb(newBomb);
 		} else {
 			return;
 		}
@@ -94,14 +94,24 @@ public class Field {
 	 * @param iXCoord: x-Koordinate des Feldes
 	 * @param iYCoord: y-Koordinate des Feldes
 	 */
-	public void setPlayer(player newPlayer, int iXCoord, int iYCoord) {
-		if (bInBounds(iXCoord, iYCoord)) {
-			map[iXCoord][iYCoord].insertPlayer(newPlayer);
+	public void setPlayer(Player newPlayer) {
+		if (bInBounds(newPlayer.getPosition()[1], newPlayer.getPosition()[0])) {
+			map[newPlayer.getPosition()[1]][newPlayer.getPosition()[0]].insertPlayer(newPlayer);
 		} else {
 			return;
 		}
 	}
 
+	public void removePlayer(Player player){
+		map[player.getPosition()[1]][player.getPosition()[0]].removePlayer();
+	}
+	public void removeBomb(Bomb bomb){
+		map[bomb.getPosition()[1]][bomb.getPosition()[0]].removeBomb();
+	}
+	public void setField(int iX, int iY, int iContent)
+	{
+		map[iX][iY].setContent(iContent);
+	}
 	/**
 	 * Ueberprueft ob angegebene Zelle existiert
 	 * 
