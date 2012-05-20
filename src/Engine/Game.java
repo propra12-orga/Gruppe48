@@ -27,10 +27,13 @@ public class Game implements Runnable {
 	private Field testfield;
 
 	public Game(Field field, Player player) {
-		restart(field, player, false);
-		// gui.addKeyListener(this);
-		// System.out.println(gui.isFocusable());
-		// run();
+		this.player = player;
+		explosionList = new ArrayList<long[]>();
+		time = Calendar.getInstance().getTimeInMillis();
+		bombList = new ArrayList<Bomb>();
+		gameSpeed = 100;
+		gameState = GameStates.INITIALIZED;
+		testfield = field;
 	}
 
 	public Field getField() {
@@ -42,6 +45,9 @@ public class Game implements Runnable {
 	}
 
 	public void restart(Field field, Player player, Boolean restart) {
+		for (int i = 0; i <= bombList.size(); i++) {
+			gui.panel.removeExplosions();
+		}
 		this.player = player;
 		explosionList = new ArrayList<long[]>();
 		time = Calendar.getInstance().getTimeInMillis();
@@ -346,7 +352,6 @@ public class Game implements Runnable {
 		GUI gui = new GUI(field, game);
 		gui.setVisible(true);
 		game.insertGUI(gui);
-
 		Thread gameThread = new Thread(game);
 		gameThread.start();
 
