@@ -29,14 +29,6 @@ public class boardPanel extends JPanel {
 		iIntList = new ArrayList<int[]>();
 		boardField = field;
 		try {
-			/*
-			 * imgExit = ImageIO.read(new File("./src/images/exit.png"));
-			 * imgWall = ImageIO.read(new File("./src/images/wall.png"));
-			 * imgFree = ImageIO.read(new File("./src/images/free.png"));
-			 * imgBomb = ImageIO.read(new File("./src/images/bomb.png"));
-			 * imgPlayer = ImageIO.read(new File("./src/images/player.png"));
-			 * imgBoom = ImageIO.read(new File("./src/images/boom.png"));
-			 */
 			imgExit = ImageIO.read(ImageIO.class
 					.getResource("/images/exit.png"));
 			imgWall = ImageIO.read(ImageIO.class
