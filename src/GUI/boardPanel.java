@@ -3,7 +3,6 @@ package GUI;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +29,26 @@ public class boardPanel extends JPanel {
 		iIntList = new ArrayList<int[]>();
 		boardField = field;
 		try {
-			imgExit = ImageIO.read(new File("./src/images/exit.png"));
-			imgWall = ImageIO.read(new File("./src/images/wall.png"));
-			imgFree = ImageIO.read(new File("./src/images/free.png"));
-			imgBomb = ImageIO.read(new File("./src/images/bomb.png"));
-			imgPlayer = ImageIO.read(new File("./src/images/player.png"));
-			imgBoom = ImageIO.read(new File("./src/images/boom.png"));
+			/*
+			 * imgExit = ImageIO.read(new File("./src/images/exit.png"));
+			 * imgWall = ImageIO.read(new File("./src/images/wall.png"));
+			 * imgFree = ImageIO.read(new File("./src/images/free.png"));
+			 * imgBomb = ImageIO.read(new File("./src/images/bomb.png"));
+			 * imgPlayer = ImageIO.read(new File("./src/images/player.png"));
+			 * imgBoom = ImageIO.read(new File("./src/images/boom.png"));
+			 */
+			imgExit = ImageIO.read(ImageIO.class
+					.getResource("/images/exit.png"));
+			imgWall = ImageIO.read(ImageIO.class
+					.getResource("/images/wall.png"));
+			imgFree = ImageIO.read(ImageIO.class
+					.getResource("/images/free.png"));
+			imgBomb = ImageIO.read(ImageIO.class
+					.getResource("/images/bomb.png"));
+			imgPlayer = ImageIO.read(ImageIO.class
+					.getResource("/images/player.png"));
+			imgBoom = ImageIO.read(ImageIO.class
+					.getResource("/images/boom.png"));
 		} catch (IOException e) {
 			System.out.println(e);
 		}
