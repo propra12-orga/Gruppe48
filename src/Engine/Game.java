@@ -45,7 +45,7 @@ public class Game implements Runnable {
 	}
 
 	public void restart(Field field, Player player, Boolean restart) {
-		for (int i = 0; i <= bombList.size(); i++) {
+		for (int i = 0; i <= bombList.size() + 1; i++) {
 			gui.panel.removeExplosions();
 		}
 		this.player = player;

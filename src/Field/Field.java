@@ -78,7 +78,7 @@ public class Field {
 	 * Fuegt Bombe an angegebener Stelle ein
 	 * 
 	 * @param newBomb
-	 *            : einzufuegende Bombe
+	 *            : Einzufuegende Bombe
 	 * @param iXCoord
 	 *            : x-Koordinate des Feldes
 	 * @param iYCoord
@@ -113,14 +113,36 @@ public class Field {
 		}
 	}
 
+	/**
+	 * Entfernt Spieler
+	 * 
+	 * @param player
+	 *            : Zu entfernender Spieler
+	 */
 	public void removePlayer(Player player) {
 		map[player.getPosition()[1]][player.getPosition()[0]].removePlayer();
 	}
 
+	/**
+	 * Entfernt Bombe
+	 * 
+	 * @param bomb
+	 *            Zu entfernende Bombe
+	 */
 	public void removeBomb(Bomb bomb) {
 		map[bomb.getPosition()[1]][bomb.getPosition()[0]].removeBomb();
 	}
 
+	/**
+	 * Fuegt angegebenen Inhalt in gewaehltes Feld ein
+	 * 
+	 * @param iX
+	 *            : X-Koordinate des Feldes
+	 * @param iY
+	 *            : Y-Koordinate des Feldes
+	 * @param iContent
+	 *            : Einzufuegender Inhalt. Erwartet Angabe zwischen 0 und 3
+	 */
 	public void setField(int iX, int iY, int iContent) {
 		map[iX][iY].setContent(iContent);
 	}
@@ -129,10 +151,10 @@ public class Field {
 	 * Ueberprueft ob angegebene Zelle existiert
 	 * 
 	 * @param iXCoord
-	 *            : x-Koordinate des Feldes
+	 *            : X-Koordinate des Feldes
 	 * @param iYCoord
-	 *            : y-Koordinate des Feldes
-	 * @return gibt true zurueck, falls Zelle existiert. Gibt sonst false
+	 *            : Y-Koordinate des Feldes
+	 * @return Gibt true zurueck, falls Zelle existiert. Gibt sonst false
 	 *         zurueck
 	 */
 	public boolean bInBounds(int iXCoord, int iYCoord) {
@@ -147,7 +169,7 @@ public class Field {
 	/**
 	 * Gibt komplette Map zurueck
 	 * 
-	 * @return gibt komplette Map zurueck. Gibt null zurueck falls keine Map
+	 * @return Gibt komplette Map zurueck. Gibt null zurueck falls keine Map
 	 *         existiert.
 	 */
 	public FieldContent[][] getMap() {
