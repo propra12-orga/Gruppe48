@@ -1,11 +1,11 @@
 package Tests;
-import Objects.bomb;
+import Objects.Bomb;
 
-//nur zu testzwecken wird nachher gelöscht
+//nur zu testzwecken wird nachher gelï¿½scht
 public class bombtest {
 
 	public bombtest() {
-		bomb a = new bomb();
+		Bomb a = new bomb();
 
 	}
 
