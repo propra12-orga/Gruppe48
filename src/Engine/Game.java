@@ -120,6 +120,12 @@ public class Game implements Runnable {
 		return testfield;
 	}
 
+	/**
+	 * Fragt Timer der Bomben ab. Falls eine Bombe explodiert, werden die
+	 * betroffenen Felder an die GUI zur Darstellung uebergeben sowie weitere
+	 * betroffene Bomben gezuendet. Steht der Spieler auf einem betroffenen
+	 * Feld, so wird der Spielstatus auf GAMEOVER gesetzt
+	 */
 	private void handleBombs() {
 		ArrayList<int[]> exList;
 		for (int i = 0; i < bombList.size(); i++) {
@@ -271,6 +277,11 @@ public class Game implements Runnable {
 		}
 	}
 
+	/**
+	 * Fragt gedrueckte Tasten ab und bewegt den Spieler entsprechend, wenn das
+	 * neue Feld begehbar ist. w = hoch, a = links, s = unten, d = rechts Wird
+	 * Space gedrueckt, so wird eine Bombe gelegt.
+	 */
 	private void handleMovement() {
 		switch (key) {
 		case 'w':
