@@ -42,7 +42,7 @@ public class FieldGenerator {
 	 *            : Breite der zu erstellenden Map
 	 * @param iHeight
 	 *            : Hoehe der zu erstellenden Map
-	 * @return erzeugte Map
+	 * @return Erzeugte Map
 	 */
 	public FieldContent[][] createRectangleMap(int iWidth, int iHeight) {
 		Map = null;
@@ -323,13 +323,13 @@ public class FieldGenerator {
 	}
 
 	/**
-	 * interne Methode zum Ueberpruefen aller Felder in einem angegebenen Radius
-	 * auf vorkommen oder nicht vorkommen eines Blocks.
+	 * Ueberprueft alle Felder in einem angegebenen Radius auf Vorkommen oder
+	 * nicht Vorkommen eines Blocks.
 	 * 
 	 * @param iCheckWhereX
-	 *            : x-Koordinate des Suchstarts
+	 *            : X-Koordinate des Suchstarts
 	 * @param iCheckWhereY
-	 *            : y-Koordinate des Suchstarts
+	 *            : Y-Koordinate des Suchstarts
 	 * @param iCheckHowFar
 	 *            : Radius der Suche
 	 * @param iCheckForWhat
@@ -338,7 +338,7 @@ public class FieldGenerator {
 	 *            : Wird hier true angegeben, so wird ueberprueft, ob der
 	 *            angegebene Block vorhanden ist. Wird false angegeben, so wird
 	 *            ueberprueft ob der Block nicht vorhanden ist.
-	 * @return gibt true zurueck wenn der gesuchte Block gefunden wurde und
+	 * @return Gibt true zurueck wenn der gesuchte Block gefunden wurde und
 	 *         bCheckIfThere = true oder wenn der gesuchte Block nicht gefunden
 	 *         wurde und bCheckIfThere = false. Gibt sonst false zurueck.
 	 */
