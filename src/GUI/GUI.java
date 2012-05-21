@@ -23,41 +23,62 @@ import java.util.ArrayList;
 //import javax.swing.JPanel;
 //import javax.swing.JFrame;
 
+/**
+ * GUI.java
+ * 
+ * @author cst
+ *
+ */
 public class GUI extends JFrame implements ActionListener, KeyListener { 
 
-    private final int OFFSET = 20;
-    private final int SPACE = 32;
-   
- //   private Player bomber;
+     
+ 
     private int w = 0;
     private int h = 0;
     Field gameField;
     BufferedImage imgExit;
     BufferedImage imgWall;
     BufferedImage imgFree;
-    public  boardPanel panel; 
-    /* Ich kann leider immer noch keine "fieldgenerator-Map" benutzen
-     * deshalb steht hier noch eine Testmap.
+    public  BoardPanel panel; 
+   
+    
+    /**
+     * Menüelemente
      */
-
-	//menu elements
-	private JMenuItem startItem;
+    
+    private JMenuItem startItem;
 	private JMenuItem restartItem;
 	private JMenuItem quitItem;
 	private JMenuBar menu;
 	private JMenu gameMenu;
-	//
+	
+	
+	
+	
+	
 	
 	private Game mainGame;
     
     public GUI(Field field, Game game) {
     	
+    	
+    	/**
+    	 * neues Panel 
+    	 */
+    	
         setFocusable(true);
-        panel = new boardPanel(field);
+        panel = new BoardPanel(field);
         reinitialize(field, game);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//MENU
+		
+        /**
+		 * Menüleiste mit den Elementen:
+		 * 
+		 *  Game: Start Game
+		 *  	  Restart Game
+		 *        Quit
+		 */
         menu = new JMenuBar();
 		gameMenu = new JMenu("Game");
 		startItem = new JMenuItem("Start Game");
@@ -70,12 +91,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		gameMenu.add(restartItem);
 		gameMenu.add(quitItem);
 		menu.add(gameMenu);
-//		this.add(menu, BorderLayout.NORTH);
+	this.add(menu, BorderLayout.NORTH);
 		this.setJMenuBar(menu);
 		//this.invalidate();
-		//
+		
         this.add(panel);
-        //initWorld()
+        
         this.addKeyListener(this);
     }
     
@@ -100,6 +121,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
     }
 
 	@Override
+	
+	
+	
+	/**
+	 * Es werden die Aktionen der jeweiligen Menüeinträge(Game)
+	 * festgesetzt(Starten, Neustarten, Beenden)
+	 */
 	public void actionPerformed(ActionEvent object) {
 		if (object.getSource() == startItem){
 			System.out.println("New Game wurde angeklickt");
@@ -114,63 +142,34 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 	}
 
 	@Override
+	
+	/**
+	 * Methode,die aufgerufen wird, wenn die Taste gedrückt wird
+	 */
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-//		mainGame.key = e.getKeyChar();
+	//	mainGame.key = e.getKeyChar();
 	}
 
 	@Override
+	/**
+	 * wird ausgeführt, wenn die Taste innerhalb eines kurzen
+	 * Zeitraums gedrückt und losgelassen wird
+	 */
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
+	
+	/**
+	 * wird ausgeführt, wenn die Taste losgelassen wird
+	 */
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		mainGame.key = e.getKeyChar();
 	}
 
-   /* public final void initWorld() {
-        
-        int x = OFFSET;
-        int y = OFFSET;
-        
-        Wall wall;
-        Exit e;
-        Free f;
-
-
-        for (int i = 0; i < level.length(); i++) {
-
-            char item = level.charAt(i);
-
-            if (item == '\n') {
-                y += SPACE;
-                if (this.w < x) {
-                    this.w = x;
-                }
-
-                x = OFFSET;
-            } else if (item == '2') {
-                wall = new Wall(x, y);
-                walls.add(wall);
-                x += SPACE;
-            } else if (item == '1') {
-                f = new Free(x, y);
-                frees.add(f);
-                x += SPACE;
-            } else if (item == '3') {
-                e = new Exit(x, y);
-                exits.add(e);
-                x += SPACE;
-            } else if (item == '@') {
-                bomber = new Player(x, y);
-                x += SPACE;
-                   
-            }
-
-            h = y;
-        }
-    }*/
+   
 }

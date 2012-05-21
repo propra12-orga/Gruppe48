@@ -11,8 +11,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import Field.Field;
-
-public class boardPanel extends JPanel {
+/**
+ * 
+ * @author Carsten Stegmann
+ *
+ *
+ */
+public class BoardPanel extends JPanel {
 
 	BufferedImage imgExit;
 	BufferedImage imgWall;
@@ -24,7 +29,12 @@ public class boardPanel extends JPanel {
 	List<int[]> iIntList;
 	List<ArrayList> iBoomList;
 
-	public boardPanel(Field field) {
+	/**
+	 * erzeugt Inhalt des Panels
+	 * 
+	 * @param field
+	 */
+	public BoardPanel(Field field) {
 		iBoomList = new ArrayList<ArrayList>();
 		iIntList = new ArrayList<int[]>();
 		boardField = field;
@@ -45,11 +55,17 @@ public class boardPanel extends JPanel {
 			System.out.println(e);
 		}
 	}
-
+/**
+ * fügt Explosion dem Array zu
+ * @param list
+ */
 	public void addExplosions(ArrayList list) {
 		iBoomList.add(list);
 	}
-
+/**
+ * entfernt Explosion aus dem Array
+ * @param iBoomList: 
+ */
 	public void removeExplosions() {
 		if (iBoomList.size() > 0) {
 			iBoomList.remove(0);
@@ -59,9 +75,13 @@ public class boardPanel extends JPanel {
 	public void insertField(Field field) {
 		boardField = field;
 	}
-
+/**
+ * durchsucht Array und ordnet mittels switch case den Arrayelementen
+ * dessen Images zu
+ * @param g
+ */
 	public void buildWorld(Graphics g) {
-		g.setColor(new Color(200, 200, 170));
+		//g.setColor(new Color(200, 200, 170));
 		g.fillRect(0, 0, this.getWidth() * 32, this.getHeight() * 32);
 		for (int i = 0; i < boardField.getMap().length; i++) {
 			for (int j = 0; j < boardField.getMap()[0].length; j++) {
@@ -95,7 +115,10 @@ public class boardPanel extends JPanel {
 		buildWorld(g);
 		paintBoom(g);
 	}
-
+/**
+ * durchsucht Array nach Explosionselementen und zeichnet diese
+ * @param g
+ */
 	public void paintBoom(Graphics g) {
 		if (iBoomList.size() > 0) {
 			for (int i = 0; i < iBoomList.size(); i++) {

@@ -99,7 +99,7 @@ public class Game implements Runnable {
 		time = Calendar.getInstance().getTimeInMillis();
 		handleBombs();
 		handleMovement();
-		gui.insertField(testfield);
+	//	gui.insertField(testfield);
 		gui.repaint();
 		try {
 			Thread.sleep(gameSpeed);
