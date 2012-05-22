@@ -11,6 +11,12 @@ import GUI.GUI;
 import Objects.Bomb;
 import Objects.Player;
 
+/**
+ * Game.java
+ * 
+ * @author pallepilla
+ * 
+ */
 public class Game implements Runnable {
 
 	private Field gameField;
@@ -26,6 +32,11 @@ public class Game implements Runnable {
 	long time;
 	private Field testfield;
 
+	/**
+	 * Game Konstruktor
+	 * 
+	 * @param: field, player
+	 */
 	public Game(Field field, Player player) {
 		this.player = player;
 		explosionList = new ArrayList<long[]>();
@@ -36,14 +47,26 @@ public class Game implements Runnable {
 		testfield = field;
 	}
 
+	/**
+	 * Gibt ein neues Field
+	 * 
+	 */
 	public Field getField() {
 		return gameField;
 	}
 
+	/**
+	 * Fuegt neues GUI ein
+	 */
 	public void insertGUI(GUI gui) {
 		this.gui = gui;
 	}
 
+	/**
+	 * Macht ein "restart"
+	 * 
+	 * @param: field, player, restart
+	 */
 	public void restart(Field field, Player player, Boolean restart) {
 		for (int i = 0; i <= bombList.size(); i++) {
 			gui.panel.removeExplosions();
@@ -59,6 +82,10 @@ public class Game implements Runnable {
 			gameState = GameStates.STARTED;
 	}
 
+	/**
+	 * Die wichtigste Methode von Thread, die das Spiel verändert, wenn ein
+	 * GameState verändert wird
+	 */
 	@Override
 	public void run() {
 		Boolean doRestart = false;
@@ -90,10 +117,16 @@ public class Game implements Runnable {
 		}
 	}
 
+	/**
+	 * Macht gameState PAUSED
+	 */
 	public void pauseGame() {
 		gameState = GameStates.PAUSED;
 	}
 
+	/**
+	 * Startet ein neues Spiel
+	 */
 	public void start() {
 
 		time = Calendar.getInstance().getTimeInMillis();
@@ -108,6 +141,9 @@ public class Game implements Runnable {
 		}
 	}
 
+	/**
+	 * Erzeugt ein neues Feld
+	 */
 	public static Field createNewField() {
 		FieldGenerator testGenerator = new FieldGenerator();
 		Field testfield = new Field();
@@ -120,6 +156,12 @@ public class Game implements Runnable {
 		return testfield;
 	}
 
+	/**
+	 * Fragt Timer der Bomben ab. Falls eine Bombe explodiert, werden die
+	 * betroffenen Felder an die GUI zur Darstellung uebergeben sowie weitere
+	 * betroffene Bomben gezuendet. Steht der Spieler auf einem betroffenen
+	 * Feld, so wird der Spielstatus auf GAMEOVER gesetzt
+	 */
 	private void handleBombs() {
 		ArrayList<int[]> exList;
 		for (int i = 0; i < bombList.size(); i++) {
@@ -271,6 +313,11 @@ public class Game implements Runnable {
 		}
 	}
 
+	/**
+	 * Fragt gedrueckte Tasten ab und bewegt den Spieler entsprechend, wenn das
+	 * neue Feld begehbar ist. w = hoch, a = links, s = unten, d = rechts Wird
+	 * Space gedrueckt, so wird eine Bombe gelegt.
+	 */
 	private void handleMovement() {
 		switch (key) {
 		case 'w':
@@ -346,6 +393,9 @@ public class Game implements Runnable {
 		key = 0;
 	}
 
+	/**
+	 * Programm-Eintrittspunkt
+	 */
 	public static void main(String args[]) {
 		Field field = createNewField();
 		Game game = new Game(field, new Player(1, 1));
