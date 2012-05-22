@@ -35,7 +35,8 @@ public class Game implements Runnable {
 	/**
 	 * Game Konstruktor
 	 * 
-	 * @param: field, player
+	 * @param: field Erzeugtes Spielfeld
+	 * @param: player Einzufuegender Spieler
 	 */
 	public Game(Field field, Player player) {
 		this.player = player;
@@ -65,7 +66,11 @@ public class Game implements Runnable {
 	/**
 	 * Macht ein "restart"
 	 * 
-	 * @param: field, player, restart
+	 * @param field
+	 *            Neues Spielfeld
+	 * @param player
+	 *            Einzufuegender Spieler
+	 * @param restart
 	 */
 	public void restart(Field field, Player player, Boolean restart) {
 		for (int i = 0; i <= bombList.size(); i++) {
