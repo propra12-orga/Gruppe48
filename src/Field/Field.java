@@ -18,7 +18,6 @@ import Objects.Player;
 public class Field {
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
 	private FieldContent map[][];
-	private final int iOldPos[];
 
 	public Field() {
 		EMPTY = 0;
@@ -27,13 +26,13 @@ public class Field {
 		EXIT = 3;
 		BOMB = 4;
 		PLAYER = 5;
-		iOldPos = new int[2];
 	}
 
 	/**
 	 * Fuegt neue Map in field ein
 	 * 
-	 * @param newMap: einzufuegende Map
+	 * @param newMap
+	 *            : einzufuegende Map
 	 */
 	public void insertMap(FieldContent newMap[][]) {
 		map = newMap;
@@ -42,10 +41,12 @@ public class Field {
 	/**
 	 * Gibt Wert des angegebenen Feldes als int zurueck
 	 * 
-	 * @param iXCoord: xKoordinate des Feldes
-	 * @param iYCoord: yKoordinate des Feldes
-	 * @return Wert des angegeben Feldes. Gibt -1 zurueck, falls das Feld
-	 *         nicht existiert
+	 * @param iXCoord
+	 *            : xKoordinate des Feldes
+	 * @param iYCoord
+	 *            : yKoordinate des Feldes
+	 * @return Wert des angegeben Feldes. Gibt -1 zurueck, falls das Feld nicht
+	 *         existiert
 	 */
 	public int iGetContent(int iXCoord, int iYCoord) {
 		if (bInBounds(iXCoord, iYCoord)) {
@@ -58,10 +59,12 @@ public class Field {
 	/**
 	 * Gibt Wert des angegebenen Feldes als FieldContent zurueck
 	 * 
-	 * @param iXCoord: x-Koordinate des Feldes
-	 * @param iYCoord: y-Koordinate des Feldes
-	 * @return Inhalt des angegebenen Feldes. Gibt null zurueck,
-	 *         falls das Feld nicht existiert
+	 * @param iXCoord
+	 *            : x-Koordinate des Feldes
+	 * @param iYCoord
+	 *            : y-Koordinate des Feldes
+	 * @return Inhalt des angegebenen Feldes. Gibt null zurueck, falls das Feld
+	 *         nicht existiert
 	 */
 	public FieldContent getField(int iXCoord, int iYCoord) {
 		if (bInBounds(iXCoord, iYCoord)) {
@@ -74,13 +77,17 @@ public class Field {
 	/**
 	 * Fuegt Bombe an angegebener Stelle ein
 	 * 
-	 * @param newBomb: einzufuegende Bombe
-	 * @param iXCoord: x-Koordinate des Feldes
-	 * @param iYCoord: y-Koordinate des Feldes
+	 * @param newBomb
+	 *            : Einzufuegende Bombe
+	 * @param iXCoord
+	 *            : x-Koordinate des Feldes
+	 * @param iYCoord
+	 *            : y-Koordinate des Feldes
 	 */
 	public void setBomb(Bomb newBomb) {
-		if (bInBounds(newBomb.getPosition()[1],newBomb.getPosition()[0])) {
-			map[newBomb.getPosition()[1]][newBomb.getPosition()[0]].insertBomb(newBomb);
+		if (bInBounds(newBomb.getPosition()[1], newBomb.getPosition()[0])) {
+			map[newBomb.getPosition()[1]][newBomb.getPosition()[0]]
+					.insertBomb(newBomb);
 		} else {
 			return;
 		}
@@ -90,34 +97,65 @@ public class Field {
 	 * 
 	 * Fuegt Spieler an angegebener Stelle ein
 	 * 
-	 * @param newPlayer: einzufuegender Spieler
-	 * @param iXCoord: x-Koordinate des Feldes
-	 * @param iYCoord: y-Koordinate des Feldes
+	 * @param newPlayer
+	 *            : einzufuegender Spieler
+	 * @param iXCoord
+	 *            : x-Koordinate des Feldes
+	 * @param iYCoord
+	 *            : y-Koordinate des Feldes
 	 */
 	public void setPlayer(Player newPlayer) {
 		if (bInBounds(newPlayer.getPosition()[1], newPlayer.getPosition()[0])) {
-			map[newPlayer.getPosition()[1]][newPlayer.getPosition()[0]].insertPlayer(newPlayer);
+			map[newPlayer.getPosition()[1]][newPlayer.getPosition()[0]]
+					.insertPlayer(newPlayer);
 		} else {
 			return;
 		}
 	}
 
-	public void removePlayer(Player player){
+	/**
+	 * Entfernt Spieler
+	 * 
+	 * @param player
+	 *            : Zu entfernender Spieler
+	 */
+	public void removePlayer(Player player) {
 		map[player.getPosition()[1]][player.getPosition()[0]].removePlayer();
 	}
-	public void removeBomb(Bomb bomb){
+
+	/**
+	 * Entfernt Bombe
+	 * 
+	 * @param bomb
+	 *            Zu entfernende Bombe
+	 */
+	public void removeBomb(Bomb bomb) {
 		map[bomb.getPosition()[1]][bomb.getPosition()[0]].removeBomb();
 	}
-	public void setField(int iX, int iY, int iContent)
-	{
+
+	/**
+	 * Fuegt angegebenen Inhalt in gewaehltes Feld ein
+	 * 
+	 * @param iX
+	 *            : X-Koordinate des Feldes
+	 * @param iY
+	 *            : Y-Koordinate des Feldes
+	 * @param iContent
+	 *            : Einzufuegender Inhalt. Erwartet Angabe zwischen 0 und 3
+	 */
+	public void setField(int iX, int iY, int iContent) {
 		map[iX][iY].setContent(iContent);
 	}
+
 	/**
 	 * Ueberprueft ob angegebene Zelle existiert
 	 * 
-	 * @param iXCoord: x-Koordinate des Feldes
-	 * @param iYCoord: y-Koordinate des Feldes
-	 * @return gibt true zurueck, falls Zelle existiert. Gibt sonst false zurueck
+	 * @param iXCoord
+	 *            : X-Koordinate des Feldes
+	 * @param iYCoord
+	 *            : Y-Koordinate des Feldes
+	 * @return Gibt true zurueck, falls Zelle existiert. Gibt sonst false
+	 *         zurueck
 	 */
 	public boolean bInBounds(int iXCoord, int iYCoord) {
 		if ((iXCoord >= 0) && (iXCoord < map.length) && (iYCoord >= 0)
@@ -131,7 +169,8 @@ public class Field {
 	/**
 	 * Gibt komplette Map zurueck
 	 * 
-	 * @return gibt komplette Map zurueck. Gibt null zurueck falls keine Map existiert.
+	 * @return Gibt komplette Map zurueck. Gibt null zurueck falls keine Map
+	 *         existiert.
 	 */
 	public FieldContent[][] getMap() {
 		return map;
@@ -140,12 +179,15 @@ public class Field {
 	/**
 	 * Speichert Map als Datei
 	 * 
-	 * @param sFileName: Name der Datei
-	 * @param iSaveModus: Legt fest wie die Datei gespeichert werden soll.
-	 *        0: normale Speicherung, 1: komprimierte Speicherung. Geht von 0
-	 *        aus, wenn Angabe != 0 oder 1
+	 * @param sFileName
+	 *            : Name der Datei
+	 * @param iSaveModus
+	 *            : Legt fest wie die Datei gespeichert werden soll. 0: normale
+	 *            Speicherung, 1: komprimierte Speicherung. Geht von 0 aus, wenn
+	 *            Angabe != 0 oder 1
 	 */
-	public void saveMap(String sFileName, int iSaveModus) {
+	public void saveMap(String sInputFileName, int iSaveModus) {
+		String sFileName = "./src/maps/" + sInputFileName;
 		FileWriter output;
 		BufferedWriter writer;
 		try {

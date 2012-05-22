@@ -1,5 +1,6 @@
 package Objects;
 
+import Field.Field;
 
 public class Player {
 	public int x, y;
@@ -17,25 +18,30 @@ public class Player {
 		getPosition[1] = y;
 		return getPosition;
 	}
-
-	public void setPosition(int iXPos, int iYPos) {
+	
+	public void setPosition(int iXPos, int iYPos)
+	{
 		x = iXPos;
 		y = iYPos;
 	}
 
-	public void moveUp() {
+	public void moveUp()
+	{
 		x -= 1;
 	}
-
-	public void moveDown() {
+	
+	public void moveDown()
+	{
 		x += 1;
 	}
-
-	public void moveLeft() {
+	
+	public void moveLeft()
+	{
 		y -= 1;
 	}
-
-	public void moveRight() {
+	
+	public void moveRight()
+	{
 		y += 1;
 	}
 
@@ -56,4 +62,33 @@ public class Player {
 	 * 
 	 * }
 	 */
+
+	public int moveUP() {
+		int u;
+		u = getPosition()[1] + 1;
+		y = u;
+		return y;
+	}
+
+	public int moveDOWN() {
+		int d;
+		d = getPosition()[1] - 1;
+		y = d;
+		return y;
+	}
+
+	public int moveLEFT() {
+		int l;
+		l = getPosition()[0] - 1;
+		x = l;
+		return x;
+	}
+
+	public int moveRIGHT() {
+		int r;
+		r = getPosition()[0] + 1;
+		x = r;
+		return x;
+	}
+
 }

@@ -1,4 +1,5 @@
 package Field;
+
 import Objects.Bomb;
 import Objects.Player;
 
@@ -33,7 +34,8 @@ public class FieldContent {
 	/**
 	 * Setzt Wert des Feldes auf angegebenen Wert
 	 * 
-	 * @param iNewContent: Zu setzender Wert
+	 * @param iNewContent
+	 *            : Zu setzender Wert
 	 */
 	public void setContent(int iNewContent) {
 		iContent = iNewContent;
@@ -46,7 +48,8 @@ public class FieldContent {
 	/**
 	 * Fuegt Bombe in Feld ein
 	 * 
-	 * @param bBomb: einzufuegende Bombe
+	 * @param bBomb
+	 *            : Einzufuegende Bombe
 	 */
 	public void insertBomb(Bomb bBomb) {
 		Bomb = bBomb;
@@ -56,7 +59,8 @@ public class FieldContent {
 	/**
 	 * Fuegt Spieler in Feld ein
 	 * 
-	 * @param pPlayer: einzufuegender Spieler
+	 * @param pPlayer
+	 *            : Einzufuegender Spieler
 	 */
 	public void insertPlayer(Player pPlayer) {
 		Player = pPlayer;

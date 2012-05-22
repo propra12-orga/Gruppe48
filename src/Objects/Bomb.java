@@ -15,6 +15,7 @@ public class Bomb {
 		x = xPos;
 		y = yPos;
 		explosionTime = time + delay;
+		BOOM();
 	}
 
 	public int[] getPosition() {
@@ -28,12 +29,16 @@ public class Bomb {
 		return explosionTime;
 	}
 
-	public int getRadius() {
-		return radius;
-	}
-
 	public void detonate() {
 		explosionTime -= delay;
+	}
+
+	public void BOOM() {
+		System.out.println("Bombe wurde gesetzt");
+	}
+
+	public int getRadius() {
+		return radius;
 	}
 	/*
 	 * public int radius(int x) { // radius verstellbar für später aufgaben
