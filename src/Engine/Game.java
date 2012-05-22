@@ -160,7 +160,8 @@ public class Game implements Runnable {
 	 * Fragt Timer der Bomben ab. Falls eine Bombe explodiert, werden die
 	 * betroffenen Felder an die GUI zur Darstellung uebergeben sowie weitere
 	 * betroffene Bomben gezuendet. Steht der Spieler auf einem betroffenen
-	 * Feld, so wird der Spielstatus auf GAMEOVER gesetzt
+	 * Feld, so wird der Spielstatus auf GAMEOVER gesetzt Kettenreaktionen sind
+	 * auch mit drin
 	 */
 	private void handleBombs() {
 		ArrayList<int[]> exList;
