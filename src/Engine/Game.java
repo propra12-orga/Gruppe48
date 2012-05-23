@@ -73,7 +73,7 @@ public class Game implements Runnable {
 	 * @param restart
 	 */
 	public void restart(Field field, Player player, Boolean restart) {
-		for (int i = 0; i <= bombList.size(); i++) {
+		for (int i = 0; i <= bombList.size() + 1; i++) {
 			gui.panel.removeExplosions();
 		}
 		this.player = player;
@@ -133,7 +133,6 @@ public class Game implements Runnable {
 	 * Startet ein neues Spiel
 	 */
 	public void start() {
-
 		time = Calendar.getInstance().getTimeInMillis();
 		handleBombs();
 		handleMovement();
@@ -196,6 +195,7 @@ public class Game implements Runnable {
 							}
 						}
 					}
+					try{
 					if (testfield.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0] - j).getContent() == 1) {
 						exList.add(new int[2]);
@@ -205,6 +205,10 @@ public class Game implements Runnable {
 								.getPosition()[0] - j;
 					} else {
 						break;
+					}
+					} catch(Exception e)
+					{
+					//	System.out.println(e);
 					}
 				}
 				for (int j = 1; j < bombList.get(i).getRadius(); j++) {
