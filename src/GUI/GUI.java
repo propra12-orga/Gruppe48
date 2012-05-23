@@ -131,6 +131,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent object) {
 		if (object.getSource() == startItem){
 			System.out.println("New Game wurde angeklickt");
+			mainGame.key = 0;
 			mainGame.gameState = GameStates.STARTED;
 		}
 		if (object.getSource() == quitItem){
