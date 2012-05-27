@@ -26,6 +26,7 @@ public class Game implements Runnable {
 	public char key;
 	long gameSpeed;
 	Player player;
+	Player player2;
 	List<Bomb> bombList;
 	List<long[]> explosionList;
 	Calendar calendar;
@@ -38,8 +39,9 @@ public class Game implements Runnable {
 	 * @param: field Erzeugtes Spielfeld
 	 * @param: player Einzufuegender Spieler
 	 */
-	public Game(Field field, Player player) {
+	public Game(Field field, Player player, Player player2) {
 		this.player = player;
+		this.player2 = player2;
 		explosionList = new ArrayList<long[]>();
 		time = Calendar.getInstance().getTimeInMillis();
 		bombList = new ArrayList<Bomb>();
@@ -72,11 +74,13 @@ public class Game implements Runnable {
 	 *            Einzufuegender Spieler
 	 * @param restart
 	 */
-	public void restart(Field field, Player player, Boolean restart) {
+	public void restart(Field field, Player player, Player player2,
+			Boolean restart) {
 		for (int i = 0; i <= bombList.size() + 1; i++) {
 			gui.panel.removeExplosions();
 		}
 		this.player = player;
+		this.player2 = player2;
 		explosionList = new ArrayList<long[]>();
 		time = Calendar.getInstance().getTimeInMillis();
 		bombList = new ArrayList<Bomb>();
@@ -98,7 +102,11 @@ public class Game implements Runnable {
 			switch (gameState) {
 			case STARTED:
 				start();
-				System.out.println("Game started");
+				//System.out.println("Game started");
+				break;
+			case TWOPLAYER:
+				testfield.setPlayer(player2);
+				start();
 				break;
 			case VICTORY:
 				System.out.println("VICTORY");
@@ -109,7 +117,8 @@ public class Game implements Runnable {
 				doRestart = true;
 				break;
 			case INITIALIZED:
-				System.out.println("INITIALIZED");
+				//System.out.println("INITIALIZED");
+				start();
 				break;
 			default:
 				System.out.println("default");
@@ -117,7 +126,8 @@ public class Game implements Runnable {
 			}
 		}
 		if (doRestart) {
-			restart(Game.createNewField(), new Player(1, 1), true);
+			restart(Game.createNewField(), new Player(1, 1),
+					new Player(13, 13), true);
 			run();
 		}
 	}
@@ -157,6 +167,7 @@ public class Game implements Runnable {
 		testfield.insertMap(testGenerator.createSquareMap(15));
 		Player player = new Player(1, 1);
 		testfield.setPlayer(player);
+		Player player2 = new Player(13, 13);
 		return testfield;
 	}
 
@@ -164,8 +175,7 @@ public class Game implements Runnable {
 	 * Fragt Timer der Bomben ab. Falls eine Bombe explodiert, werden die
 	 * betroffenen Felder an die GUI zur Darstellung uebergeben sowie weitere
 	 * betroffene Bomben gezuendet. Steht der Spieler auf einem betroffenen
-	 * Feld, so wird der Spielstatus auf GAMEOVER gesetzt Kettenreaktionen sind
-	 * auch mit drin
+	 * Feld, so wird der Spielstatus auf GAMEOVER gesetzt
 	 */
 	private void handleBombs() {
 		ArrayList<int[]> exList;
@@ -195,20 +205,21 @@ public class Game implements Runnable {
 							}
 						}
 					}
-					try{
-					if (testfield.getField(bombList.get(i).getPosition()[1],
-							bombList.get(i).getPosition()[0] - j).getContent() == 1) {
-						exList.add(new int[2]);
-						exList.get(exList.size() - 1)[0] = bombList.get(i)
-								.getPosition()[1];
-						exList.get(exList.size() - 1)[1] = bombList.get(i)
-								.getPosition()[0] - j;
-					} else {
-						break;
-					}
-					} catch(Exception e)
-					{
-					//	System.out.println(e);
+					try {
+						if (testfield.getField(
+								bombList.get(i).getPosition()[1],
+								bombList.get(i).getPosition()[0] - j)
+								.getContent() == 1) {
+							exList.add(new int[2]);
+							exList.get(exList.size() - 1)[0] = bombList.get(i)
+									.getPosition()[1];
+							exList.get(exList.size() - 1)[1] = bombList.get(i)
+									.getPosition()[0] - j;
+						} else {
+							break;
+						}
+					} catch (Exception e) {
+						//	System.out.println(e);
 					}
 				}
 				for (int j = 1; j < bombList.get(i).getRadius(); j++) {
@@ -399,6 +410,75 @@ public class Game implements Runnable {
 					player.getPosition()[1], time));
 			testfield.setBomb(bombList.get(bombList.size() - 1));
 			break;
+		case 'i':
+			switch (testfield.getField(player2.getPosition()[1],
+					player2.getPosition()[0] - 1).getContent()) {
+			case 1:
+				if (testfield.getField(player2.getPosition()[1],
+						player2.getPosition()[0] - 1).getBomb() != null) {
+					break;
+				}
+				testfield.removePlayer(player2);
+				player2.moveUp();
+				testfield.setPlayer(player2);
+				break;
+			case 3:
+				gameState = GameStates.VICTORY;
+			}
+			break;
+		case 'j':
+			switch (testfield.getField(player2.getPosition()[1] - 1,
+					player2.getPosition()[0]).getContent()) {
+			case 1:
+				if (testfield.getField(player2.getPosition()[1] - 1,
+						player2.getPosition()[0]).getBomb() != null) {
+					break;
+				}
+				testfield.removePlayer(player2);
+				player2.moveLeft();
+				testfield.setPlayer(player2);
+				break;
+			case 3:
+				gameState = GameStates.VICTORY;
+			}
+			break;
+		case 'k':
+			switch (testfield.getField(player2.getPosition()[1],
+					player2.getPosition()[0] + 1).getContent()) {
+			case 1:
+				if (testfield.getField(player2.getPosition()[1],
+						player2.getPosition()[0] + 1).getBomb() != null) {
+					break;
+				}
+				testfield.removePlayer(player2);
+				player2.moveDown();
+				testfield.setPlayer(player2);
+				break;
+			case 3:
+				gameState = GameStates.VICTORY;
+			}
+			break;
+		case 'l':
+			switch (testfield.getField(player2.getPosition()[1] + 1,
+					player2.getPosition()[0]).getContent()) {
+			case 1:
+				if (testfield.getField(player2.getPosition()[1] + 1,
+						player2.getPosition()[0]).getBomb() != null) {
+					break;
+				}
+				testfield.removePlayer(player2);
+				player2.moveRight();
+				testfield.setPlayer(player2);
+				break;
+			case 3:
+				gameState = GameStates.VICTORY;
+			}
+			break;
+		case KeyEvent.VK_ENTER:
+			bombList.add(new Bomb(player2.getPosition()[0], player2
+					.getPosition()[1], time));
+			testfield.setBomb(bombList.get(bombList.size() - 1));
+			break;
 		}
 		key = 0;
 	}
@@ -408,7 +488,7 @@ public class Game implements Runnable {
 	 */
 	public static void main(String args[]) {
 		Field field = createNewField();
-		Game game = new Game(field, new Player(1, 1));
+		Game game = new Game(field, new Player(1, 1), new Player(13, 13));
 		GUI gui = new GUI(field, game);
 		gui.setVisible(true);
 		game.insertGUI(gui);
