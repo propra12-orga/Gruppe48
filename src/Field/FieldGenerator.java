@@ -1,11 +1,9 @@
 package Field;
 
-/*
+/**
  * FieldContent.java
- * 
- * Version 1
- * 
- * © Alexander Hering
+ *  
+ * @author Alexander Hering
  */
 
 import java.io.BufferedReader;
@@ -39,9 +37,9 @@ public class FieldGenerator {
 	 * Erzeugt rechteckige Map abhaengig von iModus
 	 * 
 	 * @param iWidth
-	 *            : Breite der zu erstellenden Map
+	 *            Breite der zu erstellenden Map
 	 * @param iHeight
-	 *            : Hoehe der zu erstellenden Map
+	 *            Hoehe der zu erstellenden Map
 	 * @return Erzeugte Map
 	 */
 	public FieldContent[][] createRectangleMap(int iWidth, int iHeight) {
@@ -75,8 +73,8 @@ public class FieldGenerator {
 	 * Erzeugt quadratische Map
 	 * 
 	 * @param iSize
-	 *            : Seitenlaenge der zu erzeugenden Map
-	 * @return erzeugte Map
+	 *            Seitenlaenge der zu erzeugenden Map
+	 * @return Erzeugte Map
 	 */
 	public FieldContent[][] createSquareMap(int iSize) {
 		return createRectangleMap(iSize, iSize);
@@ -86,7 +84,7 @@ public class FieldGenerator {
 	 * Setzt Zufallschance fuer Modus 1 auf angegebenen Wert
 	 * 
 	 * @param fChance
-	 *            : Chance in Prozent
+	 *            Chance in Prozent
 	 */
 	public void setRandomChance(float fChance) {
 		fRandomChance = fChance / 100;
@@ -96,7 +94,7 @@ public class FieldGenerator {
 	 * Setzt Anzahl der Bloecke fuer Modus 2 auf angegebenen Wert
 	 * 
 	 * @param iAmount
-	 *            : Anzahl der zu setzenden Bloecke
+	 *            Anzahl der zu setzenden Bloecke
 	 */
 	public void setRandomAmount(int iAmount) {
 		iRandomAmount = iAmount;
@@ -110,8 +108,8 @@ public class FieldGenerator {
 	 * platziert, bis das Spielfeld voll ist oder iAmount erreicht wurde
 	 * 
 	 * @param iStatus
-	 *            : Gewuenschter Modus. Wird zu 0, wenn iStatus < 0 oder iStatus
-	 *            > 2
+	 *            Gewuenschter Modus. Wird zu 0, wenn iStatus < 0 oder iStatus >
+	 *            2
 	 */
 	public void setModus(int iStatus) {
 		if ((iStatus >= 0) && (iStatus <= 2)) {
@@ -126,7 +124,7 @@ public class FieldGenerator {
 	 * Erkennt automatisch ob die Map komprimiert oder unkomprimiert vorliegt.
 	 * 
 	 * @param sInputFile
-	 *            : Name der auszulesenden Datei
+	 *            Name der auszulesenden Datei
 	 * @return Eingelesene Map
 	 */
 	public FieldContent[][] readMap(String sInputFile) {
@@ -208,7 +206,7 @@ public class FieldGenerator {
 	 * Rand, nicht aber der Inhalt festgelegt ist.
 	 * 
 	 * @param sInputFile
-	 *            : Name der auszulesenden Datei
+	 *            Name der auszulesenden Datei
 	 * @return Eingelesene Map
 	 */
 	public FieldContent[][] readFillEmptyMap(String sInputFile) {
@@ -221,8 +219,8 @@ public class FieldGenerator {
 	/**
 	 * Interne Mothode zum einlesen komprimierter Maps.
 	 * 
-	 * @param BufferedReader
-	 *            reader: BufferedReader mit eingelesener Map als Inhalt
+	 * @param reader
+	 *            BufferedReader mit eingelesener Map als Inhalt
 	 * @return Eingelesene Map
 	 */
 	private FieldContent[][] readCompressedMap(BufferedReader reader) {
@@ -327,15 +325,15 @@ public class FieldGenerator {
 	 * nicht Vorkommen eines Blocks.
 	 * 
 	 * @param iCheckWhereX
-	 *            : X-Koordinate des Suchstarts
+	 *            X-Koordinate des Suchstarts
 	 * @param iCheckWhereY
-	 *            : Y-Koordinate des Suchstarts
+	 *            Y-Koordinate des Suchstarts
 	 * @param iCheckHowFar
-	 *            : Radius der Suche
+	 *            Radius der Suche
 	 * @param iCheckForWhat
-	 *            : Typ des zu suchenden Blocks
+	 *            Typ des zu suchenden Blocks
 	 * @param bCheckIfThere
-	 *            : Wird hier true angegeben, so wird ueberprueft, ob der
+	 *            Wird hier true angegeben, so wird ueberprueft, ob der
 	 *            angegebene Block vorhanden ist. Wird false angegeben, so wird
 	 *            ueberprueft ob der Block nicht vorhanden ist.
 	 * @return Gibt true zurueck wenn der gesuchte Block gefunden wurde und

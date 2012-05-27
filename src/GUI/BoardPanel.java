@@ -1,6 +1,5 @@
 package GUI;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -11,11 +10,12 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import Field.Field;
+
 /**
  * 
  * @author Carsten Stegmann
- *
- *
+ * 
+ * 
  */
 public class BoardPanel extends JPanel {
 
@@ -33,7 +33,9 @@ public class BoardPanel extends JPanel {
 	 * erzeugt Inhalt des Panels
 	 * 
 	 * @param field
+	 *            Spielfeld ueber das das Panel erzeugt werden soll
 	 */
+
 	public BoardPanel(Field field) {
 		iBoomList = new ArrayList<ArrayList>();
 		iIntList = new ArrayList<int[]>();
@@ -55,17 +57,23 @@ public class BoardPanel extends JPanel {
 			System.out.println(e);
 		}
 	}
-/**
- * fügt Explosion dem Array zu
- * @param list
- */
+
+	/**
+	 * fügt Explosion dem Array zu
+	 * 
+	 * @param list
+	 *            Liste der Felder mit Explosionen
+	 */
 	public void addExplosions(ArrayList list) {
 		iBoomList.add(list);
 	}
-/**
- * entfernt Explosion aus dem Array
- * @param iBoomList: 
- */
+
+	/**
+	 * entfernt Explosion aus dem Array
+	 * 
+	 * @param iBoomList
+	 *            :
+	 */
 	public void removeExplosions() {
 		if (iBoomList.size() > 0) {
 			iBoomList.remove(0);
@@ -75,13 +83,15 @@ public class BoardPanel extends JPanel {
 	public void insertField(Field field) {
 		boardField = field;
 	}
-/**
- * durchsucht Array und ordnet mittels switch case den Arrayelementen
- * dessen Images zu
- * @param g
- */
+
+	/**
+	 * durchsucht Array und ordnet mittels switch case den Arrayelementen dessen
+	 * Images zu
+	 * 
+	 * @param g
+	 */
 	public void buildWorld(Graphics g) {
-		//g.setColor(new Color(200, 200, 170));
+		// g.setColor(new Color(200, 200, 170));
 		g.fillRect(0, 0, this.getWidth() * 32, this.getHeight() * 32);
 		for (int i = 0; i < boardField.getMap().length; i++) {
 			for (int j = 0; j < boardField.getMap()[0].length; j++) {
@@ -115,10 +125,12 @@ public class BoardPanel extends JPanel {
 		buildWorld(g);
 		paintBoom(g);
 	}
-/**
- * durchsucht Array nach Explosionselementen und zeichnet diese
- * @param g
- */
+
+	/**
+	 * durchsucht Array nach Explosionselementen und zeichnet diese
+	 * 
+	 * @param g
+	 */
 	public void paintBoom(Graphics g) {
 		if (iBoomList.size() > 0) {
 			for (int i = 0; i < iBoomList.size(); i++) {

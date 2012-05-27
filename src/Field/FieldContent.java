@@ -3,12 +3,10 @@ package Field;
 import Objects.Bomb;
 import Objects.Player;
 
-/*
+/**
  * FieldContent.java
  * 
- * Version 1
- * 
- * © Alexander Hering
+ * @author Alexander Hering
  */
 
 public class FieldContent {
@@ -35,7 +33,7 @@ public class FieldContent {
 	 * Setzt Wert des Feldes auf angegebenen Wert
 	 * 
 	 * @param iNewContent
-	 *            : Zu setzender Wert
+	 *            Zu setzender Wert
 	 */
 	public void setContent(int iNewContent) {
 		iContent = iNewContent;
@@ -49,7 +47,7 @@ public class FieldContent {
 	 * Fuegt Bombe in Feld ein
 	 * 
 	 * @param bBomb
-	 *            : Einzufuegende Bombe
+	 *            Einzufuegende Bombe
 	 */
 	public void insertBomb(Bomb bBomb) {
 		Bomb = bBomb;
@@ -60,7 +58,7 @@ public class FieldContent {
 	 * Fuegt Spieler in Feld ein
 	 * 
 	 * @param pPlayer
-	 *            : Einzufuegender Spieler
+	 *            Einzufuegender Spieler
 	 */
 	public void insertPlayer(Player pPlayer) {
 		Player = pPlayer;
