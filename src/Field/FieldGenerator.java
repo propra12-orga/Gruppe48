@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class FieldGenerator {
-	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
+	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE;
 	private FieldContent Map[][];
 	private float fRandomChance;
 	private int iModus, iRandomAmount;
@@ -28,6 +28,7 @@ public class FieldGenerator {
 		EXIT = 3;
 		BOMB = 4;
 		PLAYER = 5;
+		STONE = 6;
 		iModus = 0;
 		fRandomChance = 0;
 		iRandomAmount = 0;
@@ -61,6 +62,12 @@ public class FieldGenerator {
 				if ((i == 0) || (i == iWidth - 1) || (j == 0)
 						|| (j == iHeight - 1)) {
 					Map[i][j].setContent(WALL);
+				}
+
+				else if ((i >= 3 && i <= iWidth) || (j >= 3 && j <= iHeight)) {
+					if (Math.random() <= 0.75)
+						Map[i][j].setContent(STONE);
+
 				}
 			}
 		}

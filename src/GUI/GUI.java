@@ -16,8 +16,6 @@ import Engine.Game;
 import Engine.GameStates;
 import Field.Field;
 import Objects.Player;
-//import javax.swing.JPanel;
-//import javax.swing.JFrame;
 
 /**
  * GUI.java
@@ -82,7 +80,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		menu.add(gameMenu);
 		this.add(menu, BorderLayout.NORTH);
 		this.setJMenuBar(menu);
-		//this.invalidate();
+		// this.invalidate();
 
 		this.add(panel);
 
@@ -140,7 +138,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 	 */
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		//	mainGame.key = e.getKeyChar();
+		// mainGame.key = e.getKeyChar();
 	}
 
 	@Override

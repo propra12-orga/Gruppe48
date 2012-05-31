@@ -14,7 +14,7 @@ import Objects.Bomb;
 import Objects.Player;
 
 public class Field {
-	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
+	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE;
 	private FieldContent map[][];
 
 	public Field() {
@@ -24,6 +24,7 @@ public class Field {
 		EXIT = 3;
 		BOMB = 4;
 		PLAYER = 5;
+		STONE = 6;
 	}
 
 	/**

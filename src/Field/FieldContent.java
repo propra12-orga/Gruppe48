@@ -10,7 +10,7 @@ import Objects.Player;
  */
 
 public class FieldContent {
-	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER;
+	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE;
 	private int iContent;
 	private Bomb Bomb;
 	private Player Player;
@@ -24,6 +24,7 @@ public class FieldContent {
 		EXIT = 3;
 		BOMB = 4;
 		PLAYER = 5;
+		STONE = 6;
 		iContent = EMPTY;
 		Bomb = null;
 		Player = null;
