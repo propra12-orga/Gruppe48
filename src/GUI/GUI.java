@@ -6,7 +6,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -15,6 +20,7 @@ import javax.swing.JMenuItem;
 import Engine.Game;
 import Engine.GameStates;
 import Field.Field;
+import Field.FieldGenerator;
 import Objects.Player;
 
 /**
@@ -38,12 +44,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 	 */
 
 	private JMenuItem startItem;
+	private JMenuItem openItem;
 	private JMenuItem multiplayer;
 	private JMenuItem restartItem;
 	private JMenuItem quitItem;
 	private JMenuBar menu;
 	private JMenu gameMenu;
-
+	private FieldGenerator readMap;
 	private Game mainGame;
 
 	public GUI(Field field, Game game) {
@@ -67,6 +74,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		gameMenu = new JMenu("Game");
 		startItem = new JMenuItem("Start Game");
 		startItem.addActionListener(this);
+		openItem = new JMenuItem("Open Map");
+		openItem.addActionListener(this);
 		multiplayer = new JMenuItem("2 Player");
 		multiplayer.addActionListener(this);
 		restartItem = new JMenuItem("Reset");
@@ -74,6 +83,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		quitItem = new JMenuItem("Quit");
 		quitItem.addActionListener(this);
 		gameMenu.add(startItem);
+		gameMenu.add(openItem);
 		gameMenu.add(multiplayer);
 		gameMenu.add(restartItem);
 		gameMenu.add(quitItem);
@@ -118,6 +128,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 			mainGame.key = 0;
 			mainGame.gameState = GameStates.STARTED;
 		}
+		if (object.getSource() == openItem) {
+			System.out.println("öffnen wurde angeklickt");
+			open();
+		}
 		if (object.getSource() == quitItem) {
 			System.exit(0);
 		}
@@ -160,4 +174,27 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		mainGame.key = e.getKeyChar();
 	}
 
+	public void open() {
+		try {
+			JFileChooser openDialog = new JFileChooser();
+			openDialog.showOpenDialog(panel);
+			FileInputStream datei = new FileInputStream(
+					openDialog.getSelectedFile());
+
+			BufferedInputStream buf = new BufferedInputStream(datei);
+			ObjectInputStream read = new ObjectInputStream(buf);
+
+			read.readObject();
+			String dateiname = (String) read.readObject();
+		}
+
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 }
