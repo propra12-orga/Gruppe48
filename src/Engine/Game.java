@@ -102,7 +102,7 @@ public class Game implements Runnable {
 			switch (gameState) {
 			case STARTED:
 				start();
-				//System.out.println("Game started");
+				// System.out.println("Game started");
 				break;
 			case TWOPLAYER:
 				testfield.setPlayer(player2);
@@ -117,7 +117,7 @@ public class Game implements Runnable {
 				doRestart = true;
 				break;
 			case INITIALIZED:
-				//System.out.println("INITIALIZED");
+				// System.out.println("INITIALIZED");
 				start();
 				break;
 			default:
@@ -216,10 +216,24 @@ public class Game implements Runnable {
 							exList.get(exList.size() - 1)[1] = bombList.get(i)
 									.getPosition()[0] - j;
 						} else {
+							if (testfield.getField(
+									bombList.get(i).getPosition()[1],
+									bombList.get(i).getPosition()[0] - j)
+									.getContent() == 6) {
+								exList.add(new int[2]);
+								exList.get(exList.size() - 1)[0] = bombList
+										.get(i).getPosition()[1];
+								exList.get(exList.size() - 1)[1] = bombList
+										.get(i).getPosition()[0] - j;
+								testfield.getField(
+										bombList.get(i).getPosition()[1],
+										bombList.get(i).getPosition()[0] - j)
+										.setContent(1);
+							}
 							break;
 						}
 					} catch (Exception e) {
-						//	System.out.println(e);
+						// System.out.println(e);
 					}
 				}
 				for (int j = 1; j < bombList.get(i).getRadius(); j++) {
@@ -240,15 +254,35 @@ public class Game implements Runnable {
 							}
 						}
 					}
-					if (testfield.getField(bombList.get(i).getPosition()[1],
-							bombList.get(i).getPosition()[0] + j).getContent() == 1) {
-						exList.add(new int[2]);
-						exList.get(exList.size() - 1)[0] = bombList.get(i)
-								.getPosition()[1];
-						exList.get(exList.size() - 1)[1] = bombList.get(i)
-								.getPosition()[0] + j;
-					} else {
-						break;
+					try {
+						if (testfield.getField(
+								bombList.get(i).getPosition()[1],
+								bombList.get(i).getPosition()[0] + j)
+								.getContent() == 1) {
+							exList.add(new int[2]);
+							exList.get(exList.size() - 1)[0] = bombList.get(i)
+									.getPosition()[1];
+							exList.get(exList.size() - 1)[1] = bombList.get(i)
+									.getPosition()[0] + j;
+						} else {
+							if (testfield.getField(
+									bombList.get(i).getPosition()[1],
+									bombList.get(i).getPosition()[0] + j)
+									.getContent() == 6) {
+								exList.add(new int[2]);
+								exList.get(exList.size() - 1)[0] = bombList
+										.get(i).getPosition()[1];
+								exList.get(exList.size() - 1)[1] = bombList
+										.get(i).getPosition()[0] + j;
+								testfield.getField(
+										bombList.get(i).getPosition()[1],
+										bombList.get(i).getPosition()[0] + j)
+										.setContent(1);
+							}
+							break;
+						}
+					} catch (Exception e) {
+
 					}
 				}
 				for (int j = 1; j < bombList.get(i).getRadius(); j++) {
@@ -271,16 +305,34 @@ public class Game implements Runnable {
 							}
 						}
 					}
-					if (testfield.getField(
-							bombList.get(i).getPosition()[1] - j,
-							bombList.get(i).getPosition()[0]).getContent() == 1) {
-						exList.add(new int[2]);
-						exList.get(exList.size() - 1)[0] = bombList.get(i)
-								.getPosition()[1] - j;
-						exList.get(exList.size() - 1)[1] = bombList.get(i)
-								.getPosition()[0];
-					} else {
-						break;
+					try {
+						if (testfield.getField(
+								bombList.get(i).getPosition()[1] - j,
+								bombList.get(i).getPosition()[0]).getContent() == 1) {
+							exList.add(new int[2]);
+							exList.get(exList.size() - 1)[0] = bombList.get(i)
+									.getPosition()[1] - j;
+							exList.get(exList.size() - 1)[1] = bombList.get(i)
+									.getPosition()[0];
+						} else {
+							if (testfield.getField(
+									bombList.get(i).getPosition()[1] - j,
+									bombList.get(i).getPosition()[0])
+									.getContent() == 6) {
+								exList.add(new int[2]);
+								exList.get(exList.size() - 1)[0] = bombList
+										.get(i).getPosition()[1] - j;
+								exList.get(exList.size() - 1)[1] = bombList
+										.get(i).getPosition()[0];
+								testfield.getField(
+										bombList.get(i).getPosition()[1] - j,
+										bombList.get(i).getPosition()[0])
+										.setContent(1);
+							}
+							break;
+						}
+					} catch (Exception e) {
+
 					}
 				}
 				for (int j = 1; j < bombList.get(i).getRadius(); j++) {
@@ -303,16 +355,34 @@ public class Game implements Runnable {
 							}
 						}
 					}
-					if (testfield.getField(
-							bombList.get(i).getPosition()[1] + j,
-							bombList.get(i).getPosition()[0]).getContent() == 1) {
-						exList.add(new int[2]);
-						exList.get(exList.size() - 1)[0] = bombList.get(i)
-								.getPosition()[1] + j;
-						exList.get(exList.size() - 1)[1] = bombList.get(i)
-								.getPosition()[0];
-					} else {
-						break;
+					try {
+						if (testfield.getField(
+								bombList.get(i).getPosition()[1] + j,
+								bombList.get(i).getPosition()[0]).getContent() == 1) {
+							exList.add(new int[2]);
+							exList.get(exList.size() - 1)[0] = bombList.get(i)
+									.getPosition()[1] + j;
+							exList.get(exList.size() - 1)[1] = bombList.get(i)
+									.getPosition()[0];
+						} else {
+							if (testfield.getField(
+									bombList.get(i).getPosition()[1] + j,
+									bombList.get(i).getPosition()[0])
+									.getContent() == 6) {
+								exList.add(new int[2]);
+								exList.get(exList.size() - 1)[0] = bombList
+										.get(i).getPosition()[1] + j;
+								exList.get(exList.size() - 1)[1] = bombList
+										.get(i).getPosition()[0];
+								testfield.getField(
+										bombList.get(i).getPosition()[1] + j,
+										bombList.get(i).getPosition()[0])
+										.setContent(1);
+							}
+							break;
+						}
+					} catch (Exception e) {
+
 					}
 				}
 
