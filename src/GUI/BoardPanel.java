@@ -25,6 +25,7 @@ public class BoardPanel extends JPanel {
 	BufferedImage imgPlayer;
 	BufferedImage imgBomb;
 	BufferedImage imgBoom;
+	BufferedImage imgStone;
 	Field boardField;
 	List<int[]> iIntList;
 	List<ArrayList> iBoomList;
@@ -53,6 +54,8 @@ public class BoardPanel extends JPanel {
 					.getResource("/images/player.png"));
 			imgBoom = ImageIO.read(ImageIO.class
 					.getResource("/images/boom.png"));
+			imgStone = ImageIO.read(ImageIO.class
+					.getResource("/images/stone.png"));
 		} catch (IOException e) {
 			System.out.println(e);
 		}
@@ -111,6 +114,9 @@ public class BoardPanel extends JPanel {
 							break;
 						case 3:
 							g.drawImage(imgExit, i * 32, j * 32, 32, 32, null);
+							break;
+						case 6:
+							g.drawImage(imgStone, i * 32, j * 32, 32, 32, null);
 							break;
 						}
 					}
