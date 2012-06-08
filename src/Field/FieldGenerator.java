@@ -64,7 +64,8 @@ public class FieldGenerator {
 					Map[i][j].setContent(WALL);
 				}
 
-				else if ((i >= 3 && i <= iWidth) || (j >= 3 && j <= iHeight)) {
+				else if ((i >= 3 && i <= iWidth - 3)
+						|| (j >= 3 && j <= iHeight)) {
 					if (Math.random() <= 0.75)
 						Map[i][j].setContent(STONE);
 
@@ -373,7 +374,8 @@ public class FieldGenerator {
 		int iCount = 0;
 		for (int i = 0; i < Map.length; i++) {
 			for (int j = 0; j < Map[0].length; j++) {
-				if (Map[i][j].getContent() == FREE) {
+				if ((Map[i][j].getContent() == FREE)
+						|| (Map[i][j].getContent() == STONE)) {
 					iCount++;
 				}
 			}
@@ -388,10 +390,11 @@ public class FieldGenerator {
 		int iRand = (int) (Math.random() * iCountFreeSpace());
 		for (int i = 0; i < Map.length; i++) {
 			for (int j = 0; j < Map[0].length; j++) {
-				if (Map[i][j].getContent() == FREE) {
+				if ((Map[i][j].getContent() == FREE)
+						|| (Map[i][j].getContent() == STONE)) {
 					iRand--;
 					if (iRand == 0) {
-						Map[i][j].setContent(EXIT);
+						Map[i][j].setExit();
 						return;
 					}
 				}

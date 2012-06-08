@@ -14,6 +14,7 @@ public class FieldContent {
 	private int iContent;
 	private Bomb Bomb;
 	private Player Player;
+	private boolean bExit = false;
 
 	public FieldContent()
 
@@ -42,6 +43,10 @@ public class FieldContent {
 		Player = null;
 		// setzt den Inhalt auf den gewuenschten Wert und loescht etwaige
 		// Spieler- oder Bombenreferenzen.
+	}
+
+	public void setExit() {
+		bExit = true;
 	}
 
 	/**
@@ -85,6 +90,10 @@ public class FieldContent {
 	 * 
 	 * @return Gibt Inhalt des Feldes zurueck
 	 */
+	public boolean isExit() {
+		return bExit;
+	}
+
 	public int getContent() {
 		return iContent;
 		// gibt Inhalt als int zurueck

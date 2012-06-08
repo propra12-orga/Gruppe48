@@ -419,12 +419,14 @@ public class Game implements Runnable {
 						player.getPosition()[0] - 1).getBomb() != null) {
 					break;
 				}
+				if (testfield.getField(player.getPosition()[1],
+						player.getPosition()[0] - 1).isExit() == true) {
+					gameState = GameStates.VICTORY;
+				}
 				testfield.removePlayer(player);
 				player.moveUp();
 				testfield.setPlayer(player);
 				break;
-			case 3:
-				gameState = GameStates.VICTORY;
 			}
 			break;
 		case 'a':
@@ -435,12 +437,14 @@ public class Game implements Runnable {
 						player.getPosition()[0]).getBomb() != null) {
 					break;
 				}
+				if (testfield.getField(player.getPosition()[1] - 1,
+						player.getPosition()[0]).isExit() == true) {
+					gameState = GameStates.VICTORY;
+				}
 				testfield.removePlayer(player);
 				player.moveLeft();
 				testfield.setPlayer(player);
 				break;
-			case 3:
-				gameState = GameStates.VICTORY;
 			}
 			break;
 		case 's':
@@ -451,12 +455,14 @@ public class Game implements Runnable {
 						player.getPosition()[0] + 1).getBomb() != null) {
 					break;
 				}
+				if (testfield.getField(player.getPosition()[1],
+						player.getPosition()[0] + 1).isExit() == true) {
+					gameState = GameStates.VICTORY;
+				}
 				testfield.removePlayer(player);
 				player.moveDown();
 				testfield.setPlayer(player);
 				break;
-			case 3:
-				gameState = GameStates.VICTORY;
 			}
 			break;
 		case 'd':
@@ -467,12 +473,14 @@ public class Game implements Runnable {
 						player.getPosition()[0]).getBomb() != null) {
 					break;
 				}
+				if (testfield.getField(player.getPosition()[1] + 1,
+						player.getPosition()[0]).isExit() == true) {
+					gameState = GameStates.VICTORY;
+				}
 				testfield.removePlayer(player);
 				player.moveRight();
 				testfield.setPlayer(player);
 				break;
-			case 3:
-				gameState = GameStates.VICTORY;
 			}
 			break;
 		case KeyEvent.VK_SPACE:

@@ -107,13 +107,16 @@ public class BoardPanel extends JPanel {
 					} else {
 						switch (boardField.getField(i, j).getContent()) {
 						case 1:
-							g.drawImage(imgFree, i * 32, j * 32, 32, 32, null);
+							if (boardField.getField(i, j).isExit()) {
+								g.drawImage(imgExit, i * 32, j * 32, 32, 32,
+										null);
+							} else {
+								g.drawImage(imgFree, i * 32, j * 32, 32, 32,
+										null);
+							}
 							break;
 						case 2:
 							g.drawImage(imgWall, i * 32, j * 32, 32, 32, null);
-							break;
-						case 3:
-							g.drawImage(imgExit, i * 32, j * 32, 32, 32, null);
 							break;
 						case 6:
 							g.drawImage(imgStone, i * 32, j * 32, 32, 32, null);
