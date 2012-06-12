@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import Field.Field;
 
 /**
+ * BoardPanel.java Diese Klasse erzeugt ein Panel im Frame der GUI. Auf diesem
+ * Panel wird die Karte gezeichnet, die Explosion hinzugefügt und gelöscht
  * 
  * @author Carsten Stegmann
  * 
@@ -23,6 +25,7 @@ public class BoardPanel extends JPanel {
 	BufferedImage imgWall;
 	BufferedImage imgFree;
 	BufferedImage imgPlayer;
+	BufferedImage imgPlayer2;
 	BufferedImage imgBomb;
 	BufferedImage imgBoom;
 	BufferedImage imgStone;
@@ -41,6 +44,7 @@ public class BoardPanel extends JPanel {
 		iBoomList = new ArrayList<ArrayList>();
 		iIntList = new ArrayList<int[]>();
 		// boardField = field;
+
 		try {
 			imgExit = ImageIO.read(ImageIO.class
 					.getResource("/images/exit.png"));
@@ -52,6 +56,8 @@ public class BoardPanel extends JPanel {
 					.getResource("/images/bomb.png"));
 			imgPlayer = ImageIO.read(ImageIO.class
 					.getResource("/images/player.png"));
+			imgPlayer2 = ImageIO.read(ImageIO.class
+					.getResource("/images/player2.png"));
 			imgBoom = ImageIO.read(ImageIO.class
 					.getResource("/images/boom.png"));
 			imgStone = ImageIO.read(ImageIO.class
@@ -62,7 +68,7 @@ public class BoardPanel extends JPanel {
 	}
 
 	/**
-	 * fügt Explosion dem Array zu
+	 * fügt die Explosion dem Array zu
 	 * 
 	 * @param list
 	 *            Liste der Felder mit Explosionen
@@ -75,7 +81,7 @@ public class BoardPanel extends JPanel {
 	 * entfernt Explosion aus dem Array
 	 * 
 	 * @param iBoomList
-	 *            :
+	 *            das Array der Explosionsfelder :
 	 */
 	public void removeExplosions() {
 		if (iBoomList.size() > 0) {
@@ -92,6 +98,7 @@ public class BoardPanel extends JPanel {
 	 * Images zu
 	 * 
 	 * @param g
+	 *            die zu zeichnende Grafik
 	 */
 	public void buildWorld(Graphics g) {
 		// g.setColor(new Color(200, 200, 170));
@@ -102,26 +109,43 @@ public class BoardPanel extends JPanel {
 			for (int j = 0; j < boardField.getMap()[0].length; j++) {
 
 				if (boardField.getField(i, j).getPlayer() != null) {
-					g.drawImage(imgPlayer, i * 32, j * 32, 32, 32, null);
+					if (boardField.getField(i, j).getPlayer().getID() == 1) {
+						g.drawImage(imgPlayer, i * 32, j * 32, 32, 32, null);
+					} else {
+						g.drawImage(imgPlayer2, i * 32, j * 32, 32, 32, null);
+					} // Zeichnet
+						// die
+						// Spieler
 				} else {
 					if (boardField.getField(i, j).getBomb() != null) {
-						g.drawImage(imgBomb, i * 32, j * 32, 32, 32, null);
+						g.drawImage(imgBomb, i * 32, j * 32, 32, 32, null); // Zeichnet
+																			// die
+																			// Bombe
 					} else {
 						switch (boardField.getField(i, j).getContent()) {
 						case 1:
 							if (boardField.getField(i, j).isExit()) {
-								g.drawImage(imgExit, i * 32, j * 32, 32, 32,
+								g.drawImage(imgExit, i * 32, j * 32, 32, 32, // Zeichnet
+																				// den
+																				// Ausgang
 										null);
 							} else {
-								g.drawImage(imgFree, i * 32, j * 32, 32, 32,
+								g.drawImage(imgFree, i * 32, j * 32, 32, 32, // Zeichnet
+																				// ein
+																				// leeres
+																				// Feld
 										null);
 							}
 							break;
 						case 2:
-							g.drawImage(imgWall, i * 32, j * 32, 32, 32, null);
+							g.drawImage(imgWall, i * 32, j * 32, 32, 32, null); // Zeichnet
+																				// unzerstörbare
+																				// Wand
 							break;
 						case 6:
-							g.drawImage(imgStone, i * 32, j * 32, 32, 32, null);
+							g.drawImage(imgStone, i * 32, j * 32, 32, 32, null); // Zeichnet
+																					// zerstörbaren
+																					// Stein
 							break;
 						}
 					}
@@ -130,7 +154,10 @@ public class BoardPanel extends JPanel {
 		}
 	}
 
-	@Override
+	/**
+	 * Methode, die zur Darstellung der Karte (buildWorld) und der Explosion
+	 * (paintBoom) aufgerufen wird
+	 */
 	public void paint(Graphics g) {
 		super.paint(g);
 		buildWorld(g);
@@ -141,6 +168,7 @@ public class BoardPanel extends JPanel {
 	 * durchsucht Array nach Explosionselementen und zeichnet diese
 	 * 
 	 * @param g
+	 *            die zu zeichnende Grafik
 	 */
 	public void paintBoom(Graphics g) {
 		if (iBoomList.size() > 0) {
