@@ -67,7 +67,9 @@ public class FieldGenerator {
 				}
 
 				else if ((i >= 3 && i <= iWidth) || (j >= 3 && j <= iHeight)) {
-					if (Math.random() <= 0.75) // hier kann man die DICHTE der zerstoerbaren Bloecke veraendern
+					if (Math.random() <= 0.75) // hier kann man die DICHTE der
+												// zerstoerbaren Bloecke
+												// veraendern
 						Map[i][j].setContent(STONE);
 
 				}
@@ -155,7 +157,6 @@ public class FieldGenerator {
 		try {
 			inputFile = new FileReader(sInputFile);
 		} catch (FileNotFoundException e) {
-			System.out.println(e);
 			return null;
 		}
 		reader = new BufferedReader(inputFile);
@@ -202,7 +203,8 @@ public class FieldGenerator {
 					Map[i][iCounter].setContent(FREE);
 					break;
 				case 69: // 'E'
-					Map[i][iCounter].setContent(EXIT);
+					Map[i][iCounter].setContent(STONE);
+					Map[i][iCounter].setExit();
 					break;
 				case 80: // 'P'
 					Map[i][iCounter].setContent(PLAYER);

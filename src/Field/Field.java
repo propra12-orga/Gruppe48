@@ -34,7 +34,17 @@ public class Field {
 	 *            Einzufuegende Map
 	 */
 	public void insertMap(FieldContent newMap[][]) {
-		map = newMap;
+		map = new FieldContent[newMap.length][newMap[0].length];
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++)
+				map[i][j] = new FieldContent();
+		}
+		for (int i = 0; i < newMap.length; i++)
+			for (int j = 0; j < newMap[0].length; j++) {
+				map[i][j].setContent(newMap[i][j].getContent());
+				map[i][j].insertPlayer(newMap[i][j].getPlayer());
+				map[i][j].insertBomb(newMap[i][j].getBomb());
+			}
 	}
 
 	/**

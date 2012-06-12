@@ -132,6 +132,11 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		JOptionPane.showMessageDialog(null, sError);
 	}
 
+	public void resize() {
+		this.setSize((gameField.getMap().length) * 32 + 5,
+				(gameField.getMap()[0].length + 1) * 32 + 18);
+	}
+
 	@Override
 	/**
 	 * Es werden die Aktionen der jeweiligen Menüeinträge(Game)
@@ -140,14 +145,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent object) {
 		if (object.getSource() == startItem) {
 			mainGame.key = 0;
-			mainGame.restart(Game.createNewField());
-			this.setSize((gameField.getMap().length) * 32 + 5,
-					(gameField.getMap()[0].length + 1) * 32 + 18);
+			mainGame.setMapLoaded(false);
+			mainGame.restart();
+			resize();
 		}
 		if (object.getSource() == openItem) {
 			if (open()) {
-				this.setSize((gameField.getMap().length) * 32 + 5,
-						(gameField.getMap()[0].length + 1) * 32 + 18);
+				resize();
 			}
 		}
 		if (object.getSource() == quitItem) {
@@ -213,13 +217,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		int iOpened = fileChooser.showOpenDialog(null);
 		if (iOpened == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
-			String path = file.getAbsolutePath();
-			System.out.println(path);
-			mainGame.restart(Game.createNewField(file.getAbsolutePath()));
+			mainGame.setMapPath(file.getAbsolutePath());
+			mainGame.setMapLoaded(true);
+			return mainGame.restart();
 		} else {
 			showError("Nichts ausgewählt");
 			return false;
 		}
-		return true;
 	}
 }

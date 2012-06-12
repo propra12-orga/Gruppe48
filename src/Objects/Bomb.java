@@ -28,7 +28,6 @@ public class Bomb {
 		x = xPos;
 		y = yPos;
 		explosionTime = time + delay;
-		BOOM();
 	}
 
 	/**
@@ -59,15 +58,6 @@ public class Bomb {
 	public void detonate() {
 		explosionTime -= delay;
 		isExploded = true;
-	}
-
-	/**
-	 * Schreibt "Bombe wurde gesetzt" in die Konsole dient nur der
-	 * Uebersichtlichkeit
-	 */
-	public void BOOM() {
-		System.out.println("Bombe wurde gesetzt");
-
 	}
 
 	/**
