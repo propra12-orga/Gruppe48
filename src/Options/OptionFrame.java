@@ -37,7 +37,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// private final Game game;
+	// private final Game field;
 
 	private int changedMap;
 	private int changedDense;
@@ -76,16 +76,16 @@ public class OptionFrame extends JFrame implements WindowListener {
 
 		// Zeile 1
 		JLabel lb1 = new JLabel("Spielfeldgröße:");
-		JSlider mapSlider = new JSlider(16, 30, changedMap);
-		// updateMapLabel();
+		JSlider mapSlider = new JSlider(16, 30);
+		updateMapLabel();
 
 		mapSlider.addChangeListener(new ChangeListener() {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				changedMap = ((JSlider) e.getSource()).getValue();
-				savedOptions = false;
-				// updateMapLabel();
+				savedOptions = false; //
+				updateMapLabel();
 			}
 		});
 
@@ -97,21 +97,24 @@ public class OptionFrame extends JFrame implements WindowListener {
 
 		// Zeile 2
 
-		/*
-		 * JLabel lb2 = new JLabel("Mauerdichte:"); JSlider denseSlider = new
-		 * JSlider(16, 30, changedDense); updateDenseLabel();
-		 * 
-		 * denseSlider.addChangeListener(new ChangeListener() {
-		 * 
-		 * @Override public void stateChanged(ChangeEvent e) { changedDense =
-		 * ((JSlider) e.getSource()).getValue(); savedOptions = false;
-		 * updateDenseLabel(); } });
-		 * 
-		 * // nach 3 Opjekten wird eine neue Zeile begonnen center.add(lb2); //
-		 * Zeile 1 Spalte 1 center.add(denseSlider);// Zeile 1 Spalte 2
-		 * center.add(denseLabel); // Zeile 1 Spalte 3 // Zeile 1 ENDE // Ende
-		 * Zeile 2
-		 */
+		JLabel lb2 = new JLabel("Mauerdichte:");
+		JSlider denseSlider = new JSlider(25, 80);
+		updateDenseLabel();
+
+		denseSlider.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				changedDense = ((JSlider) e.getSource()).getValue();
+				savedOptions = false;
+				updateDenseLabel();
+			}
+		});
+
+		center.add(lb2); // Zeile 1 Spalte 1
+		center.add(denseSlider);// Zeile 1 Spalte 2
+		center.add(denseLabel); // Zeile 1 Spalte 3
+
 		// Zeile 3
 
 		/**
@@ -126,7 +129,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// acceptOptions();
+				acceptOptions();
 
 			}
 		});
@@ -158,7 +161,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 		buttons.add(cancelBt);
 
 		// Panels aufs Frame
-		add(center, BorderLayout.NORTH);
+		// add(center, BorderLayout.NORTH);
 		add(center, BorderLayout.CENTER);
 		add(buttons, BorderLayout.SOUTH);
 
@@ -171,24 +174,25 @@ public class OptionFrame extends JFrame implements WindowListener {
 	 * Speichert die Eingestellten Optionen
 	 * 
 	 */
-	/*
-	 * private void acceptOptions() { game1.getGameOptions().setMap(changedMap);
-	 * game1.getGameOptions().setDense(changedDense); //
-	 * game1.getGf().repaintBgD();
-	 * 
-	 * savedOptions = true; }
-	 */
+
+	private void acceptOptions() {
+
+		savedOptions = true;
+	}
 
 	/**
-	 * Setzt das Spiellabel auf die im Slider eingestellte Größe
+	 * Setzt das Spiellabel auf die im Slider eingestellte Groesse
 	 */
-	/*
-	 * private void updateMapLabel() { mapLabel.setText(new
-	 * Integer(changedMap).toString()); mapLabel.repaint(); }
-	 * 
-	 * private void updateDenseLabel() { denseLabel.setText(new
-	 * Integer(changedDense).toString()); denseLabel.repaint(); }
-	 */
+
+	private void updateMapLabel() {
+		mapLabel.setText(new Integer(changedMap).toString());
+		mapLabel.repaint();
+	}
+
+	private void updateDenseLabel() {
+		denseLabel.setText(new Integer(changedDense).toString());
+		denseLabel.repaint();
+	}
 
 	/**
 	 * Sicherheitsabfrage ob man ohne die Änderungzuspeichern das Fenster
