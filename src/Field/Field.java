@@ -213,6 +213,12 @@ public class Field {
 						case 3:
 							writer.write(69); // 'E'
 							break;
+						case 5:
+							writer.write(80); // 'P'
+							break;
+						case 6:
+							writer.write(37); // '%'
+							break;
 						}
 					}
 					writer.newLine();
@@ -322,35 +328,4 @@ public class Field {
 		}
 		return sOutput;
 	}
-	/*
-	 * public void updatePlayer (int[] iOldPos, player updPlayer) {
-	 * map[iOldPos[0]][iOldPos[1]].removePlayer();
-	 * map[updPlayer.getPosition()[0]
-	 * ][updPlayer.getPosition()[1]].insertPlayer(updPlayer); }
-	 */
-
-	// die folgende Methode ist als ueberlegung zur fluessigen Bewegung des
-	// Spielers entstanden
-
-	/*
-	 * public void updatePlayer(float fOldPos[], player updPlayer) { int
-	 * iPlayerID = updPlayer.getID(); iOldPos[0] = (int)fOldPos[0]; iOldPos[1] =
-	 * (int)fOldPos[1]; if(map[iOldPos[0]][iOldPos[1]].getPlayer() != null) {
-	 * if(map[iOldPos[0]][iOldPos[1]].getPlayer().getID() == iPlayerID) {
-	 * map[iOldPos[0]][iOldPos[1]].removePlayer(); } }
-	 * 
-	 * if(map[iOldPos[0] + 1][iOldPos[1]].getPlayer() != null) {
-	 * if(map[iOldPos[0]][iOldPos[1]].getPlayer().getID() == iPlayerID) {
-	 * map[iOldPos[0]][iOldPos[1]].removePlayer(); } }
-	 * 
-	 * if(map[iOldPos[0]][iOldPos[1] + 1].getPlayer() != null) {
-	 * if(map[iOldPos[0]][iOldPos[1]].getPlayer().getID() == iPlayerID) {
-	 * map[iOldPos[0]][iOldPos[1]].removePlayer(); } }
-	 * 
-	 * map[Math.round(updPlayer.getPosition()[0])][Math.round(updPlayer.getPosition
-	 * ()[1])].insertPlayer(updPlayer);
-	 * 
-	 * }
-	 */
-
 }

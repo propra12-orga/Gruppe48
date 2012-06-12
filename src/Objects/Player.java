@@ -7,7 +7,7 @@ package Objects;
  * 
  */
 public class Player {
-	public int x, y;
+	public int x, y, id;
 	// public static float a,b;
 	public boolean stillAlive = true;
 
@@ -21,9 +21,10 @@ public class Player {
 	 *            Gewuenschte Y-Koordinate auf die der Spieler gesetzt werden
 	 *            soll
 	 */
-	public Player(int iXPos, int iYPos) {
+	public Player(int iXPos, int iYPos, int id) {
 		x = iXPos;
 		y = iYPos;
+		this.id = id;
 	}
 
 	/**
@@ -83,37 +84,19 @@ public class Player {
 		y += 1;
 	}
 
+	public int getID() {
+		return id;
+	}
 	/*
-	 * public float[] getPositionfloat() { 
-	 * Für eine flüssige Bewegung anstatt int mit float bewegen 
-	 * float[] getPosition = new float[2]; 
-	 * getPosition[0] = x; 
-	 * getPosition[1] = y; 
-	 * return getPosition; }
+	 * public float[] getPositionfloat() { Für eine flüssige Bewegung anstatt
+	 * int mit float bewegen float[] getPosition = new float[2]; getPosition[0]
+	 * = x; getPosition[1] = y; return getPosition; }
 	 * 
-	 * public float moveUPf(){
-	 * float u; 
-	 * u = getPositionfloat()[1] + 0.1f;
-	 * b = u;
-	 * return b;
-	 * }
-	 * public float moveDOWNf(){ 
-	 * float d;
-	 * d = getPositionfloat()[1] - 0.1f;
-	 * b= d; 
-	 * return b;
-	 * } 
-	 * public float moveLEFTf(){ 
-	 * float l; 
-	 * l = getPositionfloat()[0] - 0.1f; 
-	 * a= l; 
-	 * return a;
-	 * } 
-	 * public float moveRIGHTf(){ 
-	 * float r; 
-	 * r = getPositionfloat()[0] + 0.1f; 
-	 * a= r; 
-	 * return a;
+	 * public float moveUPf(){ float u; u = getPositionfloat()[1] + 0.1f; b = u;
+	 * return b; } public float moveDOWNf(){ float d; d = getPositionfloat()[1]
+	 * - 0.1f; b= d; return b; } public float moveLEFTf(){ float l; l =
+	 * getPositionfloat()[0] - 0.1f; a= l; return a; } public float
+	 * moveRIGHTf(){ float r; r = getPositionfloat()[0] + 0.1f; a= r; return a;
 	 * }
 	 */
 

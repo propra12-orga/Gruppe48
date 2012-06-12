@@ -37,10 +37,10 @@ public class BoardPanel extends JPanel {
 	 *            Spielfeld ueber das das Panel erzeugt werden soll
 	 */
 
-	public BoardPanel(Field field) {
+	public BoardPanel() {
 		iBoomList = new ArrayList<ArrayList>();
 		iIntList = new ArrayList<int[]>();
-		boardField = field;
+		// boardField = field;
 		try {
 			imgExit = ImageIO.read(ImageIO.class
 					.getResource("/images/exit.png"));
@@ -95,6 +95,8 @@ public class BoardPanel extends JPanel {
 	 */
 	public void buildWorld(Graphics g) {
 		// g.setColor(new Color(200, 200, 170));
+		if (boardField == null)
+			return;
 		g.fillRect(0, 0, this.getWidth() * 32, this.getHeight() * 32);
 		for (int i = 0; i < boardField.getMap().length; i++) {
 			for (int j = 0; j < boardField.getMap()[0].length; j++) {

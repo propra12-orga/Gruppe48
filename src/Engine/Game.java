@@ -20,13 +20,18 @@ import Objects.Player;
 public class Game implements Runnable {
 
 	private Field gameField;
-	public GameStates gameState;
+	public static GameStates gameState;
 
-	private GUI gui;
+	private static GUI gui;
 	public char key;
 	long gameSpeed;
 	Player player;
 	Player player2;
+	static int iPlayerCount = 1;
+	int iNewPlayerCount = 1;
+	int iDefeatedPlayer = 0;
+	int iWinningPlayer = 0;
+	static int iMaxPlayers = 0;
 	List<Bomb> bombList;
 	List<long[]> explosionList;
 	Calendar calendar;
@@ -39,15 +44,35 @@ public class Game implements Runnable {
 	 * @param: field Erzeugtes Spielfeld
 	 * @param: player Einzufuegender Spieler
 	 */
-	public Game(Field field, Player player, Player player2) {
-		this.player = player;
-		this.player2 = player2;
+	public Game(Field field) {
+		testfield = field;
+		int iPlayercounter = 1;
+		for (int i = 0; i < testfield.getMap().length; i++) {
+			for (int j = 0; j < testfield.getMap()[0].length; j++) {
+				if (testfield.getMap()[i][j].getContent() == 5) {
+					testfield.getMap()[i][j].setContent(1);
+					if (iPlayercounter <= iPlayerCount) {
+						switch (iPlayercounter) {
+						case 1:
+							player = new Player(i, j, 1);
+							testfield.setPlayer(player);
+							break;
+						case 2:
+							player2 = new Player(i, j, 2);
+							testfield.setPlayer(player2);
+							break;
+						}
+					}
+					iPlayercounter++;
+				}
+			}
+		}
 		explosionList = new ArrayList<long[]>();
 		time = Calendar.getInstance().getTimeInMillis();
 		bombList = new ArrayList<Bomb>();
 		gameSpeed = 100;
-		gameState = GameStates.INITIALIZED;
-		testfield = field;
+		// gui.insertField(testfield);
+		gameState = GameStates.STOP;
 	}
 
 	/**
@@ -74,21 +99,45 @@ public class Game implements Runnable {
 	 *            Einzufuegender Spieler
 	 * @param restart
 	 */
-	public void restart(Field field, Player player, Player player2,
-			Boolean restart) {
+	public void restart(Field field) {
+		if (field == null) {
+			gameState = GameStates.STOP;
+			return;
+		}
+		iPlayerCount = iNewPlayerCount;
 		for (int i = 0; i <= bombList.size() + 1; i++) {
 			gui.panel.removeExplosions();
 		}
-		this.player = player;
-		this.player2 = player2;
+		testfield = field;
+		int iPlayercounter = 1;
+		for (int i = 0; i < testfield.getMap().length; i++) {
+			for (int j = 0; j < testfield.getMap()[0].length; j++) {
+				if (testfield.getMap()[i][j].getContent() == 5) {
+					testfield.getMap()[i][j].setContent(1);
+					if (iPlayercounter <= iPlayerCount) {
+						switch (iPlayercounter) {
+						case 1:
+							player = new Player(j, i, 1);
+							testfield.setPlayer(player);
+							break;
+						case 2:
+							player2 = new Player(j, i, 2);
+							testfield.setPlayer(player2);
+							break;
+						}
+					}
+					iPlayercounter++;
+				}
+			}
+		}
 		explosionList = new ArrayList<long[]>();
 		time = Calendar.getInstance().getTimeInMillis();
 		bombList = new ArrayList<Bomb>();
 		gameSpeed = 100;
 		gameState = GameStates.INITIALIZED;
-		testfield = field;
-		if (restart)
-			gameState = GameStates.STARTED;
+		gui.insertField(testfield);
+		gui.repaint();
+		gameState = GameStates.STARTED;
 	}
 
 	/**
@@ -105,20 +154,34 @@ public class Game implements Runnable {
 				// System.out.println("Game started");
 				break;
 			case TWOPLAYER:
-				testfield.setPlayer(player2);
-				start();
+				iNewPlayerCount = 2;
+				gameState = GameStates.STARTED;
+				break;
+			case ONEPLAYER:
+				iNewPlayerCount = 1;
+				gameState = GameStates.STARTED;
 				break;
 			case VICTORY:
-				System.out.println("VICTORY");
+				if (iPlayerCount > 1) {
+					gui.showError("Spieler " + iWinningPlayer
+							+ " hat gewonnen!");
+				} else
+					gui.showError("Gewonnen!");
 				doRestart = true;
 				break;
 			case GAMEOVER:
-				System.out.println("GAMEOVER");
+				if (iPlayerCount > 1) {
+					gui.showError("Spieler " + iDefeatedPlayer
+							+ " hat verloren!");
+				} else
+					gui.showError("GAMEOVER");
 				doRestart = true;
 				break;
 			case INITIALIZED:
 				// System.out.println("INITIALIZED");
 				start();
+				break;
+			case STOP:
 				break;
 			default:
 				System.out.println("default");
@@ -126,8 +189,7 @@ public class Game implements Runnable {
 			}
 		}
 		if (doRestart) {
-			restart(Game.createNewField(), new Player(1, 1),
-					new Player(13, 13), true);
+			restart(Game.createNewField());
 			run();
 		}
 	}
@@ -165,9 +227,50 @@ public class Game implements Runnable {
 		testGenerator.setRandomChance(50);
 		testGenerator.setModus(0);
 		testfield.insertMap(testGenerator.createSquareMap(15));
-		Player player = new Player(1, 1);
-		testfield.setPlayer(player);
-		Player player2 = new Player(13, 13);
+		return testfield;
+	}
+
+	public static Field createNewField(String sMap) {
+		int iMaxPlayersLoaded = 0;
+		FieldGenerator testGenerator = new FieldGenerator();
+		Field testfield = new Field();
+		Field fileTester = new Field();
+		fileTester.insertMap(testGenerator.readMap(sMap));
+		if (fileTester.getMap() != null) {
+			for (int i = 0; i < fileTester.getMap().length; i++) {
+				for (int j = 0; j < fileTester.getMap()[0].length; j++) {
+					if (fileTester.getMap()[i][j].getContent() == 5) {
+						iMaxPlayersLoaded++;
+					}
+				}
+			}
+			if (iMaxPlayersLoaded > 0) {
+				testfield.insertMap(testGenerator.readMap(sMap));
+				iMaxPlayers = iMaxPlayersLoaded;
+			} else {
+				gui.showError("Die Map ist unspielbar, da kein Spieler vorhanden ist");
+				return null;
+			}
+		} else {
+			gui.showError("Die Map enthaelt ungueltige Zeichen! Vorgang wird abgebrochen.");
+			return null;
+		}
+
+		if (iPlayerCount > iMaxPlayers) {
+			gui.showError("Diese Map ist nicht mit so vielen Spielern spielbar");
+			gameState = GameStates.STOP;
+			return null;
+		}
+		return fileTester;
+	}
+
+	public static Field createNewField(int iSize) {
+		FieldGenerator testGenerator = new FieldGenerator();
+		Field testfield = new Field();
+		testGenerator.setRandomAmount(5);
+		testGenerator.setRandomChance(50);
+		testGenerator.setModus(0);
+		testfield.insertMap(testGenerator.createSquareMap(iSize));
 		return testfield;
 	}
 
@@ -191,6 +294,10 @@ public class Game implements Runnable {
 					if (testfield.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0] - j).getPlayer() != null) {
 						gameState = GameStates.GAMEOVER;
+						testfield
+								.getField(bombList.get(i).getPosition()[1],
+										bombList.get(i).getPosition()[0] - j)
+								.getPlayer().getID();
 					}
 					if (testfield.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0] - j).getBomb() != null) {
@@ -240,6 +347,10 @@ public class Game implements Runnable {
 					if (testfield.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0] + j).getPlayer() != null) {
 						gameState = GameStates.GAMEOVER;
+						testfield
+								.getField(bombList.get(i).getPosition()[1],
+										bombList.get(i).getPosition()[0] + j)
+								.getPlayer().getID();
 					}
 					if (testfield.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0] + j).getBomb() != null) {
@@ -290,6 +401,10 @@ public class Game implements Runnable {
 							bombList.get(i).getPosition()[1] - j,
 							bombList.get(i).getPosition()[0]).getPlayer() != null) {
 						gameState = GameStates.GAMEOVER;
+						testfield
+								.getField(bombList.get(i).getPosition()[1] - j,
+										bombList.get(i).getPosition()[0])
+								.getPlayer().getID();
 					}
 					if (testfield.getField(
 							bombList.get(i).getPosition()[1] - j,
@@ -340,6 +455,10 @@ public class Game implements Runnable {
 							bombList.get(i).getPosition()[1] + j,
 							bombList.get(i).getPosition()[0]).getPlayer() != null) {
 						gameState = GameStates.GAMEOVER;
+						iDefeatedPlayer = testfield
+								.getField(bombList.get(i).getPosition()[1] + j,
+										bombList.get(i).getPosition()[0])
+								.getPlayer().getID();
 					}
 					if (testfield.getField(
 							bombList.get(i).getPosition()[1] + j,
@@ -410,155 +529,262 @@ public class Game implements Runnable {
 	 * Space gedrueckt, so wird eine Bombe gelegt.
 	 */
 	private void handleMovement() {
-		switch (key) {
-		case 'w':
-			switch (testfield.getField(player.getPosition()[1],
-					player.getPosition()[0] - 1).getContent()) {
-			case 1:
-				if (testfield.getField(player.getPosition()[1],
-						player.getPosition()[0] - 1).getBomb() != null) {
+		if (iPlayerCount == 1) {
+			switch (key) {
+			case 'w':
+				switch (testfield.getField(player.getPosition()[1],
+						player.getPosition()[0] - 1).getContent()) {
+				case 1:
+					if (testfield.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).getBomb() != null) {
+						break;
+					}
+					if (testfield.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).isExit() == true) {
+						gameState = GameStates.VICTORY;
+					}
+					testfield.removePlayer(player);
+					player.moveUp();
+					testfield.setPlayer(player);
 					break;
 				}
-				if (testfield.getField(player.getPosition()[1],
-						player.getPosition()[0] - 1).isExit() == true) {
+				break;
+			case 'a':
+				switch (testfield.getField(player.getPosition()[1] - 1,
+						player.getPosition()[0]).getContent()) {
+				case 1:
+					if (testfield.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).getBomb() != null) {
+						break;
+					}
+					if (testfield.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).isExit() == true) {
+						gameState = GameStates.VICTORY;
+					}
+					testfield.removePlayer(player);
+					player.moveLeft();
+					testfield.setPlayer(player);
+					break;
+				}
+				break;
+			case 's':
+				switch (testfield.getField(player.getPosition()[1],
+						player.getPosition()[0] + 1).getContent()) {
+				case 1:
+					if (testfield.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).getBomb() != null) {
+						break;
+					}
+					if (testfield.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).isExit() == true) {
+						gameState = GameStates.VICTORY;
+					}
+					testfield.removePlayer(player);
+					player.moveDown();
+					testfield.setPlayer(player);
+					break;
+				}
+				break;
+			case 'd':
+				switch (testfield.getField(player.getPosition()[1] + 1,
+						player.getPosition()[0]).getContent()) {
+				case 1:
+					if (testfield.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).getBomb() != null) {
+						break;
+					}
+					if (testfield.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).isExit() == true) {
+						gameState = GameStates.VICTORY;
+					}
+					testfield.removePlayer(player);
+					player.moveRight();
+					testfield.setPlayer(player);
+					break;
+				}
+				break;
+			case KeyEvent.VK_SPACE:
+				bombList.add(new Bomb(player.getPosition()[0], player
+						.getPosition()[1], time));
+				testfield.setBomb(bombList.get(bombList.size() - 1));
+				break;
+			}
+			key = 0;
+		} else {
+			switch (key) {
+			case 'w':
+				switch (testfield.getField(player.getPosition()[1],
+						player.getPosition()[0] - 1).getContent()) {
+				case 1:
+					if (testfield.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).getBomb() != null) {
+						break;
+					}
+					if (testfield.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).isExit() == true) {
+						iWinningPlayer = 1;
+						gameState = GameStates.VICTORY;
+					}
+					testfield.removePlayer(player);
+					player.moveUp();
+					testfield.setPlayer(player);
+					break;
+				}
+				break;
+			case 'a':
+				switch (testfield.getField(player.getPosition()[1] - 1,
+						player.getPosition()[0]).getContent()) {
+				case 1:
+					if (testfield.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).getBomb() != null) {
+						break;
+					}
+					if (testfield.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).isExit() == true) {
+						iWinningPlayer = 1;
+						gameState = GameStates.VICTORY;
+					}
+					testfield.removePlayer(player);
+					player.moveLeft();
+					testfield.setPlayer(player);
+					break;
+				}
+				break;
+			case 's':
+				switch (testfield.getField(player.getPosition()[1],
+						player.getPosition()[0] + 1).getContent()) {
+				case 1:
+					if (testfield.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).getBomb() != null) {
+						break;
+					}
+					if (testfield.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).isExit() == true) {
+						iWinningPlayer = 1;
+						gameState = GameStates.VICTORY;
+					}
+					testfield.removePlayer(player);
+					player.moveDown();
+					testfield.setPlayer(player);
+					break;
+				}
+				break;
+			case 'd':
+				switch (testfield.getField(player.getPosition()[1] + 1,
+						player.getPosition()[0]).getContent()) {
+				case 1:
+					if (testfield.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).getBomb() != null) {
+						break;
+					}
+					if (testfield.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).isExit() == true) {
+						iWinningPlayer = 1;
+						gameState = GameStates.VICTORY;
+					}
+					testfield.removePlayer(player);
+					player.moveRight();
+					testfield.setPlayer(player);
+					break;
+				}
+				break;
+			case KeyEvent.VK_SPACE:
+				bombList.add(new Bomb(player.getPosition()[0], player
+						.getPosition()[1], time));
+				testfield.setBomb(bombList.get(bombList.size() - 1));
+				break;
+			case 'i':
+				switch (testfield.getField(player2.getPosition()[1],
+						player2.getPosition()[0] - 1).getContent()) {
+				case 1:
+					if (testfield.getField(player2.getPosition()[1],
+							player2.getPosition()[0] - 1).getBomb() != null) {
+						break;
+					}
+					if (testfield.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).isExit() == true) {
+						iWinningPlayer = 2;
+						gameState = GameStates.VICTORY;
+					}
+					testfield.removePlayer(player2);
+					player2.moveUp();
+					testfield.setPlayer(player2);
+					break;
+				case 3:
 					gameState = GameStates.VICTORY;
 				}
-				testfield.removePlayer(player);
-				player.moveUp();
-				testfield.setPlayer(player);
 				break;
-			}
-			break;
-		case 'a':
-			switch (testfield.getField(player.getPosition()[1] - 1,
-					player.getPosition()[0]).getContent()) {
-			case 1:
-				if (testfield.getField(player.getPosition()[1] - 1,
-						player.getPosition()[0]).getBomb() != null) {
+			case 'j':
+				switch (testfield.getField(player2.getPosition()[1] - 1,
+						player2.getPosition()[0]).getContent()) {
+				case 1:
+					if (testfield.getField(player2.getPosition()[1] - 1,
+							player2.getPosition()[0]).getBomb() != null) {
+						break;
+					}
+					if (testfield.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).isExit() == true) {
+						iWinningPlayer = 2;
+						gameState = GameStates.VICTORY;
+					}
+					testfield.removePlayer(player2);
+					player2.moveLeft();
+					testfield.setPlayer(player2);
 					break;
-				}
-				if (testfield.getField(player.getPosition()[1] - 1,
-						player.getPosition()[0]).isExit() == true) {
+				case 3:
 					gameState = GameStates.VICTORY;
 				}
-				testfield.removePlayer(player);
-				player.moveLeft();
-				testfield.setPlayer(player);
 				break;
-			}
-			break;
-		case 's':
-			switch (testfield.getField(player.getPosition()[1],
-					player.getPosition()[0] + 1).getContent()) {
-			case 1:
-				if (testfield.getField(player.getPosition()[1],
-						player.getPosition()[0] + 1).getBomb() != null) {
+			case 'k':
+				switch (testfield.getField(player2.getPosition()[1],
+						player2.getPosition()[0] + 1).getContent()) {
+				case 1:
+					if (testfield.getField(player2.getPosition()[1],
+							player2.getPosition()[0] + 1).getBomb() != null) {
+						break;
+					}
+					if (testfield.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).isExit() == true) {
+						iWinningPlayer = 2;
+						gameState = GameStates.VICTORY;
+					}
+					testfield.removePlayer(player2);
+					player2.moveDown();
+					testfield.setPlayer(player2);
 					break;
-				}
-				if (testfield.getField(player.getPosition()[1],
-						player.getPosition()[0] + 1).isExit() == true) {
+				case 3:
 					gameState = GameStates.VICTORY;
 				}
-				testfield.removePlayer(player);
-				player.moveDown();
-				testfield.setPlayer(player);
 				break;
-			}
-			break;
-		case 'd':
-			switch (testfield.getField(player.getPosition()[1] + 1,
-					player.getPosition()[0]).getContent()) {
-			case 1:
-				if (testfield.getField(player.getPosition()[1] + 1,
-						player.getPosition()[0]).getBomb() != null) {
+			case 'l':
+				switch (testfield.getField(player2.getPosition()[1] + 1,
+						player2.getPosition()[0]).getContent()) {
+				case 1:
+					if (testfield.getField(player2.getPosition()[1] + 1,
+							player2.getPosition()[0]).getBomb() != null) {
+						break;
+					}
+					if (testfield.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).isExit() == true) {
+						iWinningPlayer = 2;
+						gameState = GameStates.VICTORY;
+					}
+					testfield.removePlayer(player2);
+					player2.moveRight();
+					testfield.setPlayer(player2);
 					break;
-				}
-				if (testfield.getField(player.getPosition()[1] + 1,
-						player.getPosition()[0]).isExit() == true) {
+				case 3:
 					gameState = GameStates.VICTORY;
 				}
-				testfield.removePlayer(player);
-				player.moveRight();
-				testfield.setPlayer(player);
+				break;
+			case KeyEvent.VK_ENTER:
+				bombList.add(new Bomb(player2.getPosition()[0], player2
+						.getPosition()[1], time));
+				testfield.setBomb(bombList.get(bombList.size() - 1));
 				break;
 			}
-			break;
-		case KeyEvent.VK_SPACE:
-			bombList.add(new Bomb(player.getPosition()[0],
-					player.getPosition()[1], time));
-			testfield.setBomb(bombList.get(bombList.size() - 1));
-			break;
-		case 'i':
-			switch (testfield.getField(player2.getPosition()[1],
-					player2.getPosition()[0] - 1).getContent()) {
-			case 1:
-				if (testfield.getField(player2.getPosition()[1],
-						player2.getPosition()[0] - 1).getBomb() != null) {
-					break;
-				}
-				testfield.removePlayer(player2);
-				player2.moveUp();
-				testfield.setPlayer(player2);
-				break;
-			case 3:
-				gameState = GameStates.VICTORY;
-			}
-			break;
-		case 'j':
-			switch (testfield.getField(player2.getPosition()[1] - 1,
-					player2.getPosition()[0]).getContent()) {
-			case 1:
-				if (testfield.getField(player2.getPosition()[1] - 1,
-						player2.getPosition()[0]).getBomb() != null) {
-					break;
-				}
-				testfield.removePlayer(player2);
-				player2.moveLeft();
-				testfield.setPlayer(player2);
-				break;
-			case 3:
-				gameState = GameStates.VICTORY;
-			}
-			break;
-		case 'k':
-			switch (testfield.getField(player2.getPosition()[1],
-					player2.getPosition()[0] + 1).getContent()) {
-			case 1:
-				if (testfield.getField(player2.getPosition()[1],
-						player2.getPosition()[0] + 1).getBomb() != null) {
-					break;
-				}
-				testfield.removePlayer(player2);
-				player2.moveDown();
-				testfield.setPlayer(player2);
-				break;
-			case 3:
-				gameState = GameStates.VICTORY;
-			}
-			break;
-		case 'l':
-			switch (testfield.getField(player2.getPosition()[1] + 1,
-					player2.getPosition()[0]).getContent()) {
-			case 1:
-				if (testfield.getField(player2.getPosition()[1] + 1,
-						player2.getPosition()[0]).getBomb() != null) {
-					break;
-				}
-				testfield.removePlayer(player2);
-				player2.moveRight();
-				testfield.setPlayer(player2);
-				break;
-			case 3:
-				gameState = GameStates.VICTORY;
-			}
-			break;
-		case KeyEvent.VK_ENTER:
-			bombList.add(new Bomb(player2.getPosition()[0], player2
-					.getPosition()[1], time));
-			testfield.setBomb(bombList.get(bombList.size() - 1));
-			break;
+			key = 0;
 		}
-		key = 0;
 	}
 
 	/**
@@ -566,8 +792,8 @@ public class Game implements Runnable {
 	 */
 	public static void main(String args[]) {
 		Field field = createNewField();
-		Game game = new Game(field, new Player(1, 1), new Player(13, 13));
-		GUI gui = new GUI(field, game);
+		Game game = new Game(field);
+		GUI gui = new GUI(game);
 		gui.setVisible(true);
 		game.insertGUI(gui);
 		Thread gameThread = new Thread(game);

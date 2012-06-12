@@ -19,6 +19,7 @@ public class FieldGenerator {
 	private FieldContent Map[][];
 	private float fRandomChance;
 	private int iModus, iRandomAmount;
+	private boolean bCreateExit;
 
 	public FieldGenerator() {
 
@@ -32,6 +33,7 @@ public class FieldGenerator {
 		iModus = 0;
 		fRandomChance = 0;
 		iRandomAmount = 0;
+		bCreateExit = true;
 	}
 
 	/**
@@ -64,16 +66,22 @@ public class FieldGenerator {
 					Map[i][j].setContent(WALL);
 				}
 
-				else if ((i >= 3 && i <= iWidth - 3)
-						|| (j >= 3 && j <= iHeight)) {
+				else if ((i >= 3 && i <= iWidth) || (j >= 3 && j <= iHeight)) {
 					if (Math.random() <= 0.75)
 						Map[i][j].setContent(STONE);
 
 				}
 			}
 		}
+
 		setWalls();
-		createRandomExit();
+		if (bCreateExit) {
+			createRandomExit();
+		}
+		Map[1][1].setContent(PLAYER);
+		Map[iWidth - 2][iHeight - 2].setContent(PLAYER);
+		Map[iWidth - 3][iHeight - 2].setContent(FREE);
+		Map[iWidth - 2][iHeight - 3].setContent(FREE);
 		return Map;
 	}
 
@@ -127,6 +135,10 @@ public class FieldGenerator {
 		}
 	}
 
+	public void setExit(boolean bSetExit) {
+		bCreateExit = bSetExit;
+	}
+
 	/**
 	 * Liest Map aus Datei aus und gibt sie als FieldContent[][] zurueck.
 	 * Erkennt automatisch ob die Map komprimiert oder unkomprimiert vorliegt.
@@ -147,19 +159,15 @@ public class FieldGenerator {
 			return null;
 		}
 		reader = new BufferedReader(inputFile);
+
 		try {
-			reader.mark(1);
-			if (reader.read() == 99) {
-				return readCompressedMap(reader);
-			} else {
-				reader.reset();
-			}
 			while (reader.ready()) {
 				mapList.add(reader.readLine());
 			}
 		} catch (IOException e) {
 			return null;
 		}
+
 		try {
 			reader.close();
 			inputFile.close();
@@ -173,11 +181,11 @@ public class FieldGenerator {
 				iCounter = mapList.get(i).length();
 			}
 		}
-		Map = new FieldContent[mapList.size()][iCounter];
+		Map = new FieldContent[iCounter][mapList.size()];
 		for (int i = 0; i < mapList.size(); i++) {
 			for (int j = 0; j < iCounter; j++) {
-				Map[i][j] = new FieldContent();
-				Map[i][j].setContent(EMPTY);
+				Map[j][i] = new FieldContent();
+				Map[j][i].setContent(EMPTY);
 			}
 		}
 		iCounter = 0;
@@ -185,20 +193,25 @@ public class FieldGenerator {
 			for (int i = 0; i < mapList.get(0).length(); i++) {
 				switch (mapList.get(0).charAt(i)) {
 				case 32: // ' '
-					Map[iCounter][i].setContent(EMPTY);
+					Map[i][iCounter].setContent(EMPTY);
 					break;
 				case 35: // '#'
-					Map[iCounter][i].setContent(WALL);
+					Map[i][iCounter].setContent(WALL);
 					break;
 				case 46: // '.'
-					Map[iCounter][i].setContent(FREE);
+					Map[i][iCounter].setContent(FREE);
 					break;
 				case 69: // 'E'
-					Map[iCounter][i].setContent(EXIT);
+					Map[i][iCounter].setContent(EXIT);
+					break;
+				case 80: // 'P'
+					Map[i][iCounter].setContent(PLAYER);
+					break;
+				case 37: // '%'
+					Map[i][iCounter].setContent(STONE);
 					break;
 				default:
-					Map[iCounter][i].setContent(EMPTY);
-					break;
+					return null;
 				}
 			}
 			iCounter++;
@@ -306,7 +319,6 @@ public class FieldGenerator {
 							break;
 						case 69: // 'E'
 							iInsert = EXIT;
-
 							break;
 						default:
 							iInsert = EMPTY;
@@ -374,8 +386,7 @@ public class FieldGenerator {
 		int iCount = 0;
 		for (int i = 0; i < Map.length; i++) {
 			for (int j = 0; j < Map[0].length; j++) {
-				if ((Map[i][j].getContent() == FREE)
-						|| (Map[i][j].getContent() == STONE)) {
+				if (Map[i][j].getContent() == STONE) {
 					iCount++;
 				}
 			}
@@ -390,8 +401,7 @@ public class FieldGenerator {
 		int iRand = (int) (Math.random() * iCountFreeSpace());
 		for (int i = 0; i < Map.length; i++) {
 			for (int j = 0; j < Map[0].length; j++) {
-				if ((Map[i][j].getContent() == FREE)
-						|| (Map[i][j].getContent() == STONE)) {
+				if (Map[i][j].getContent() == STONE) {
 					iRand--;
 					if (iRand == 0) {
 						Map[i][j].setExit();

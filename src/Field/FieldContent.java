@@ -12,8 +12,8 @@ import Objects.Player;
 public class FieldContent {
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE;
 	private int iContent;
-	private Bomb Bomb;
-	private Player Player;
+	private Bomb bomb;
+	private Player player;
 	private boolean bExit = false;
 
 	public FieldContent()
@@ -27,8 +27,8 @@ public class FieldContent {
 		PLAYER = 5;
 		STONE = 6;
 		iContent = EMPTY;
-		Bomb = null;
-		Player = null;
+		bomb = null;
+		player = null;
 	}
 
 	/**
@@ -39,8 +39,8 @@ public class FieldContent {
 	 */
 	public void setContent(int iNewContent) {
 		iContent = iNewContent;
-		Bomb = null;
-		Player = null;
+		bomb = null;
+		player = null;
 		// setzt den Inhalt auf den gewuenschten Wert und loescht etwaige
 		// Spieler- oder Bombenreferenzen.
 	}
@@ -56,7 +56,7 @@ public class FieldContent {
 	 *            Einzufuegende Bombe
 	 */
 	public void insertBomb(Bomb bBomb) {
-		Bomb = bBomb;
+		bomb = bBomb;
 		// fuegt Bombe hinzu
 	}
 
@@ -67,7 +67,7 @@ public class FieldContent {
 	 *            Einzufuegender Spieler
 	 */
 	public void insertPlayer(Player pPlayer) {
-		Player = pPlayer;
+		player = pPlayer;
 		// fuegt Spieler hinzu und loescht Referenz auf Bomben
 	}
 
@@ -75,14 +75,14 @@ public class FieldContent {
 	 * Entfernt Bombe aus Feld
 	 */
 	public void removeBomb() {
-		Bomb = null;
+		bomb = null;
 	}
 
 	/**
 	 * Entfernt Spieler aus Feld
 	 */
 	public void removePlayer() {
-		Player = null;
+		player = null;
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class FieldContent {
 	 * @return Gibt Bombe zurueck, falls vorhanden. Gibt sonst null zurueck;
 	 */
 	public Bomb getBomb() {
-		return Bomb;
+		return bomb;
 		// gibt Referenz auf Bombe zurueck falls vorhanden, gibt sonst null
 		// zurueck
 	}
@@ -116,7 +116,7 @@ public class FieldContent {
 	 * @return Gibt Spieler zurueck, falls vorhanden. Gibt sonst null zurueck;
 	 */
 	public Player getPlayer() {
-		return Player;
+		return player;
 		// gibt Referenz auf Spieler zurueck falls vorhanden, gibt sonst null
 		// zurueck
 	}

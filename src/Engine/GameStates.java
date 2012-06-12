@@ -6,5 +6,5 @@ package Engine;
  * @author pallepilla Alle GameStates werden hier als enum-Variablen defeniert
  */
 public enum GameStates {
-	INITIALIZED, STARTED, PAUSED, VICTORY, GAMEOVER, TWOPLAYER
+	INITIALIZED, STARTED, PAUSED, VICTORY, GAMEOVER, TWOPLAYER, STOP, ONEPLAYER
 }
