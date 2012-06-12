@@ -150,14 +150,6 @@ public class Game implements Runnable {
 				start();
 				// System.out.println("Game started");
 				break;
-			case TWOPLAYER:
-				iNewPlayerCount = 2;
-				gameState = GameStates.STARTED;
-				break;
-			case ONEPLAYER:
-				iNewPlayerCount = 1;
-				gameState = GameStates.STARTED;
-				break;
 			case VICTORY:
 				if (iPlayerCount > 1) {
 					gui.showError("Spieler " + iWinningPlayer
@@ -196,6 +188,10 @@ public class Game implements Runnable {
 	 */
 	public void pauseGame() {
 		gameState = GameStates.PAUSED;
+	}
+
+	public void setPlayerCount(int iCount) {
+		iNewPlayerCount = iCount;
 	}
 
 	/**

@@ -19,7 +19,6 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.filechooser.FileFilter;
 
 import Engine.Game;
-import Engine.GameStates;
 import Field.Field;
 import Field.FieldGenerator;
 import Options.OptionFrame;
@@ -100,7 +99,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		this.setJMenuBar(menubar);
 		this.add(panel);
 		this.addKeyListener(this);
-
+		singleplayer.setSelected(true);
 		/*
 		 * AbstractAction optionAction = new AbstractAction("GameOptions") {
 		 * 
@@ -146,22 +145,22 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 					(gameField.getMap()[0].length + 1) * 32 + 18);
 		}
 		if (object.getSource() == openItem) {
-			System.out.println("öffnen wurde angeklickt");
-			open();
-			this.setSize((gameField.getMap().length) * 32 + 5,
-					(gameField.getMap()[0].length + 1) * 32 + 18);
+			if (open()) {
+				this.setSize((gameField.getMap().length) * 32 + 5,
+						(gameField.getMap()[0].length + 1) * 32 + 18);
+			}
 		}
 		if (object.getSource() == quitItem) {
 			System.exit(0);
 		}
 		if (object.getSource() == multiplayer) {
 			mainGame.key = 0;
-			mainGame.gameState = GameStates.TWOPLAYER;
+			mainGame.setPlayerCount(2);
 			singleplayer.setSelected(false);
 		}
 		if (object.getSource() == singleplayer) {
 			mainGame.key = 0;
-			mainGame.gameState = GameStates.ONEPLAYER;
+			mainGame.setPlayerCount(1);
 			multiplayer.setSelected(false);
 		}
 		if (object.getSource() == optionItem) {
@@ -197,7 +196,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		mainGame.key = e.getKeyChar();
 	}
 
-	public void open() {
+	public boolean open() {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileFilter(new FileFilter() {
 			@Override
@@ -219,6 +218,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 			mainGame.restart(Game.createNewField(file.getAbsolutePath()));
 		} else {
 			showError("Nichts ausgewählt");
+			return false;
 		}
+		return true;
 	}
 }
