@@ -39,10 +39,10 @@ public class Game implements Runnable {
 	private Field testfield;
 
 	/**
-	 * Game Konstruktor
+	 * Erzeugt ein neues Spielfeld mit 1-2 Spielern
 	 * 
-	 * @param: field Erzeugtes Spielfeld
-	 * @param: player Einzufuegender Spieler
+	 * @param field
+	 *            Das zu erzeugende Spielfeld wird hier uebergeben
 	 */
 	public Game(Field field) {
 		testfield = field;
@@ -76,7 +76,7 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * Gibt ein neues Field
+	 * Gibt ein Field zurueck
 	 * 
 	 */
 	public Field getField() {
@@ -84,20 +84,17 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * Fuegt neues GUI ein
+	 * Fuegt neue GUI ein
 	 */
 	public void insertGUI(GUI gui) {
 		this.gui = gui;
 	}
 
 	/**
-	 * Macht ein "restart"
+	 * Startet das Spiel neu
 	 * 
 	 * @param field
-	 *            Neues Spielfeld
-	 * @param player
-	 *            Einzufuegender Spieler
-	 * @param restart
+	 *            Gegebenes Spielfeld
 	 */
 	public void restart(Field field) {
 		if (field == null) {
@@ -195,7 +192,7 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * Macht gameState PAUSED
+	 * Pausiert das Spiel
 	 */
 	public void pauseGame() {
 		gameState = GameStates.PAUSED;
@@ -218,7 +215,7 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * Erzeugt ein neues Feld
+	 * Erzeugt ein neues Feld mit zufaelligen Waenden und Mauern
 	 */
 	public static Field createNewField() {
 		FieldGenerator testGenerator = new FieldGenerator();
@@ -774,8 +771,8 @@ public class Game implements Runnable {
 							player2.getPosition()[0] - 1).getBomb() != null) {
 						break;
 					}
-					if (testfield.getField(player.getPosition()[1],
-							player.getPosition()[0] - 1).isExit() == true) {
+					if (testfield.getField(player2.getPosition()[1],
+							player2.getPosition()[0] - 1).isExit() == true) {
 						iWinningPlayer = 2;
 						gameState = GameStates.VICTORY;
 					}
@@ -783,8 +780,6 @@ public class Game implements Runnable {
 					player2.moveUp();
 					testfield.setPlayer(player2);
 					break;
-				case 3:
-					gameState = GameStates.VICTORY;
 				}
 				break;
 			case 'j':
@@ -795,8 +790,8 @@ public class Game implements Runnable {
 							player2.getPosition()[0]).getBomb() != null) {
 						break;
 					}
-					if (testfield.getField(player.getPosition()[1] - 1,
-							player.getPosition()[0]).isExit() == true) {
+					if (testfield.getField(player2.getPosition()[1] - 1,
+							player2.getPosition()[0]).isExit() == true) {
 						iWinningPlayer = 2;
 						gameState = GameStates.VICTORY;
 					}
@@ -804,8 +799,6 @@ public class Game implements Runnable {
 					player2.moveLeft();
 					testfield.setPlayer(player2);
 					break;
-				case 3:
-					gameState = GameStates.VICTORY;
 				}
 				break;
 			case 'k':
@@ -816,8 +809,8 @@ public class Game implements Runnable {
 							player2.getPosition()[0] + 1).getBomb() != null) {
 						break;
 					}
-					if (testfield.getField(player.getPosition()[1],
-							player.getPosition()[0] + 1).isExit() == true) {
+					if (testfield.getField(player2.getPosition()[1],
+							player2.getPosition()[0] + 1).isExit() == true) {
 						iWinningPlayer = 2;
 						gameState = GameStates.VICTORY;
 					}
@@ -825,8 +818,6 @@ public class Game implements Runnable {
 					player2.moveDown();
 					testfield.setPlayer(player2);
 					break;
-				case 3:
-					gameState = GameStates.VICTORY;
 				}
 				break;
 			case 'l':
@@ -837,8 +828,8 @@ public class Game implements Runnable {
 							player2.getPosition()[0]).getBomb() != null) {
 						break;
 					}
-					if (testfield.getField(player.getPosition()[1] + 1,
-							player.getPosition()[0]).isExit() == true) {
+					if (testfield.getField(player2.getPosition()[1] + 1,
+							player2.getPosition()[0]).isExit() == true) {
 						iWinningPlayer = 2;
 						gameState = GameStates.VICTORY;
 					}
@@ -846,8 +837,6 @@ public class Game implements Runnable {
 					player2.moveRight();
 					testfield.setPlayer(player2);
 					break;
-				case 3:
-					gameState = GameStates.VICTORY;
 				}
 				break;
 			case KeyEvent.VK_ENTER:
@@ -861,7 +850,7 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * Programm-Eintrittspunkt
+	 * Hauptprogramm Methode, die alles initialisiert(field,gui,gamelogik)
 	 */
 	public static void main(String args[]) {
 		Field field = createNewField();
