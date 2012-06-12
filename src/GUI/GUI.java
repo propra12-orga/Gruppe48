@@ -9,13 +9,13 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.filechooser.FileFilter;
 
 import Engine.Game;
@@ -46,13 +46,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 
 	private JMenuItem startItem;
 	private JMenuItem openItem;
-	private JMenuItem multiplayer;
-	private JMenuItem singleplayer;
+	private JRadioButtonMenuItem multiplayer;
+	private JRadioButtonMenuItem singleplayer;
 	private JMenuItem quitItem;
-	private JMenuBar menuBar;
+	private JMenuBar menubar;
 	private JMenu gameMenu;
 	private FieldGenerator readMap;
 	private Game mainGame;
+	private JMenuItem optionItem;
 
 	public GUI(Game game) {
 
@@ -71,16 +72,17 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		 * 
 		 * Game: Start Game 2 Player Reset Quit
 		 */
-		menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
+		menubar = new JMenuBar();
+		setJMenuBar(menubar);
 		gameMenu = new JMenu("Game");
+		JMenu optionMenu = new JMenu("Options");
 		startItem = new JMenuItem("New Game");
 		startItem.addActionListener(this);
 		openItem = new JMenuItem("Open Map");
 		openItem.addActionListener(this);
-		multiplayer = new JMenuItem("2 Player");
+		multiplayer = new JRadioButtonMenuItem("2 Player");
 		multiplayer.addActionListener(this);
-		singleplayer = new JMenuItem("1 Player");
+		singleplayer = new JRadioButtonMenuItem("1 Player");
 		singleplayer.addActionListener(this);
 		quitItem = new JMenuItem("Quit");
 		quitItem.addActionListener(this);
@@ -89,32 +91,29 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		gameMenu.add(singleplayer);
 		gameMenu.add(multiplayer);
 		gameMenu.add(quitItem);
-		menuBar.add(gameMenu);
-		this.add(menuBar, BorderLayout.NORTH);
-		this.setJMenuBar(menuBar);
+		menubar.add(gameMenu);
+		menubar.add(optionMenu);
+		optionItem = new JMenuItem("GameOptions");
+		optionItem.addActionListener(this);
+		optionMenu.add(optionItem);
+		this.add(menubar, BorderLayout.NORTH);
+		this.setJMenuBar(menubar);
 		this.add(panel);
 		this.addKeyListener(this);
-		JMenu optionMenu = new JMenu("Optionen"); // neues Menü "Optionen" im
-													// MenuBar
 
-		menuBar.add(optionMenu);
-		AbstractAction optionAction = new AbstractAction("Spieloptionen") { // neuer
-																			// Untermenupunkt
-																			// "Spieloptionen"
-
-			/**
-              * 
-              */
-			private static final long serialVersionUID = 1L;
-
-			public void actionPerformed(ActionEvent arg0) {
-
-				new OptionFrame();
-			}
-		};
-
-		optionMenu.add(optionAction);
-
+		/*
+		 * AbstractAction optionAction = new AbstractAction("GameOptions") {
+		 * 
+		 * /**
+		 * 
+		 * 
+		 * private static final long serialVersionUID = 1L;
+		 * 
+		 * @Override public void actionPerformed(ActionEvent arg0) { // TODO
+		 * Auto-generated method stub System.exit(0); } };
+		 * 
+		 * optionMenu.add(optionAction);
+		 */
 	}
 
 	public void insertField(Field field) {
@@ -147,7 +146,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 					(gameField.getMap()[0].length + 1) * 32 + 18);
 		}
 		if (object.getSource() == openItem) {
-			System.out.println("Öffnen wurde angeklickt");
+			System.out.println("öffnen wurde angeklickt");
 			open();
 			this.setSize((gameField.getMap().length) * 32 + 5,
 					(gameField.getMap()[0].length + 1) * 32 + 18);
@@ -158,10 +157,15 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		if (object.getSource() == multiplayer) {
 			mainGame.key = 0;
 			mainGame.gameState = GameStates.TWOPLAYER;
+			singleplayer.setSelected(false);
 		}
 		if (object.getSource() == singleplayer) {
 			mainGame.key = 0;
 			mainGame.gameState = GameStates.ONEPLAYER;
+			multiplayer.setSelected(false);
+		}
+		if (object.getSource() == optionItem) {
+			new OptionFrame();
 		}
 	}
 
