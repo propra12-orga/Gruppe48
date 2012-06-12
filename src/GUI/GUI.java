@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -21,6 +22,7 @@ import Engine.Game;
 import Engine.GameStates;
 import Field.Field;
 import Field.FieldGenerator;
+import Options.OptionFrame;
 
 /**
  * GUI.java
@@ -47,7 +49,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 	private JMenuItem multiplayer;
 	private JMenuItem singleplayer;
 	private JMenuItem quitItem;
-	private JMenuBar menu;
+	private JMenuBar menuBar;
 	private JMenu gameMenu;
 	private FieldGenerator readMap;
 	private Game mainGame;
@@ -69,7 +71,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		 * 
 		 * Game: Start Game 2 Player Reset Quit
 		 */
-		menu = new JMenuBar();
+		menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
 		gameMenu = new JMenu("Game");
 		startItem = new JMenuItem("New Game");
 		startItem.addActionListener(this);
@@ -86,11 +89,32 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		gameMenu.add(singleplayer);
 		gameMenu.add(multiplayer);
 		gameMenu.add(quitItem);
-		menu.add(gameMenu);
-		this.add(menu, BorderLayout.NORTH);
-		this.setJMenuBar(menu);
+		menuBar.add(gameMenu);
+		this.add(menuBar, BorderLayout.NORTH);
+		this.setJMenuBar(menuBar);
 		this.add(panel);
 		this.addKeyListener(this);
+		JMenu optionMenu = new JMenu("Optionen"); // neues Menü "Optionen" im
+													// MenuBar
+
+		menuBar.add(optionMenu);
+		AbstractAction optionAction = new AbstractAction("Spieloptionen") { // neuer
+																			// Untermenupunkt
+																			// "Spieloptionen"
+
+			/**
+              * 
+              */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent arg0) {
+
+				new OptionFrame();
+			}
+		};
+
+		optionMenu.add(optionAction);
+
 	}
 
 	public void insertField(Field field) {

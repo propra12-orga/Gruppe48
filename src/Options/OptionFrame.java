@@ -180,7 +180,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 	 */
 
 	/**
-	 * Setzt das Spiellabel auf die im Slider eingestellte Geschwindigkeit
+	 * Setzt das Spiellabel auf die im Slider eingestellte Größe
 	 */
 	/*
 	 * private void updateMapLabel() { mapLabel.setText(new
