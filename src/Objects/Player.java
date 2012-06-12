@@ -15,11 +15,11 @@ public class Player {
 	 * Konstruktor der Klasse Player
 	 * 
 	 * @param iXPos
-	 *            Gewuenschte X-Koordinate auf die der Spieler gesetzt werden
-	 *            soll
+	 *            Gewuenschte X-Koordinate des Spielers
 	 * @param iYPos
-	 *            Gewuenschte Y-Koordinate auf die der Spieler gesetzt werden
-	 *            soll
+	 *            Gewuenschte Y-Koordinate des Spielers
+	 * @param id
+	 *            ID des Spielers(Mehrspielermodus)
 	 */
 	public Player(int iXPos, int iYPos, int id) {
 		x = iXPos;
@@ -84,6 +84,11 @@ public class Player {
 		y += 1;
 	}
 
+	/**
+	 * Gibt die "Nummer" des Spielers zurueck
+	 * 
+	 * @return ID des Spielers(Multiplayermodus)
+	 */
 	public int getID() {
 		return id;
 	}

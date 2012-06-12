@@ -147,7 +147,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 					(gameField.getMap()[0].length + 1) * 32 + 18);
 		}
 		if (object.getSource() == openItem) {
-			System.out.println("öffnen wurde angeklickt");
+			System.out.println("Öffnen wurde angeklickt");
 			open();
 			this.setSize((gameField.getMap().length) * 32 + 5,
 					(gameField.getMap()[0].length + 1) * 32 + 18);

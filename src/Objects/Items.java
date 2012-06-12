@@ -1,11 +1,5 @@
 package Objects;
 
-/**
- * Items.java
- * 
- * @author Martin Haase
- * 
- */
 public class Items {
 
 	public void flame() {

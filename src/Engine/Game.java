@@ -292,9 +292,69 @@ public class Game implements Runnable {
 						.getPosition()[0];
 				for (int j = 1; j < bombList.get(i).getRadius(); j++) {
 					if (testfield.getField(bombList.get(i).getPosition()[1],
+							bombList.get(i).getPosition()[0]).getPlayer() != null) {
+						gameState = GameStates.GAMEOVER;
+						testfield
+								.getField(bombList.get(i).getPosition()[1],
+										bombList.get(i).getPosition()[0])
+								.getPlayer().getID();
+						iDefeatedPlayer = testfield
+								.getField(bombList.get(i).getPosition()[1],
+										bombList.get(i).getPosition()[0])
+								.getPlayer().getID();
+					}
+					if (testfield.getField(bombList.get(i).getPosition()[1],
+							bombList.get(i).getPosition()[0]).getBomb() != null) {
+						int tmp[] = new int[2];
+						tmp[0] = bombList.get(i).getPosition()[0];
+						tmp[1] = bombList.get(i).getPosition()[1];
+						for (int k = 0; k < bombList.size(); k++) {
+							if ((bombList.get(k).getPosition()[0] == tmp[0])
+									&& (bombList.get(k).getPosition()[1] == tmp[1])) {
+								bombList.get(k).detonate();
+								i = 0;
+							}
+						}
+					}
+					try {
+						if (testfield.getField(
+								bombList.get(i).getPosition()[1],
+								bombList.get(i).getPosition()[0]).getContent() == 1) {
+							exList.add(new int[2]);
+							exList.get(exList.size() - 1)[0] = bombList.get(i)
+									.getPosition()[1];
+							exList.get(exList.size() - 1)[1] = bombList.get(i)
+									.getPosition()[0];
+						} else {
+							if (testfield.getField(
+									bombList.get(i).getPosition()[1],
+									bombList.get(i).getPosition()[0])
+									.getContent() == 6) {
+								exList.add(new int[2]);
+								exList.get(exList.size() - 1)[0] = bombList
+										.get(i).getPosition()[1];
+								exList.get(exList.size() - 1)[1] = bombList
+										.get(i).getPosition()[0];
+								testfield.getField(
+										bombList.get(i).getPosition()[1],
+										bombList.get(i).getPosition()[0])
+										.setContent(1);
+							}
+							break;
+						}
+					} catch (Exception e) {
+						// System.out.println(e);
+					}
+				}
+				for (int j = 1; j < bombList.get(i).getRadius(); j++) {
+					if (testfield.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0] - j).getPlayer() != null) {
 						gameState = GameStates.GAMEOVER;
 						testfield
+								.getField(bombList.get(i).getPosition()[1],
+										bombList.get(i).getPosition()[0] - j)
+								.getPlayer().getID();
+						iDefeatedPlayer = testfield
 								.getField(bombList.get(i).getPosition()[1],
 										bombList.get(i).getPosition()[0] - j)
 								.getPlayer().getID();
@@ -348,6 +408,10 @@ public class Game implements Runnable {
 							bombList.get(i).getPosition()[0] + j).getPlayer() != null) {
 						gameState = GameStates.GAMEOVER;
 						testfield
+								.getField(bombList.get(i).getPosition()[1],
+										bombList.get(i).getPosition()[0] + j)
+								.getPlayer().getID();
+						iDefeatedPlayer = testfield
 								.getField(bombList.get(i).getPosition()[1],
 										bombList.get(i).getPosition()[0] + j)
 								.getPlayer().getID();
@@ -405,6 +469,10 @@ public class Game implements Runnable {
 								.getField(bombList.get(i).getPosition()[1] - j,
 										bombList.get(i).getPosition()[0])
 								.getPlayer().getID();
+						iDefeatedPlayer = testfield
+								.getField(bombList.get(i).getPosition()[1] - j,
+										bombList.get(i).getPosition()[0])
+								.getPlayer().getID();
 					}
 					if (testfield.getField(
 							bombList.get(i).getPosition()[1] - j,
@@ -455,6 +523,10 @@ public class Game implements Runnable {
 							bombList.get(i).getPosition()[1] + j,
 							bombList.get(i).getPosition()[0]).getPlayer() != null) {
 						gameState = GameStates.GAMEOVER;
+						testfield
+								.getField(bombList.get(i).getPosition()[1] + j,
+										bombList.get(i).getPosition()[0])
+								.getPlayer().getID();
 						iDefeatedPlayer = testfield
 								.getField(bombList.get(i).getPosition()[1] + j,
 										bombList.get(i).getPosition()[0])
@@ -526,7 +598,8 @@ public class Game implements Runnable {
 	/**
 	 * Fragt gedrueckte Tasten ab und bewegt den Spieler entsprechend, wenn das
 	 * neue Feld begehbar ist. w = hoch, a = links, s = unten, d = rechts Wird
-	 * Space gedrueckt, so wird eine Bombe gelegt.
+	 * Space gedrueckt, so wird eine Bombe gelegt. Fuer einen zweiten Spieler i
+	 * = hoch, j= links, k = unten, l = rechts, enter = Bombe legen
 	 */
 	private void handleMovement() {
 		if (iPlayerCount == 1) {
