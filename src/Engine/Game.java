@@ -801,6 +801,10 @@ public class Game implements Runnable {
 						break;
 					}
 					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).getPlayer() != null) {
+						break;
+					}
+					if (gameField.getField(player.getPosition()[1],
 							player.getPosition()[0] - 1).isExit() == true) {
 						iWinningPlayer = 1;
 						gameState = GameStates.VICTORY;
@@ -817,6 +821,10 @@ public class Game implements Runnable {
 				case 1:
 					if (gameField.getField(player.getPosition()[1] - 1,
 							player.getPosition()[0]).getBomb() != null) {
+						break;
+					}
+					if (gameField.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).getPlayer() != null) {
 						break;
 					}
 					if (gameField.getField(player.getPosition()[1] - 1,
@@ -839,6 +847,10 @@ public class Game implements Runnable {
 						break;
 					}
 					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).getPlayer() != null) {
+						break;
+					}
+					if (gameField.getField(player.getPosition()[1],
 							player.getPosition()[0] + 1).isExit() == true) {
 						iWinningPlayer = 1;
 						gameState = GameStates.VICTORY;
@@ -855,6 +867,10 @@ public class Game implements Runnable {
 				case 1:
 					if (gameField.getField(player.getPosition()[1] + 1,
 							player.getPosition()[0]).getBomb() != null) {
+						break;
+					}
+					if (gameField.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).getPlayer() != null) {
 						break;
 					}
 					if (gameField.getField(player.getPosition()[1] + 1,
@@ -882,6 +898,10 @@ public class Game implements Runnable {
 						break;
 					}
 					if (gameField.getField(player2.getPosition()[1],
+							player2.getPosition()[0] - 1).getPlayer() != null) {
+						break;
+					}
+					if (gameField.getField(player2.getPosition()[1],
 							player2.getPosition()[0] - 1).isExit() == true) {
 						iWinningPlayer = 2;
 						gameState = GameStates.VICTORY;
@@ -898,6 +918,10 @@ public class Game implements Runnable {
 				case 1:
 					if (gameField.getField(player2.getPosition()[1] - 1,
 							player2.getPosition()[0]).getBomb() != null) {
+						break;
+					}
+					if (gameField.getField(player2.getPosition()[1] - 1,
+							player2.getPosition()[0]).getPlayer() != null) {
 						break;
 					}
 					if (gameField.getField(player2.getPosition()[1] - 1,
@@ -920,6 +944,10 @@ public class Game implements Runnable {
 						break;
 					}
 					if (gameField.getField(player2.getPosition()[1],
+							player2.getPosition()[0] + 1).getPlayer() != null) {
+						break;
+					}
+					if (gameField.getField(player2.getPosition()[1],
 							player2.getPosition()[0] + 1).isExit() == true) {
 						iWinningPlayer = 2;
 						gameState = GameStates.VICTORY;
@@ -936,6 +964,10 @@ public class Game implements Runnable {
 				case 1:
 					if (gameField.getField(player2.getPosition()[1] + 1,
 							player2.getPosition()[0]).getBomb() != null) {
+						break;
+					}
+					if (gameField.getField(player2.getPosition()[1] + 1,
+							player2.getPosition()[0]).getPlayer() != null) {
 						break;
 					}
 					if (gameField.getField(player2.getPosition()[1] + 1,
