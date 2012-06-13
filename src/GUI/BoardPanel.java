@@ -13,7 +13,7 @@ import Field.Field;
 
 /**
  * BoardPanel.java Diese Klasse erzeugt ein Panel im Frame der GUI. Auf diesem
- * Panel wird die Karte gezeichnet, die Explosion hinzugefügt und gelöscht
+ * Panel wird die Karte gezeichnet, die Explosion hinzugefuegt und geloescht
  * 
  * @author Carsten Stegmann
  * 
@@ -34,17 +34,14 @@ public class BoardPanel extends JPanel {
 	List<ArrayList> iBoomList;
 
 	/**
-	 * erzeugt Inhalt des Panels
+	 * Liest Bilddateien der anzuzeigenden Objekte ein und initialisiert interne
+	 * Listen
 	 * 
-	 * @param field
-	 *            Spielfeld ueber das das Panel erzeugt werden soll
 	 */
 
 	public BoardPanel() {
 		iBoomList = new ArrayList<ArrayList>();
 		iIntList = new ArrayList<int[]>();
-		// boardField = field;
-
 		try {
 			imgExit = ImageIO.read(ImageIO.class
 					.getResource("/images/exit.png"));
@@ -68,7 +65,7 @@ public class BoardPanel extends JPanel {
 	}
 
 	/**
-	 * fügt die Explosion dem Array zu
+	 * fuegt die Explosion dem Array zu
 	 * 
 	 * @param list
 	 *            Liste der Felder mit Explosionen
@@ -79,9 +76,6 @@ public class BoardPanel extends JPanel {
 
 	/**
 	 * entfernt Explosion aus dem Array
-	 * 
-	 * @param iBoomList
-	 *            das Array der Explosionsfelder :
 	 */
 	public void removeExplosions() {
 		if (iBoomList.size() > 0) {
@@ -89,6 +83,12 @@ public class BoardPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Fuegt neues Spielfeld in Panel zum anzeigen ein
+	 * 
+	 * @param field
+	 *            Einzufuegendes Spielfeld
+	 */
 	public void insertField(Field field) {
 		boardField = field;
 	}
@@ -139,12 +139,12 @@ public class BoardPanel extends JPanel {
 							break;
 						case 2:
 							g.drawImage(imgWall, i * 32, j * 32, 32, 32, null); // Zeichnet
-																				// unzerstörbare
+																				// unzerstoerbare
 																				// Wand
 							break;
 						case 6:
 							g.drawImage(imgStone, i * 32, j * 32, 32, 32, null); // Zeichnet
-																					// zerstörbaren
+																					// zerstoerbaren
 																					// Stein
 							break;
 						}

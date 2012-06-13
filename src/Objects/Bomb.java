@@ -7,6 +7,9 @@ package Objects;
  * 
  */
 public class Bomb {
+	/**
+	 * Ist true, falls Bombe explodiert, ist sonst false
+	 */
 	public boolean isExploded = false;
 	long delay = 3 * 1000;
 	long explosionTime;

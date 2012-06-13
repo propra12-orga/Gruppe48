@@ -21,8 +21,16 @@ public class Game implements Runnable {
 
 	private Field gameField;
 	private static Field cacheField;
+	/**
+	 * Enthaelt aktuellen Zustand des Spiels STARTED = Spiel laeuft STOP = Spiel
+	 * ist angehalten VICTORY = Ein Spieler hat gewonnen GAMEOVER = Ein Spieler
+	 * hat verloren
+	 */
 	public static GameStates gameState;
 	private static GUI gui;
+	/**
+	 * Zuletzt gedrueckte Taste
+	 */
 	public char key;
 	long gameSpeed;
 	Player player;
@@ -50,6 +58,9 @@ public class Game implements Runnable {
 		gameField = field;
 		int iPlayercounter = 1;
 		for (int i = 0; i < gameField.getMap().length; i++) {
+			// An den ersten 1 oder 2 Positionen mit einem Inhaltswert von 5,
+			// werden Spieler1 und Spieler2 hinzugefuegt. Anschließend wird der
+			// Wert aller dieser Felder auf 1 gesetzt.
 			for (int j = 0; j < gameField.getMap()[0].length; j++) {
 				if (gameField.getMap()[i][j].getContent() == 5) {
 					gameField.getMap()[i][j].setContent(1);
@@ -67,6 +78,7 @@ public class Game implements Runnable {
 					}
 					iPlayercounter++;
 				}
+
 			}
 		}
 		explosionList = new ArrayList<long[]>();
@@ -92,25 +104,40 @@ public class Game implements Runnable {
 		this.gui = gui;
 	}
 
+	/**
+	 * Aendert den Pfad an dem eine zu ladende Map zu finden ist
+	 * 
+	 * @param sPath
+	 *            Pfad zur zu ladenden Map
+	 */
 	public void setMapPath(String sPath) {
 		sMapPath = sPath;
 	}
 
+	/**
+	 * Legt fest, ob eine Map bei Erzeugung eines neuen Spiels geladen oder
+	 * generiert werden soll
+	 * 
+	 * @param bLoad
+	 *            Bei true wird eine Map geladen, ansonsten eine generiert
+	 */
 	public static void setMapLoaded(boolean bLoad) {
 		bMapLoaded = bLoad;
 	}
 
 	/**
-	 * Startet das Spiel neu
-	 * 
-	 * @param field
-	 *            Gegebenes Spielfeld
+	 * Startet das Spiel neu, genereiert, falls angegeben, neue Maps Setzt die
+	 * Spieler auf ihre Startpositionen und entfernt sämtliche
+	 * Explosionsueberreste
 	 */
 	public boolean restart() {
 		Field field;
 		if (bAutoRestart) {
 			field = new Field();
-			field.insertMap(cacheField.getMap());
+			field.insertMap(cacheField.getMap()); // Wurde das Spiel automatisch
+													// neu gestartet, so wird
+													// wieder die vorherige Map
+													// benutzt
 		} else {
 			if (bMapLoaded) {
 				field = createNewField(sMapPath);
@@ -124,12 +151,16 @@ public class Game implements Runnable {
 			return false;
 		}
 		iPlayerCount = iNewPlayerCount;
-		for (int i = 0; i <= bombList.size() + 1; i++) {
+		for (int i = 0; i <= bombList.size() + 1; i++) { // Alle Explosionen
+															// werden entfernt
 			gui.panel.removeExplosions();
 		}
 		gameField = field;
 		int iPlayercounter = 1;
 		for (int i = 0; i < gameField.getMap().length; i++) {
+			// An den ersten 1 oder 2 Positionen mit einem Inhaltswert von 5,
+			// werden Spieler1 und Spieler2 hinzugefuegt. Anschließend wird der
+			// Wert aller dieser Felder auf 1 gesetzt.
 			for (int j = 0; j < gameField.getMap()[0].length; j++) {
 				if (gameField.getMap()[i][j].getContent() == 5) {
 					gameField.getMap()[i][j].setContent(1);
@@ -147,13 +178,16 @@ public class Game implements Runnable {
 					}
 					iPlayercounter++;
 				}
+				if (gameField.getMap()[i][j].isExit()) {
+					System.out.println(i + " " + j);
+				}
 			}
+
 		}
 		explosionList = new ArrayList<long[]>();
 		time = Calendar.getInstance().getTimeInMillis();
 		bombList = new ArrayList<Bomb>();
 		gameSpeed = 100;
-		gameState = GameStates.INITIALIZED;
 		gui.insertField(gameField);
 		gui.resize();
 		gui.repaint();
@@ -163,18 +197,20 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * Die wichtigste Methode von Thread, die das Spiel verändert, wenn ein
-	 * GameState verändert wird
+	 * Hauptschleife der Spiellogik. Überwacht Zustand des Spiels und nimmt
+	 * entsprechende Änderungen vor.
 	 */
 	@Override
 	public void run() {
 		Boolean doRestart = false;
 		while (true && !doRestart) {
 			switch (gameState) {
-			case STARTED:
+			case STARTED: // Das Spiel laeuft und laesst sich bedienen
 				start();
 				break;
-			case VICTORY:
+			case VICTORY: // Ein Spieler hat gewonnen. Es wird eine
+							// Siegesmeldung ausgegeben und das Spiel neu
+							// gestartet
 				if (iPlayerCount > 1) {
 					gui.showError("Spieler " + iWinningPlayer
 							+ " hat gewonnen!");
@@ -183,7 +219,9 @@ public class Game implements Runnable {
 				doRestart = true;
 				bAutoRestart = true;
 				break;
-			case GAMEOVER:
+			case GAMEOVER: // Ein Spieler hat verloren. Es wird eine
+							// Niederlagemeldung ausgegeben und das Spiel neu
+							// gestartet
 				if (iPlayerCount > 1) {
 					gui.showError("Spieler " + iDefeatedPlayer
 							+ " hat verloren!");
@@ -192,10 +230,7 @@ public class Game implements Runnable {
 				doRestart = true;
 				bAutoRestart = true;
 				break;
-			case INITIALIZED:
-				start();
-				break;
-			case STOP:
+			case STOP: // Das Spiel wird angehalten
 				break;
 			default:
 				System.out.println("default");
@@ -209,18 +244,21 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * Pausiert das Spiel
+	 * Legt fest ob ein oder zwei Spieler vorhanden sind.
+	 * 
+	 * @param iCount
+	 *            Ein Wert > 1 setzt die Spieleranzahl auf 2, jeder andere auf 1
 	 */
-	public void pauseGame() {
-		gameState = GameStates.PAUSED;
-	}
-
 	public void setPlayerCount(int iCount) {
-		iNewPlayerCount = iCount;
+		if (iCount >= 2)
+			iNewPlayerCount = 2;
+		else
+			iNewPlayerCount = 1;
 	}
 
 	/**
-	 * Startet ein neues Spiel
+	 * Abarbeitung der Spiellogik. Bomben und eventuelle Explosionen werden
+	 * abgearbeitet, Spieler bewegt und das Spielfeld aktualisiert
 	 */
 	public void start() {
 		time = Calendar.getInstance().getTimeInMillis();
@@ -237,11 +275,14 @@ public class Game implements Runnable {
 
 	/**
 	 * Erzeugt ein neues Feld mit zufaelligen Waenden und Mauern
+	 * 
+	 * @return Erzeugtes Spielfeld
 	 */
 	public static Field createNewField() {
 		FieldGenerator testGenerator = new FieldGenerator();
 		Field generatedField = new Field();
-		cacheField = new Field();
+		cacheField = new Field(); // Neues Spielfeld wird fuer einen etwaigen
+									// Neustart auf der selben Map gespeichert.
 		testGenerator.setRandomAmount(5);
 		testGenerator.setRandomChance(50);
 		testGenerator.setModus(0);
@@ -250,6 +291,14 @@ public class Game implements Runnable {
 		return generatedField;
 	}
 
+	/**
+	 * Erzeugt eine neue Map aus einer Datei
+	 * 
+	 * @param sMap
+	 *            Pfad zur Datei
+	 * @return Erzeugtes Spielfeld. Gibt null zurueck, falls geladenes Spielfeld
+	 *         nicht den Vorgaben entspricht
+	 */
 	public static Field createNewField(String sMap) {
 		int iMaxPlayersLoaded = 0;
 		FieldGenerator testGenerator = new FieldGenerator();
@@ -257,7 +306,9 @@ public class Game implements Runnable {
 		Field fileTester = new Field();
 		cacheField = new Field();
 		fileTester.insertMap(testGenerator.readMap(sMap));
-		if (fileTester.getMap() != null) {
+		if (fileTester.getMap() != null) { // Die Anzahl der moeglichen
+											// Spielerstartplätze wird
+											// ueberprueft
 			for (int i = 0; i < fileTester.getMap().length; i++) {
 				for (int j = 0; j < fileTester.getMap()[0].length; j++) {
 					if (fileTester.getMap()[i][j].getContent() == 5) {
@@ -265,7 +316,9 @@ public class Game implements Runnable {
 					}
 				}
 			}
-			if (iMaxPlayersLoaded > 0) {
+			if (iMaxPlayersLoaded > 0) { // Gibt es keine Startplätze fuer
+											// Spieler, so wird die Map
+											// abgelehnt
 				generatedField.insertMap(testGenerator.readMap(sMap));
 				iMaxPlayers = iMaxPlayersLoaded;
 			} else {
@@ -273,13 +326,17 @@ public class Game implements Runnable {
 				setMapLoaded(false);
 				return null;
 			}
-		} else {
+		} else { // Gibt es Fehler beim Einlesen der Datei, so wird diese
+					// abgelehnt
 			gui.showError("Die Map enthaelt ungueltige Zeichen oder ist nicht mehr vorhanden! Vorgang wird abgebrochen.");
 			setMapLoaded(false);
 			return null;
 		}
 
-		if (iPlayerCount > iMaxPlayers) {
+		if (iPlayerCount > iMaxPlayers) { // Soll die Map mit mehr Spielern
+											// gespielt werden koennen als
+											// vorhanden sind, so wird die Map
+											// abgelehnt
 			gui.showError("Diese Map ist nicht mit so vielen Spielern spielbar");
 			gameState = GameStates.STOP;
 			setMapLoaded(false);
@@ -287,10 +344,16 @@ public class Game implements Runnable {
 		}
 		sMapPath = sMap;
 		cacheField.insertMap(fileTester.getMap());
-		cacheField.insertMap(fileTester.getMap());
 		return fileTester;
 	}
 
+	/**
+	 * Erzeugt ein quadratisches, zufällig generiertes Speilfeld
+	 * 
+	 * @param iSize
+	 *            Hoehe und Breite des Spielfeldes
+	 * @return Erzeugtes Spielfeld
+	 */
 	public static Field createNewField(int iSize) {
 		FieldGenerator testGenerator = new FieldGenerator();
 		Field generatedField = new Field();
@@ -313,7 +376,10 @@ public class Game implements Runnable {
 	private void handleBombs() {
 		ArrayList<int[]> exList;
 		for (int i = 0; i < bombList.size(); i++) {
-			if (bombList.get(i).getTimer() <= time) {
+			if (bombList.get(i).getTimer() <= time) { // Eine Liste aller Bomben
+														// deren Timer
+														// abgelaufen ist wird
+														// generiert
 				exList = new ArrayList<int[]>();
 				exList.add(new int[2]);
 				exList.get(exList.size() - 1)[0] = bombList.get(i)
@@ -321,13 +387,26 @@ public class Game implements Runnable {
 				exList.get(exList.size() - 1)[1] = bombList.get(i)
 						.getPosition()[0];
 				for (int j = 1; j < bombList.get(i).getRadius(); j++) {
+					// Die folgenden 4 for-Schleifen machen efektiv dasselbe,
+					// betracheten dabei allerdings verschiedene Felder. Alle
+					// Felder im Radius der explodierenden Bombe werden
+					// abgesucht, dabeiwerden folgende Aktionen unternommen:
+					// Befindet sich ein Spieler im Radius, so hat dieser
+					// verloren. befindet sich ein freies Feld im Radius, so
+					// passiert nichts. Befindet sich ein fester Block im
+					// Radius, so wird die Explosion vor ihm gestoppt. Befindet
+					// sich ein zerstoerebarer Block im Radius, so wird dieser
+					// Zerstoert und die Explosion danach gestoppt. Befindet
+					// sich
+					// ein Ausgang im Radius, so wird die Explosion vor ihm
+					// gestoppt. Befindet sich eine andere Bombe im Radius, so
+					// wird diese auch zur Explosion gebracht.
 					if (gameField.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0]).getPlayer() != null) {
+						// Überprueft Feld der Bombe
+						// Trifft die Explosion auf einen Spieler, so wird hier
+						// der besiegte Spieler ermittelt
 						gameState = GameStates.GAMEOVER;
-						gameField
-								.getField(bombList.get(i).getPosition()[1],
-										bombList.get(i).getPosition()[0])
-								.getPlayer().getID();
 						iDefeatedPlayer = gameField
 								.getField(bombList.get(i).getPosition()[1],
 										bombList.get(i).getPosition()[0])
@@ -335,6 +414,8 @@ public class Game implements Runnable {
 					}
 					if (gameField.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0]).getBomb() != null) {
+						// Trifft die Bombe auf eine andere Bombe, so wird diese
+						// hier auch zur Detonation gebracht
 						int tmp[] = new int[2];
 						tmp[0] = bombList.get(i).getPosition()[0];
 						tmp[1] = bombList.get(i).getPosition()[1];
@@ -350,6 +431,9 @@ public class Game implements Runnable {
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1],
 								bombList.get(i).getPosition()[0]).getContent() == 1) {
+							// Sämtliche explodierenden Felder werden zur
+							// Darstellung gesammelt und anschließend an die gui
+							// uebergeben
 							exList.add(new int[2]);
 							exList.get(exList.size() - 1)[0] = bombList.get(i)
 									.getPosition()[1];
@@ -373,17 +457,13 @@ public class Game implements Runnable {
 							break;
 						}
 					} catch (Exception e) {
-						// System.out.println(e);
 					}
 				}
 				for (int j = 1; j < bombList.get(i).getRadius(); j++) {
 					if (gameField.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0] - j).getPlayer() != null) {
+						// Überprueft Felder rechts der Bombe
 						gameState = GameStates.GAMEOVER;
-						gameField
-								.getField(bombList.get(i).getPosition()[1],
-										bombList.get(i).getPosition()[0] - j)
-								.getPlayer().getID();
 						iDefeatedPlayer = gameField
 								.getField(bombList.get(i).getPosition()[1],
 										bombList.get(i).getPosition()[0] - j)
@@ -430,17 +510,13 @@ public class Game implements Runnable {
 							break;
 						}
 					} catch (Exception e) {
-						// System.out.println(e);
 					}
 				}
 				for (int j = 1; j < bombList.get(i).getRadius(); j++) {
 					if (gameField.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0] + j).getPlayer() != null) {
+						// Überprueft Felder unterhalb der Bombe
 						gameState = GameStates.GAMEOVER;
-						gameField
-								.getField(bombList.get(i).getPosition()[1],
-										bombList.get(i).getPosition()[0] + j)
-								.getPlayer().getID();
 						iDefeatedPlayer = gameField
 								.getField(bombList.get(i).getPosition()[1],
 										bombList.get(i).getPosition()[0] + j)
@@ -494,11 +570,8 @@ public class Game implements Runnable {
 					if (gameField.getField(
 							bombList.get(i).getPosition()[1] - j,
 							bombList.get(i).getPosition()[0]).getPlayer() != null) {
+						// Überprueft Felder links der Bombe
 						gameState = GameStates.GAMEOVER;
-						gameField
-								.getField(bombList.get(i).getPosition()[1] - j,
-										bombList.get(i).getPosition()[0])
-								.getPlayer().getID();
 						iDefeatedPlayer = gameField
 								.getField(bombList.get(i).getPosition()[1] - j,
 										bombList.get(i).getPosition()[0])
@@ -552,6 +625,7 @@ public class Game implements Runnable {
 					if (gameField.getField(
 							bombList.get(i).getPosition()[1] + j,
 							bombList.get(i).getPosition()[0]).getPlayer() != null) {
+						// Überprueft Felder rechts der Bombe
 						gameState = GameStates.GAMEOVER;
 						gameField
 								.getField(bombList.get(i).getPosition()[1] + j,
@@ -610,13 +684,16 @@ public class Game implements Runnable {
 				explosionList.add(new long[1]);
 				explosionList.get(0)[0] = Calendar.getInstance()
 						.getTimeInMillis() + 500;
-				gui.panel.addExplosions(exList);
+				gui.panel.addExplosions(exList); // explosionen werden an Gui
+													// uebergeben
 				exList = null;
 				gameField.removeBomb(bombList.get(i));
 				bombList.remove(i);
 			}
 		}
 		for (int i = 0; i < explosionList.size(); i++) {
+
+			// abgelaufene explosionen werden entfernt
 			if (explosionList.get(i)[0] < (Calendar.getInstance()
 					.getTimeInMillis())) {
 				gui.panel.removeExplosions();
@@ -632,7 +709,10 @@ public class Game implements Runnable {
 	 * = hoch, j= links, k = unten, l = rechts, enter = Bombe legen
 	 */
 	private void handleMovement() {
-		if (iPlayerCount == 1) {
+		if (iPlayerCount == 1) { // Abfragt der Spieleranzahl. Gibt es nur einen
+									// Spieler, so werden die Kontrollen fuer
+									// den
+									// 2. Spieler deaktiviert.
 			switch (key) {
 			case 'w':
 				switch (gameField.getField(player.getPosition()[1],

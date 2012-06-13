@@ -24,7 +24,7 @@ import Field.FieldGenerator;
 import Options.OptionFrame;
 
 /**
- * GUI.java Diese Klasse erzeugt ein Frame und legt eine Menüleiste fest
+ * GUI.java Diese Klasse erzeugt ein Frame und legt eine Menueleiste fest
  * 
  * @author Carsten Stegmann
  * 
@@ -38,7 +38,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 	public BoardPanel panel;
 
 	/**
-	 * Menüelemente für die Menüleiste
+	 * Menueelemente fuer die Menueleiste
 	 */
 
 	private JMenuItem startItem;
@@ -65,9 +65,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setSize(new Dimension(480, 480));
 		/**
-		 * Menüleiste mit den Elementen:
+		 * Menueleiste mit den Elementen:
 		 * 
-		 * Ein Game-Menü mit den Untermenüs: New Game: ein neues Spiel wird
+		 * Ein Game-Menue mit den Untermenues: New Game: ein neues Spiel wird
 		 * gestartet Open Map: Es kann eine Karte aus einer Datei geladen werden
 		 * 1 Player: Startet den Einzelspieler Modus 2 Player: Startet des 2
 		 * Spieler Modus Quit: Schliesst das Fenster
@@ -93,7 +93,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		gameMenu.addSeparator();
 		gameMenu.add(quitItem);
 		menubar.add(gameMenu);
-		menubar.add(optionMenu);
+		// menubar.add(optionMenu);
 		optionItem = new JMenuItem("GameOptions");
 		optionItem.addActionListener(this);
 		optionMenu.add(optionItem);
@@ -108,25 +108,26 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 	 * setzt das Spielfeld auf das Panel
 	 * 
 	 * @param field
-	 *            das einzufügende Spielfeld
+	 *            das einzufuegende Spielfeld
 	 */
 	public void insertField(Field field) {
 		gameField = field;
 		panel.insertField(field);
 	}
 
-	// public int getBoardWidth() {
-	// return gameField.getMap().length;
-	// }
-
-	// public int getBoardHeight() {
-	// return gameField.getMap()[0].length;
-	// }
-
+	/**
+	 * Erzeugt Ausgabefenster mit angegebener Nachricht
+	 * 
+	 * @param sError
+	 *            Auszugebene Nachricht
+	 */
 	public void showError(String sError) {
 		JOptionPane.showMessageDialog(null, sError);
 	}
 
+	/**
+	 * Veraendert die Panelgroeße abhaengig des geladenen Spielfelds
+	 */
 	public void resize() {
 		this.setSize((gameField.getMap().length) * 32 + 5,
 				(gameField.getMap()[0].length + 1) * 32 + 18);
@@ -134,7 +135,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	/**
-	 * Es werden die Aktionen der jeweiligen Menüeinträge "Game" 
+	 * Es werden die Aktionen der jeweiligen Menueeintraege "Game" 
 	 * (New Game, Open Map, 1 Player, 2Player, Quit) und "Options" (Game Options)
 	 * festgelegt
 	 */
@@ -170,35 +171,30 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	/**
-	 * Methode,die aufgerufen wird, wenn eine Taste gedrückt wird
+	 * Methode,die aufgerufen wird, wenn eine Taste gedrueckt wird
 	 */
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		// mainGame.key = e.getKeyChar();
 	}
 
 	@Override
 	/**
-	 * wird ausgeführt, wenn die Taste innerhalb eines kurzen
-	 * Zeitraums gedrückt und losgelassen wird
+	 * wird ausgefuehrt, wenn die Taste innerhalb eines kurzen
+	 * Zeitraums gedrueckt und losgelassen wird
 	 */
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	/**
-	 * wird ausgeführt, wenn die Taste losgelassen wird
+	 * wird ausgefuehrt, wenn die Taste losgelassen wird
 	 */
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 		mainGame.key = e.getKeyChar();
 	}
 
 	/**
 	 * Öffnet ein neues Fenster, indem eine Datei mit der Endung .txt zum laden
-	 * der Map gewählt werden kann
+	 * der Map gewaehlt werden kann
 	 * 
 	 */
 	public boolean open() {
@@ -219,23 +215,23 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		});
 		int iOpened = fileChooser.showOpenDialog(null);
 		if (iOpened == JFileChooser.APPROVE_OPTION) { // Legt fest, was
-														// passiert, nachtem der
+														// passiert, nachdem der
 														// "Öffnen"-Button
-														// gedrückt wurde
+														// gedrueckt wurde
 			File file = fileChooser.getSelectedFile();
 			mainGame.setMapPath(file.getAbsolutePath());
 			mainGame.setMapLoaded(true);
 			return mainGame.restart();
 		} else {
-			showError("Nichts ausgewählt");
+			showError("Nichts ausgewaehlt");
 			return false;
 		}
 
 	}
 
 	/**
-	 * Methode wird aufgerufen, nachdem im Menü "Quit" angeklickt worden ist und
-	 * öffnet ein neues Dialogfenster, zum Bestätigen der Aktion
+	 * Methode wird aufgerufen, nachdem im Menue "Quit" angeklickt worden ist
+	 * und oeffnet ein neues Dialogfenster, zum Bestaetigen der Aktion
 	 */
 	protected void shutdown() {
 		int result = JOptionPane.showConfirmDialog(null, "Sure?", "Quit?",
