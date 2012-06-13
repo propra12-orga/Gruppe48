@@ -213,12 +213,13 @@ public class FieldGenerator {
 					Map[i][iCounter].setContent(FREE);
 					break;
 				case 69: // 'E'
-					Map[i][iCounter].setContent(EXIT);
+					Map[i][iCounter].setContent(FREE);//fuer sichtbaren Ausgang
 					Map[i][iCounter].setExit();
 					break;
-				case 73: // 'H'
-					Map[i][iCounter].setContent(STONE);
+				case 72: // 'H'
+					Map[i][iCounter].setContent(STONE);//fuer versteckten Ausgang
 					Map[i][iCounter].setExit();
+					break;
 				case 80: // 'P'
 					Map[i][iCounter].setContent(PLAYER);
 					break;
