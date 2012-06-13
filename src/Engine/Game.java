@@ -178,9 +178,6 @@ public class Game implements Runnable {
 					}
 					iPlayercounter++;
 				}
-				if (gameField.getMap()[i][j].isExit()) {
-					System.out.println(i + " " + j);
-				}
 			}
 
 		}
