@@ -20,10 +20,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- * Diese Klasse erstellt einen Frame, das Panel und dessen Komponenten für die Optionen.
+ * Diese Klasse erstellt einen Frame, das Panel und dessen Komponenten fuer die Optionen.
  * Die Optionen sollen folgendes beinhalten:
- * -Einstellungsmöglichkeiten der Spielfeldgröße,
- * -Einstellungsmöglichkeiten der Dichte der zerstörbaren Blöcke,
+ * -Einstellungsmoeglichkeiten der Spielfeldgroeße,
+ * -Einstellungsmoeglichkeiten der Dichte der zerstoerbaren Bloecke,
  * -Spielmodus
  */
 /**
@@ -50,9 +50,6 @@ public class OptionFrame extends JFrame implements WindowListener {
 	/**
 	 * Erzeugt ein OpitonFrame und zeigt dieses an. Es besitzt verschiedene
 	 * Komponenten
-	 * 
-	 * @param game
-	 *            Das zugehörige Spiel an das das OptionFrame gebunden ist
 	 */
 	public OptionFrame() {
 		// this.game = game;
@@ -75,7 +72,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 																// Opitonenliegen
 
 		// Zeile 1
-		JLabel lb1 = new JLabel("Spielfeldgröße:");
+		JLabel lb1 = new JLabel("Spielfeldgroeße:");
 		JSlider mapSlider = new JSlider(16, 30);
 		updateMapLabel();
 
@@ -118,7 +115,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 		// Zeile 3
 
 		/**
-		 * SOUTH.Panel Belegung: Neue Buttons für die Optionen "OK",
+		 * SOUTH.Panel Belegung: Neue Buttons fuer die Optionen "OK",
 		 * "Übernehmen", "Abbrechen" der festgelegten Einstellungen
 		 */
 
@@ -196,7 +193,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 
 	/**
 	 * Sicherheitsabfrage ob man ohne die Änderungzuspeichern das Fenster
-	 * schließen möchte
+	 * schließen moechte
 	 */
 	private void checkCancelWithoutSave() {
 		if (!savedOptions) {

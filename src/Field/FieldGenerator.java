@@ -67,7 +67,9 @@ public class FieldGenerator {
 				}
 
 				else if ((i >= 3 && i <= iWidth) || (j >= 3 && j <= iHeight)) {
-					if (Math.random() <= 0.75) // hier kann man die DICHTE der zerstoerbaren Bloecke veraendern
+					if (Math.random() <= 0.75) // hier kann man die DICHTE der
+												// zerstoerbaren Bloecke
+												// veraendern
 						Map[i][j].setContent(STONE);
 
 				}
@@ -75,9 +77,8 @@ public class FieldGenerator {
 		}
 
 		setWalls();
-		if (bCreateExit) {
+		if (bCreateExit)
 			createRandomExit();
-		}
 		Map[1][1].setContent(PLAYER);
 		Map[iWidth - 2][iHeight - 2].setContent(PLAYER);
 		Map[iWidth - 3][iHeight - 2].setContent(FREE);
@@ -135,7 +136,13 @@ public class FieldGenerator {
 		}
 	}
 
-	public void setExit(boolean bSetExit) {
+	/**
+	 * Legt fest, ob ein Ausgang erzeugt werden soll
+	 * 
+	 * @param bSetExit
+	 *            Falls true wird ein Ausgang erzeugt
+	 */
+	public void createExit(boolean bSetExit) {
 		bCreateExit = bSetExit;
 	}
 
@@ -155,7 +162,6 @@ public class FieldGenerator {
 		try {
 			inputFile = new FileReader(sInputFile);
 		} catch (FileNotFoundException e) {
-			System.out.println(e);
 			return null;
 		}
 		reader = new BufferedReader(inputFile);
@@ -177,11 +183,14 @@ public class FieldGenerator {
 		Map = null;
 		iCounter = mapList.get(0).length();
 		for (int i = 1; i < mapList.size(); i++) {
+			// laengste Zeile wird ausgesucht um die Groeße deszu erstellenden
+			// Arrays zu ermitteln
 			if (iCounter < mapList.get(i).length()) {
 				iCounter = mapList.get(i).length();
 			}
 		}
 		Map = new FieldContent[iCounter][mapList.size()];
+		// Array wird erzeugt und initialisiert
 		for (int i = 0; i < mapList.size(); i++) {
 			for (int j = 0; j < iCounter; j++) {
 				Map[j][i] = new FieldContent();
@@ -191,6 +200,8 @@ public class FieldGenerator {
 		iCounter = 0;
 		while (mapList.size() > 0) {
 			for (int i = 0; i < mapList.get(0).length(); i++) {
+				// Jedes Zeichen jeder Zeile wird ausgelesen udn der Inhalt der
+				// entsprechenden ArrayZellen gesetzt
 				switch (mapList.get(0).charAt(i)) {
 				case 32: // ' '
 					Map[i][iCounter].setContent(EMPTY);
@@ -203,14 +214,19 @@ public class FieldGenerator {
 					break;
 				case 69: // 'E'
 					Map[i][iCounter].setContent(EXIT);
+					Map[i][iCounter].setExit();
 					break;
+				case 73: // 'H'
+					Map[i][iCounter].setContent(STONE);
+					Map[i][iCounter].setExit();
 				case 80: // 'P'
 					Map[i][iCounter].setContent(PLAYER);
 					break;
 				case 37: // '%'
 					Map[i][iCounter].setContent(STONE);
 					break;
-				default:
+				default: // Trifft der Algorithmus auf ein nicht bekanntes
+							// Zeichen, so wird der Vorang abgebrochen
 					return null;
 				}
 			}
@@ -386,7 +402,8 @@ public class FieldGenerator {
 		int iCount = 0;
 		for (int i = 0; i < Map.length; i++) {
 			for (int j = 0; j < Map[0].length; j++) {
-				if (Map[i][j].getContent() == STONE) {
+				if ((Map[i][j].getContent() == STONE)
+						|| (Map[i][j].getContent() == FREE)) {
 					iCount++;
 				}
 			}
@@ -401,7 +418,8 @@ public class FieldGenerator {
 		int iRand = (int) (Math.random() * iCountFreeSpace());
 		for (int i = 0; i < Map.length; i++) {
 			for (int j = 0; j < Map[0].length; j++) {
-				if (Map[i][j].getContent() == STONE) {
+				if ((Map[i][j].getContent() == STONE)
+						|| (Map[i][j].getContent() == FREE)) {
 					iRand--;
 					if (iRand == 0) {
 						Map[i][j].setExit();
@@ -410,6 +428,7 @@ public class FieldGenerator {
 				}
 			}
 		}
+
 	}
 
 	/**

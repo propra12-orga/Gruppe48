@@ -45,6 +45,9 @@ public class FieldContent {
 		// Spieler- oder Bombenreferenzen.
 	}
 
+	/**
+	 * Fuegt Ausgang hinzu.
+	 */
 	public void setExit() {
 		bExit = true;
 	}
@@ -94,6 +97,11 @@ public class FieldContent {
 		return bExit;
 	}
 
+	/**
+	 * Gibt Inhalt des Feldes als Integer zurueck
+	 * 
+	 * @return Inhalt des Feldes
+	 */
 	public int getContent() {
 		return iContent;
 		// gibt Inhalt als int zurueck

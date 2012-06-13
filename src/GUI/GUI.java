@@ -19,21 +19,18 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.filechooser.FileFilter;
 
 import Engine.Game;
-import Engine.GameStates;
 import Field.Field;
 import Field.FieldGenerator;
 import Options.OptionFrame;
 
 /**
- * GUI.java
+ * GUI.java Diese Klasse erzeugt ein Frame und legt eine Menueleiste fest
  * 
- * @author cst
+ * @author Carsten Stegmann
  * 
  */
 public class GUI extends JFrame implements ActionListener, KeyListener {
 
-	private int w = 0;
-	private int h = 0;
 	Field gameField;
 	BufferedImage imgExit;
 	BufferedImage imgWall;
@@ -41,7 +38,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 	public BoardPanel panel;
 
 	/**
-	 * Menüelemente
+	 * Menueelemente fuer die Menueleiste
 	 */
 
 	private JMenuItem startItem;
@@ -58,19 +55,22 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 	public GUI(Game game) {
 
 		/**
-		 * neues Panel
+		 * neues Panel und Frameeigenschaften
 		 */
 
 		setFocusable(true);
 		panel = new BoardPanel();
 		mainGame = game;
 		this.setResizable(false);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(new Dimension(300, 200));
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setSize(new Dimension(480, 480));
 		/**
-		 * Menüleiste mit den Elementen:
+		 * Menueleiste mit den Elementen:
 		 * 
-		 * Game: Start Game 2 Player Reset Quit
+		 * Ein Game-Menue mit den Untermenues: New Game: ein neues Spiel wird
+		 * gestartet Open Map: Es kann eine Karte aus einer Datei geladen werden
+		 * 1 Player: Startet den Einzelspieler Modus 2 Player: Startet des 2
+		 * Spieler Modus Quit: Schliesst das Fenster
 		 */
 		menubar = new JMenuBar();
 		setJMenuBar(menubar);
@@ -90,9 +90,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		gameMenu.add(openItem);
 		gameMenu.add(singleplayer);
 		gameMenu.add(multiplayer);
+		gameMenu.addSeparator();
 		gameMenu.add(quitItem);
 		menubar.add(gameMenu);
-		menubar.add(optionMenu);
+		// menubar.add(optionMenu);
 		optionItem = new JMenuItem("GameOptions");
 		optionItem.addActionListener(this);
 		optionMenu.add(optionItem);
@@ -100,68 +101,67 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		this.setJMenuBar(menubar);
 		this.add(panel);
 		this.addKeyListener(this);
-
-		/*
-		 * AbstractAction optionAction = new AbstractAction("GameOptions") {
-		 * 
-		 * /**
-		 * 
-		 * 
-		 * private static final long serialVersionUID = 1L;
-		 * 
-		 * @Override public void actionPerformed(ActionEvent arg0) { // TODO
-		 * Auto-generated method stub System.exit(0); } };
-		 * 
-		 * optionMenu.add(optionAction);
-		 */
+		singleplayer.setSelected(true);
 	}
 
+	/**
+	 * setzt das Spielfeld auf das Panel
+	 * 
+	 * @param field
+	 *            das einzufuegende Spielfeld
+	 */
 	public void insertField(Field field) {
 		gameField = field;
 		panel.insertField(field);
 	}
 
-	public int getBoardWidth() {
-		return gameField.getMap().length;
-	}
-
-	public int getBoardHeight() {
-		return gameField.getMap()[0].length;
-	}
-
+	/**
+	 * Erzeugt Ausgabefenster mit angegebener Nachricht
+	 * 
+	 * @param sError
+	 *            Auszugebene Nachricht
+	 */
 	public void showError(String sError) {
 		JOptionPane.showMessageDialog(null, sError);
 	}
 
+	/**
+	 * Veraendert die Panelgroeße abhaengig des geladenen Spielfelds
+	 */
+	public void resize() {
+		this.setSize((gameField.getMap().length) * 32 + 5,
+				(gameField.getMap()[0].length + 1) * 32 + 18);
+	}
+
 	@Override
 	/**
-	 * Es werden die Aktionen der jeweiligen Menüeinträge(Game)
-	 * festgesetzt(Starten, Neustarten, Beenden)
+	 * Es werden die Aktionen der jeweiligen Menueeintraege "Game" 
+	 * (New Game, Open Map, 1 Player, 2Player, Quit) und "Options" (Game Options)
+	 * festgelegt
 	 */
 	public void actionPerformed(ActionEvent object) {
 		if (object.getSource() == startItem) {
 			mainGame.key = 0;
-			mainGame.restart(Game.createNewField());
-			this.setSize((gameField.getMap().length) * 32 + 5,
-					(gameField.getMap()[0].length + 1) * 32 + 18);
+			mainGame.setMapLoaded(false);
+			mainGame.restart();
+			resize();
 		}
 		if (object.getSource() == openItem) {
-			System.out.println("öffnen wurde angeklickt");
-			open();
-			this.setSize((gameField.getMap().length) * 32 + 5,
-					(gameField.getMap()[0].length + 1) * 32 + 18);
+			if (open()) {
+				resize();
+			}
 		}
 		if (object.getSource() == quitItem) {
-			System.exit(0);
+			shutdown();
 		}
 		if (object.getSource() == multiplayer) {
 			mainGame.key = 0;
-			mainGame.gameState = GameStates.TWOPLAYER;
+			mainGame.setPlayerCount(2);
 			singleplayer.setSelected(false);
 		}
 		if (object.getSource() == singleplayer) {
 			mainGame.key = 0;
-			mainGame.gameState = GameStates.ONEPLAYER;
+			mainGame.setPlayerCount(1);
 			multiplayer.setSelected(false);
 		}
 		if (object.getSource() == optionItem) {
@@ -171,38 +171,40 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	/**
-	 * Methode,die aufgerufen wird, wenn die Taste gedrückt wird
+	 * Methode,die aufgerufen wird, wenn eine Taste gedrueckt wird
 	 */
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		// mainGame.key = e.getKeyChar();
 	}
 
 	@Override
 	/**
-	 * wird ausgeführt, wenn die Taste innerhalb eines kurzen
-	 * Zeitraums gedrückt und losgelassen wird
+	 * wird ausgefuehrt, wenn die Taste innerhalb eines kurzen
+	 * Zeitraums gedrueckt und losgelassen wird
 	 */
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	/**
-	 * wird ausgeführt, wenn die Taste losgelassen wird
+	 * wird ausgefuehrt, wenn die Taste losgelassen wird
 	 */
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 		mainGame.key = e.getKeyChar();
 	}
 
-	public void open() {
+	/**
+	 * Öffnet ein neues Fenster, indem eine Datei mit der Endung .txt zum laden
+	 * der Map gewaehlt werden kann
+	 * 
+	 */
+	public boolean open() {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileFilter(new FileFilter() {
 			@Override
 			public boolean accept(File f) {
-				return f.getName().toLowerCase().endsWith(".txt")
+				return f.getName().toLowerCase().endsWith(".txt") // Nur die
+																	// Endung
+																	// .txt
 						|| f.isDirectory();
 			}
 
@@ -212,13 +214,31 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 			}
 		});
 		int iOpened = fileChooser.showOpenDialog(null);
-		if (iOpened == JFileChooser.APPROVE_OPTION) {
+		if (iOpened == JFileChooser.APPROVE_OPTION) { // Legt fest, was
+														// passiert, nachdem der
+														// "Öffnen"-Button
+														// gedrueckt wurde
 			File file = fileChooser.getSelectedFile();
-			String path = file.getAbsolutePath();
-			System.out.println(path);
-			mainGame.restart(Game.createNewField(file.getAbsolutePath()));
+			mainGame.setMapPath(file.getAbsolutePath());
+			mainGame.setMapLoaded(true);
+			return mainGame.restart();
 		} else {
-			showError("Nichts ausgewählt");
+			showError("Nichts ausgewaehlt");
+			return false;
 		}
+
+	}
+
+	/**
+	 * Methode wird aufgerufen, nachdem im Menue "Quit" angeklickt worden ist
+	 * und oeffnet ein neues Dialogfenster, zum Bestaetigen der Aktion
+	 */
+	protected void shutdown() {
+		int result = JOptionPane.showConfirmDialog(null, "Sure?", "Quit?",
+				JOptionPane.YES_NO_OPTION);
+		if (result == JOptionPane.YES_OPTION) {
+			Runtime.getRuntime().exit(0);
+		}
+
 	}
 }

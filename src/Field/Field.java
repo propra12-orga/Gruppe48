@@ -28,13 +28,30 @@ public class Field {
 	}
 
 	/**
-	 * Fuegt neue Map in field ein
+	 * Kopiert den Inhalt eines uebergebenen, 2-dimensionalen FieldContent
+	 * Arrays in ein neu erzeugtes Array und speichert dies als neue Map.
 	 * 
 	 * @param newMap
 	 *            Einzufuegende Map
 	 */
 	public void insertMap(FieldContent newMap[][]) {
-		map = newMap;
+		if (newMap == null) {
+			map = null;
+			return;
+		}
+		map = new FieldContent[newMap.length][newMap[0].length];
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++)
+				map[i][j] = new FieldContent();
+		}
+		for (int i = 0; i < newMap.length; i++)
+			for (int j = 0; j < newMap[0].length; j++) {
+				map[i][j].setContent(newMap[i][j].getContent());
+				map[i][j].insertPlayer(newMap[i][j].getPlayer());
+				map[i][j].insertBomb(newMap[i][j].getBomb());
+				if (newMap[i][j].isExit())
+					map[i][j].setExit();
+			}
 	}
 
 	/**
@@ -74,14 +91,10 @@ public class Field {
 	}
 
 	/**
-	 * Fuegt Bombe an angegebener Stelle ein
+	 * Fuegt Bombe an in Bombe gespeicherter Stelle ein
 	 * 
 	 * @param newBomb
 	 *            Einzufuegende Bombe
-	 * @param iXCoord
-	 *            X-Koordinate des Feldes
-	 * @param iYCoord
-	 *            Y-Koordinate des Feldes
 	 */
 	public void setBomb(Bomb newBomb) {
 		if (bInBounds(newBomb.getPosition()[1], newBomb.getPosition()[0])) {
@@ -94,14 +107,10 @@ public class Field {
 
 	/**
 	 * 
-	 * Fuegt Spieler an angegebener Stelle ein
+	 * Fuegt Spieler an in Spieler gespeicherter Stelle ein
 	 * 
 	 * @param newPlayer
 	 *            Einzufuegender Spieler
-	 * @param iXCoord
-	 *            X-Koordinate des Feldes
-	 * @param iYCoord
-	 *            Y-Koordinate des Feldes
 	 */
 	public void setPlayer(Player newPlayer) {
 		if (bInBounds(newPlayer.getPosition()[1], newPlayer.getPosition()[0])) {
@@ -178,15 +187,15 @@ public class Field {
 	/**
 	 * Speichert Map als Datei
 	 * 
-	 * @param sFileName
+	 * @param sOutputFileName
 	 *            Name der Datei
 	 * @param iSaveModus
 	 *            Legt fest wie die Datei gespeichert werden soll. 0: normale
 	 *            Speicherung, 1: komprimierte Speicherung. Geht von 0 aus, wenn
 	 *            Angabe != 0 oder 1
 	 */
-	public void saveMap(String sInputFileName, int iSaveModus) {
-		String sFileName = "./src/maps/" + sInputFileName;
+	public void saveMap(String sOutputFileName, int iSaveModus) {
+		String sFileName = "./src/maps/" + sOutputFileName;
 		FileWriter output;
 		BufferedWriter writer;
 		try {
