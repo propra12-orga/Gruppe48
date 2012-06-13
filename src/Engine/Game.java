@@ -84,7 +84,7 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * Fuegt neue GUI ein
+	 * Fuegt ein neues GUI ein
 	 */
 	public void insertGUI(GUI gui) {
 		this.gui = gui;
