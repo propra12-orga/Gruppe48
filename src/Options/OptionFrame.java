@@ -20,10 +20,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- * Diese Klasse erstellt einen Frame, das Panel und dessen Komponenten fuer die Optionen.
+ * Diese Klasse erstellt einen Frame, das Panel und dessen Komponenten für die Optionen.
  * Die Optionen sollen folgendes beinhalten:
- * -Einstellungsmoeglichkeiten der Spielfeldgroeße,
- * -Einstellungsmoeglichkeiten der Dichte der zerstoerbaren Bloecke,
+ * -Einstellungsmöglichkeiten der Spielfeldgröße,
+ * -Einstellungsmöglichkeiten der Dichte der zerstörbaren Blöcke,
  * -Spielmodus
  */
 /**
@@ -37,7 +37,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// private final Game field;
+	// private final Game game1;
 
 	private int changedMap;
 	private int changedDense;
@@ -50,11 +50,15 @@ public class OptionFrame extends JFrame implements WindowListener {
 	/**
 	 * Erzeugt ein OpitonFrame und zeigt dieses an. Es besitzt verschiedene
 	 * Komponenten
+	 * 
+	 * @param game
+	 *            Das zugehörige Spiel an das das OptionFrame gebunden ist
 	 */
 	public OptionFrame() {
-		// this.game = game;
-		// changedMap = game.getGameOptions().getMap();
-		// changedDense = game.getGameOptions().getDense();
+
+		// this.game1 = game1;
+		// changedMap = 10;
+		// changedDense = game1.getGameOptions().getDense();
 		// Fenstereinstellungen
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
@@ -72,8 +76,11 @@ public class OptionFrame extends JFrame implements WindowListener {
 																// Opitonenliegen
 
 		// Zeile 1
-		JLabel lb1 = new JLabel("Spielfeldgroeße:");
-		JSlider mapSlider = new JSlider(16, 30);
+		JLabel lb1 = new JLabel("Spielfeldgröße:");
+		JSlider mapSlider = new JSlider(15, 30);
+		mapSlider.setMinorTickSpacing(1);
+		mapSlider.setMajorTickSpacing(10);
+		mapSlider.setPaintTicks(true);
 		updateMapLabel();
 
 		mapSlider.addChangeListener(new ChangeListener() {
@@ -81,6 +88,8 @@ public class OptionFrame extends JFrame implements WindowListener {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				changedMap = ((JSlider) e.getSource()).getValue();
+				System.out.println("Neuer Wert Spielfeldgröße: "
+						+ ((JSlider) e.getSource()).getValue());
 				savedOptions = false; //
 				updateMapLabel();
 			}
@@ -95,7 +104,11 @@ public class OptionFrame extends JFrame implements WindowListener {
 		// Zeile 2
 
 		JLabel lb2 = new JLabel("Mauerdichte:");
-		JSlider denseSlider = new JSlider(25, 80);
+		JSlider denseSlider = new JSlider(1, 100);
+		denseSlider.setMinorTickSpacing(5);
+		denseSlider.setMajorTickSpacing(50);
+		denseSlider.setPaintTicks(true);
+
 		updateDenseLabel();
 
 		denseSlider.addChangeListener(new ChangeListener() {
@@ -103,25 +116,27 @@ public class OptionFrame extends JFrame implements WindowListener {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				changedDense = ((JSlider) e.getSource()).getValue();
+				System.out.println("Neuer Wert Blockdichte: "
+						+ ((JSlider) e.getSource()).getValue());
 				savedOptions = false;
 				updateDenseLabel();
 			}
 		});
 
-		center.add(lb2); // Zeile 1 Spalte 1
-		center.add(denseSlider);// Zeile 1 Spalte 2
-		center.add(denseLabel); // Zeile 1 Spalte 3
+		center.add(lb2); // Zeile 2 Spalte 1
+		center.add(denseSlider);// Zeile 2 Spalte 2
+		center.add(denseLabel); // Zeile 2 Spalte 3
 
 		// Zeile 3
 
 		/**
-		 * SOUTH.Panel Belegung: Neue Buttons fuer die Optionen "OK",
+		 * SOUTH.Panel Belegung: Neue Buttons für die Optionen "OK",
 		 * "Übernehmen", "Abbrechen" der festgelegten Einstellungen
 		 */
 
 		buttons = new JPanel(new FlowLayout());
 
-		JButton saveBt = new JButton("Übernehmen");
+		JButton saveBt = new JButton("Save");
 		saveBt.addActionListener(new ActionListener() {
 
 			@Override
@@ -131,7 +146,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 			}
 		});
 
-		JButton cancelBt = new JButton("Abbrechen");
+		JButton cancelBt = new JButton("Cancel");
 		cancelBt.addActionListener(new ActionListener() {
 
 			@Override
@@ -193,7 +208,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 
 	/**
 	 * Sicherheitsabfrage ob man ohne die Änderungzuspeichern das Fenster
-	 * schließen moechte
+	 * schließen möchte
 	 */
 	private void checkCancelWithoutSave() {
 		if (!savedOptions) {
