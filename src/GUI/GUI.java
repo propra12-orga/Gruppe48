@@ -2,10 +2,13 @@ package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -29,7 +32,8 @@ import Options.OptionFrame;
  * @author Carsten Stegmann
  * 
  */
-public class GUI extends JFrame implements ActionListener, KeyListener {
+public class GUI extends JFrame implements ActionListener, KeyListener,
+		WindowListener {
 
 	Field gameField;
 	BufferedImage imgExit;
@@ -63,7 +67,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		mainGame = game;
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.setSize(new Dimension(480, 480));
+		// this.setSize(new Dimension(480, 480));
+		setSize(480, 480);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = (dim.width - getWidth()) / 2;
+		int y = (dim.height - getHeight()) / 2;
+		setLocation(x, y);
+
 		/**
 		 * Menueleiste mit den Elementen:
 		 * 
@@ -93,7 +103,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		gameMenu.addSeparator();
 		gameMenu.add(quitItem);
 		menubar.add(gameMenu);
-		// menubar.add(optionMenu);
+		menubar.add(optionMenu);
 		optionItem = new JMenuItem("GameOptions");
 		optionItem.addActionListener(this);
 		optionMenu.add(optionItem);
@@ -102,6 +112,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		this.add(panel);
 		this.addKeyListener(this);
 		singleplayer.setSelected(true);
+		this.addWindowListener(this);
+
 	}
 
 	/**
@@ -241,4 +253,40 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		}
 
 	}
+
+	public void windowClosing(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		shutdown();
+	}
+
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void windowClosed(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
 }
