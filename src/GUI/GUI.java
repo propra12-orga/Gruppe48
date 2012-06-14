@@ -55,13 +55,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	private FieldGenerator readMap;
 	private Game mainGame;
 	private JMenuItem optionItem;
+	private final Game game1;
 
 	public GUI(Game game) {
 
 		/**
 		 * neues Panel und Frameeigenschaften
 		 */
-
+		this.game1 = game;
 		setFocusable(true);
 		panel = new BoardPanel();
 		mainGame = game;
@@ -177,7 +178,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 			multiplayer.setSelected(false);
 		}
 		if (object.getSource() == optionItem) {
-			new OptionFrame();
+			new OptionFrame(game1);
 		}
 	}
 

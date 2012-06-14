@@ -10,6 +10,7 @@ import Field.FieldGenerator;
 import GUI.GUI;
 import Objects.Bomb;
 import Objects.Player;
+import Options.Options;
 
 /**
  * Game.java
@@ -19,6 +20,7 @@ import Objects.Player;
  */
 public class Game implements Runnable {
 
+	private static Options gameOptions;
 	private Field gameField;
 	private static Field cacheField;
 	/**
@@ -276,6 +278,7 @@ public class Game implements Runnable {
 	 * @return Erzeugtes Spielfeld
 	 */
 	public static Field createNewField() {
+		gameOptions = new Options();
 		FieldGenerator testGenerator = new FieldGenerator();
 		Field generatedField = new Field();
 		cacheField = new Field(); // Neues Spielfeld wird fuer einen etwaigen
@@ -989,6 +992,19 @@ public class Game implements Runnable {
 			}
 			key = 0;
 		}
+	}
+
+	public Options getGameOptions() {
+		return gameOptions;
+	}
+
+	/**
+	 * Es werden neue Spieloptionen gesetzt.
+	 * 
+	 * @param gameOptions
+	 */
+	public void setGameOptions(Options gameOptions) {
+		this.gameOptions = gameOptions;
 	}
 
 	/**

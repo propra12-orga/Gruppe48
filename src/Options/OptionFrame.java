@@ -19,6 +19,8 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import Engine.Game;
+
 /**
  * Diese Klasse erstellt einen Frame, das Panel und dessen Komponenten für die Optionen.
  * Die Optionen sollen folgendes beinhalten:
@@ -37,7 +39,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// private final Game game1;
+	private final Game game1;
 
 	private int changedMap;
 	private int changedDense;
@@ -54,11 +56,11 @@ public class OptionFrame extends JFrame implements WindowListener {
 	 * @param game
 	 *            Das zugehörige Spiel an das das OptionFrame gebunden ist
 	 */
-	public OptionFrame() {
+	public OptionFrame(Game game) {
 
-		// this.game1 = game1;
-		// changedMap = 10;
-		// changedDense = game1.getGameOptions().getDense();
+		this.game1 = game;
+		changedMap = game1.getGameOptions().getMap();
+		changedDense = game1.getGameOptions().getDense();
 		// Fenstereinstellungen
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
@@ -77,7 +79,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 
 		// Zeile 1
 		JLabel lb1 = new JLabel("Spielfeldgröße:");
-		JSlider mapSlider = new JSlider(15, 30);
+		JSlider mapSlider = new JSlider(15, 30, changedMap);
 		mapSlider.setMinorTickSpacing(1);
 		mapSlider.setMajorTickSpacing(10);
 		mapSlider.setPaintTicks(true);
@@ -90,7 +92,8 @@ public class OptionFrame extends JFrame implements WindowListener {
 				changedMap = ((JSlider) e.getSource()).getValue();
 				System.out.println("Neuer Wert Spielfeldgröße: "
 						+ ((JSlider) e.getSource()).getValue());
-				savedOptions = false; //
+				savedOptions = false;
+				System.out.println(changedMap);
 				updateMapLabel();
 			}
 		});
@@ -104,7 +107,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 		// Zeile 2
 
 		JLabel lb2 = new JLabel("Mauerdichte:");
-		JSlider denseSlider = new JSlider(1, 100);
+		JSlider denseSlider = new JSlider(1, 100, changedDense);
 		denseSlider.setMinorTickSpacing(5);
 		denseSlider.setMajorTickSpacing(50);
 		denseSlider.setPaintTicks(true);
@@ -161,7 +164,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// acceptOptions();
+				acceptOptions();
 				dispose();
 			}
 
@@ -188,7 +191,8 @@ public class OptionFrame extends JFrame implements WindowListener {
 	 */
 
 	private void acceptOptions() {
-
+		game1.getGameOptions().setDense(changedDense);
+		game1.getGameOptions().setMap(changedMap);
 		savedOptions = true;
 	}
 
@@ -212,11 +216,11 @@ public class OptionFrame extends JFrame implements WindowListener {
 	 */
 	private void checkCancelWithoutSave() {
 		if (!savedOptions) {
-			String yesNoOptions[] = { "Yes", "No" };
-			int n = JOptionPane.showOptionDialog(null, "Cancel without save ?",
-					"Cancel", JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE, null, yesNoOptions,
-					yesNoOptions[0]);
+			String yesNoOptions[] = { "Ja", "Nein" };
+			int n = JOptionPane.showOptionDialog(null,
+					"Abbrechen ohne zu speichern ?", "Abbrechen",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+					null, yesNoOptions, yesNoOptions[0]);
 
 			if (n == JOptionPane.YES_OPTION) {
 				dispose();
