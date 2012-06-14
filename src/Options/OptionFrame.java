@@ -212,11 +212,11 @@ public class OptionFrame extends JFrame implements WindowListener {
 	 */
 	private void checkCancelWithoutSave() {
 		if (!savedOptions) {
-			String yesNoOptions[] = { "Ja", "Nein" };
-			int n = JOptionPane.showOptionDialog(null,
-					"Abbrechen ohne zu speichern ?", "Abbrechen",
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-					null, yesNoOptions, yesNoOptions[0]);
+			String yesNoOptions[] = { "Yes", "No" };
+			int n = JOptionPane.showOptionDialog(null, "Cancel without save ?",
+					"Cancel", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, yesNoOptions,
+					yesNoOptions[0]);
 
 			if (n == JOptionPane.YES_OPTION) {
 				dispose();
