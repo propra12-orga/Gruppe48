@@ -10,7 +10,6 @@ import Field.FieldGenerator;
 import GUI.GUI;
 import Objects.Bomb;
 import Objects.Player;
-import Options.Options;
 
 /**
  * Game.java
@@ -20,7 +19,6 @@ import Options.Options;
  */
 public class Game implements Runnable {
 
-	private static Options gameOptions;
 	private Field gameField;
 	private static Field cacheField;
 	/**
@@ -49,6 +47,10 @@ public class Game implements Runnable {
 	List<long[]> explosionList;
 	Calendar calendar;
 	long time;
+
+	public static int G = 15;
+
+	// public static int D = 75;
 
 	/**
 	 * Erzeugt ein neues Spielfeld mit 1-2 Spielern
@@ -125,6 +127,10 @@ public class Game implements Runnable {
 	 */
 	public static void setMapLoaded(boolean bLoad) {
 		bMapLoaded = bLoad;
+	}
+
+	public void setGameMapOptions(int GR) {
+		G = GR;
 	}
 
 	/**
@@ -278,7 +284,7 @@ public class Game implements Runnable {
 	 * @return Erzeugtes Spielfeld
 	 */
 	public static Field createNewField() {
-		gameOptions = new Options();
+
 		FieldGenerator testGenerator = new FieldGenerator();
 		Field generatedField = new Field();
 		cacheField = new Field(); // Neues Spielfeld wird fuer einen etwaigen
@@ -286,7 +292,8 @@ public class Game implements Runnable {
 		testGenerator.setRandomAmount(5);
 		testGenerator.setRandomChance(50);
 		testGenerator.setModus(0);
-		generatedField.insertMap(testGenerator.createSquareMap(15));
+		generatedField.insertMap(testGenerator.createSquareMap(G));
+		// testGenerator.setGameDenseOptions(D);
 		cacheField.insertMap(generatedField.getMap());
 		return generatedField;
 	}
@@ -992,19 +999,6 @@ public class Game implements Runnable {
 			}
 			key = 0;
 		}
-	}
-
-	public Options getGameOptions() {
-		return gameOptions;
-	}
-
-	/**
-	 * Es werden neue Spieloptionen gesetzt.
-	 * 
-	 * @param gameOptions
-	 */
-	public void setGameOptions(Options gameOptions) {
-		this.gameOptions = gameOptions;
 	}
 
 	/**

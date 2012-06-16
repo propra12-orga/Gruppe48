@@ -59,8 +59,8 @@ public class OptionFrame extends JFrame implements WindowListener {
 	public OptionFrame(Game game) {
 
 		this.game1 = game;
-		changedMap = game1.getGameOptions().getMap();
-		changedDense = game1.getGameOptions().getDense();
+		changedMap = game1.G;
+		// changedDense = game1.D;
 		// Fenstereinstellungen
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
@@ -107,7 +107,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 		// Zeile 2
 
 		JLabel lb2 = new JLabel("Mauerdichte:");
-		JSlider denseSlider = new JSlider(1, 100, changedDense);
+		JSlider denseSlider = new JSlider(1, 100);
 		denseSlider.setMinorTickSpacing(5);
 		denseSlider.setMajorTickSpacing(50);
 		denseSlider.setPaintTicks(true);
@@ -191,8 +191,9 @@ public class OptionFrame extends JFrame implements WindowListener {
 	 */
 
 	private void acceptOptions() {
-		game1.getGameOptions().setDense(changedDense);
-		game1.getGameOptions().setMap(changedMap);
+
+		game1.setGameMapOptions(changedMap);
+		// fi.setGameDenseOptions(changedDense);
 		savedOptions = true;
 	}
 
