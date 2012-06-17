@@ -21,13 +21,6 @@ public class FieldGenerator {
 	private int iModus, iRandomAmount;
 	private boolean bCreateExit;
 
-	// public int DENSITY;
-
-	// private int densityRandomChance;
-	private double densityStartChance;
-	private double density;
-	private double dRandomchance;
-
 	public FieldGenerator() {
 
 		EMPTY = 0;
@@ -41,7 +34,6 @@ public class FieldGenerator {
 		fRandomChance = 0;
 		iRandomAmount = 0;
 		bCreateExit = true;
-		densityStartChance = 75;
 
 	}
 
