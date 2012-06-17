@@ -49,7 +49,9 @@ public class Game implements Runnable {
 	long time;
 	public static int startMapSize = 15;
 	public static double startDensity = 70;
-	static int mapModus = 1;
+	public static int rectangleMapWidht = 20;
+	public static int rectangleMapHight = 15;
+	public static boolean mapModus = Options.OptionFrame.mapModus;
 
 	/**
 	 * Erzeugt ein neues Spielfeld mit 1-2 Spielern
@@ -136,8 +138,16 @@ public class Game implements Runnable {
 		startDensity = changedMapDensity;
 	}
 
-	public void setMapModusOptions(int modus) {
-		mapModus = modus;
+	public void setMapModus(boolean Mapmode) {
+		mapModus = Mapmode;
+	}
+
+	public void setGameMapWidht(int changedWidhtMapSize) {
+		rectangleMapWidht = changedWidhtMapSize;
+	}
+
+	public void setGameMapHight(int changedHightMapSize) {
+		rectangleMapHight = changedHightMapSize;
 	}
 
 	/**
@@ -299,16 +309,16 @@ public class Game implements Runnable {
 		testGenerator.setRandomAmount(5);
 		testGenerator.setRandomChance(50);
 		testGenerator.setModus(0);
-		if (mapModus == 1) {
+		cacheField.insertMap(generatedField.getMap());
+		if (mapModus == true) {
 
 			generatedField.insertMap(testGenerator.createSquareMap(
 					startMapSize, startDensity));
 		} else {
-			generatedField.insertMap(testGenerator.createRectangleMap(20, 10,
-					startDensity));
+			generatedField.insertMap(testGenerator.createRectangleMap(
+					rectangleMapWidht, rectangleMapHight, startDensity));
 		}
-		// testGenerator.setDensityChance(2);
-		cacheField.insertMap(generatedField.getMap());
+
 		return generatedField;
 	}
 

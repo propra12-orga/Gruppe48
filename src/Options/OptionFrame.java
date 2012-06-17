@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Label;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,11 +12,12 @@ import java.awt.event.WindowListener;
 import java.math.BigDecimal;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.ChangeEvent;
@@ -38,7 +38,8 @@ import Engine.Game;
  * 
  */
 
-public class OptionFrame extends JFrame implements WindowListener {
+public class OptionFrame extends JFrame implements WindowListener,
+		ActionListener {
 	/**	
 	 * 
 	 */
@@ -47,21 +48,16 @@ public class OptionFrame extends JFrame implements WindowListener {
 
 	private int changedMap;
 	private double changedDensity;
+	private int changedVerticalMap;
+	private int changedHorizontalMap;
 	private boolean savedOptions = true;
+	public static boolean mapModus = true;
 
 	private final JLabel mapLabel = new JLabel();
 	private final JLabel densityLabel = new JLabel();
 	private final JPanel buttons;
-	static final String gapList[] = { "0", "2", "4", "6", "8", "10", "12",
-			"14", "16", "18" };
-	final static int maxGap = 20;
-	JComboBox horizontalGapComboBox;
-	JComboBox verticalGapComboBox;
-
-	public void initGaps() {
-		horizontalGapComboBox = new JComboBox(gapList);
-		verticalGapComboBox = new JComboBox(gapList);
-	}
+	private final JLabel verticalLabel = new JLabel();
+	private final JLabel horizontalLabel = new JLabel();
 
 	/**
 	 * Erzeugt ein OpitonFrame und zeigt dieses an. Es besitzt verschiedene
@@ -75,6 +71,9 @@ public class OptionFrame extends JFrame implements WindowListener {
 		this.game1 = game;
 		changedMap = game1.startMapSize;
 		changedDensity = game1.startDensity;
+		changedVerticalMap = game1.rectangleMapHight;
+		changedHorizontalMap = game1.rectangleMapWidht;
+
 		// Fenstereinstellungen
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
@@ -84,57 +83,84 @@ public class OptionFrame extends JFrame implements WindowListener {
 		int x = dim.width / 2 - (getWidth() / 2);
 		int y = dim.height / 2 - (getHeight() / 2);
 		setLocation(x, y);
-		setResizable(false);
-		initGaps();
-		JPanel controls = new JPanel();
-		controls.setLayout(new GridLayout(0, 3));
-
-		JPanel center = new JPanel(new GridLayout(0, 3)); // das zentrale
-															// Panel auf dem
-															// die
-															// Opitonenliegen
+		setResizable(true);
+		JPanel controls = new JPanel(new GridLayout(0, 3));
+		JPanel center = new JPanel(new GridLayout(0, 3));
+		// JPanel west = new JPanel(new GridLayout(0, 1));
+		final JRadioButton squareButton = new JRadioButton("Create Squaremap",
+				true);
+		final JRadioButton rectangleButton = new JRadioButton(
+				"Create Rectanglemap", false);
+		controls.add(squareButton);
+		controls.add(rectangleButton);
 
 		center.setBorder(new BevelBorder(BevelBorder.RAISED));
 		controls.setBorder(new BevelBorder(BevelBorder.RAISED));
-		// controls.add(new Label(""));
-		controls.add(new Label(""));
+		JLabel lb4 = new JLabel("Spielfeldbreite:");
+		JSlider horizontalSlider = new JSlider(5, 30, 20);
+		horizontalSlider.setMinorTickSpacing(1);
+		horizontalSlider.setMajorTickSpacing(5);
+		horizontalSlider.setPaintTicks(true);
+		horizontalSlider.setPaintLabels(true);
 
-		controls.add(new Label("Settings for Rectangle Map", Label.CENTER));
-		controls.add(new Label(""));
+		horizontalSlider.addChangeListener(new ChangeListener() {
 
-		// controls.add(new Label(""));
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				changedHorizontalMap = ((JSlider) e.getSource()).getValue();
+				System.out.println("Neuer Wert Spielfeldbreite: "
+						+ ((JSlider) e.getSource()).getValue());
+				savedOptions = false;
+				updateHorizontalMapLabel();
+			}
+		});
+		JLabel lb3 = new JLabel("Spielfeldhöhe:");
+		JSlider verticalSlider = new JSlider(5, 30, 15);
+		verticalSlider.setMinorTickSpacing(1);
+		verticalSlider.setMajorTickSpacing(5);
+		verticalSlider.setPaintTicks(true);
+		verticalSlider.setPaintLabels(true);
 
-		controls.add(new Label("width:"));
-		controls.add(new Label(""));
-		// controls.add(new Label(""));
-		controls.add(new Label("hight:"));
-		// controls.add(new Label(""));
-		// controls.add(new Label(""));
-		controls.add(horizontalGapComboBox);
-		controls.add(new Label(""));
-		controls.add(verticalGapComboBox);
-		controls.add(new Label(""));
-		controls.add(new Label(""));
-		controls.add(new Label(""));
+		verticalSlider.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				changedVerticalMap = ((JSlider) e.getSource()).getValue();
+				System.out.println("Neuer Wert Spielfeldhöhe: "
+						+ ((JSlider) e.getSource()).getValue());
+				savedOptions = false;
+				updateVerticalMapLabel();
+			}
+		});
 
 		// Zeile 1
 		JLabel lb1 = new JLabel("Spielfeldgröße:");
-		JSlider mapSlider = new JSlider(13, 25, changedMap);
+		JSlider mapSlider = new JSlider(5, 30, changedMap);
 		mapSlider.setMinorTickSpacing(1);
-		mapSlider.setMajorTickSpacing(10);
+		mapSlider.setMajorTickSpacing(5);
 		mapSlider.setPaintTicks(true);
+		mapSlider.setPaintLabels(true);
 		updateMapLabel();
 
-		center.add(new Label(""));
-		center.add(new Label("Settings for Square Map", Label.CENTER));
-		center.add(new Label(""));
+		squareButton.addActionListener(new ActionListener() {
 
-		center.add(new Label(""));
-		center.add(new Label(""));
-		center.add(new Label(""));
-		center.add(lb1); // Zeile 1 Spalte 1
-		center.add(mapSlider);// Zeile 1 Spalte 2
-		center.add(mapLabel); // Zeile 1 Spalte 3
+			public void actionPerformed(ActionEvent e) {
+				mapModus = true;
+				rectangleButton.setSelected(false);
+				System.out.println(mapModus + ": Square");
+			}
+
+		});
+
+		rectangleButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				mapModus = false;
+				squareButton.setSelected(false);
+				System.out.println(mapModus + ": Rectangle");
+			}
+
+		});
 
 		mapSlider.addChangeListener(new ChangeListener() {
 
@@ -147,20 +173,20 @@ public class OptionFrame extends JFrame implements WindowListener {
 				updateMapLabel();
 			}
 		});
+		buttons = new JPanel(new FlowLayout());
 
 		// nach 3 Opjekten wird eine neue Zeile begonnen
-		center.add(lb1); // Zeile 1 Spalte 1
-		center.add(mapSlider);// Zeile 1 Spalte 2
-		center.add(mapLabel); // Zeile 1 Spalte 3
+
 		// Zeile 1 ENDE
 
 		// Zeile 2
 
 		JLabel lb2 = new JLabel("Mauerdichte:");
-		JSlider densitySlider = new JSlider(1, 100);
-		densitySlider.setMinorTickSpacing(1);
-		densitySlider.setMajorTickSpacing(10);
+		JSlider densitySlider = new JSlider(0, 100, 70);
+		densitySlider.setMinorTickSpacing(5);
+		densitySlider.setMajorTickSpacing(25);
 		densitySlider.setPaintTicks(true);
+		densitySlider.setPaintLabels(true);
 
 		updateDensityLabel();
 
@@ -175,19 +201,47 @@ public class OptionFrame extends JFrame implements WindowListener {
 				updateDensityLabel();
 			}
 		});
-
-		center.add(lb2); // Zeile 2 Spalte 1
-		center.add(densitySlider);// Zeile 2 Spalte 2
-		center.add(densityLabel); // Zeile 2 Spalte 3
-
-		// Zeile 3
+		center.add(new JLabel(""));
+		center.add(new JLabel("Settings SquareMap"));
+		center.add(new JLabel(""));
+		center.add(new JLabel(""));
+		center.add(new JLabel(""));
+		center.add(new JLabel(""));
+		center.add(lb1);
+		center.add(mapSlider);
+		center.add(mapLabel);
+		center.add(new JLabel(""));
+		center.add(new JLabel(""));
+		center.add(new JLabel(""));
+		center.add(new JSeparator());
+		center.add(new JSeparator());
+		center.add(new JSeparator());
+		center.add(new JLabel(""));
+		center.add(new JLabel("Settings RectangleMap"));
+		center.add(new JLabel(""));
+		center.add(new JLabel(""));
+		center.add(new JLabel(""));
+		center.add(new JLabel(""));
+		center.add(lb4);
+		center.add(horizontalSlider);
+		center.add(horizontalLabel);
+		center.add(lb3);
+		center.add(verticalSlider);
+		center.add(verticalLabel);
+		buttons.add(lb2);
+		buttons.add(densitySlider);
+		buttons.add(densityLabel);
+		buttons.add(new JLabel(""));
+		center.add(new JLabel(""));
+		center.add(new JLabel(""));
+		center.add(new JLabel(""));
 
 		/**
 		 * SOUTH.Panel Belegung: Neue Buttons für die Optionen "OK",
 		 * "Übernehmen", "Abbrechen" der festgelegten Einstellungen
 		 */
 
-		buttons = new JPanel(new FlowLayout());
+		// buttons = new JPanel(new FlowLayout());
 
 		JButton saveBt = new JButton("Save");
 		saveBt.addActionListener(new ActionListener() {
@@ -224,7 +278,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 		buttons.add(okBt);
 		buttons.add(saveBt);
 		buttons.add(cancelBt);
-
+		buttons.setBorder(new BevelBorder(BevelBorder.RAISED));
 		// Panels aufs Frame
 		add(controls, BorderLayout.NORTH);
 		add(center, BorderLayout.CENTER);
@@ -244,7 +298,11 @@ public class OptionFrame extends JFrame implements WindowListener {
 
 		game1.setGameMapOptions(changedMap);
 		game1.setGameDensityOptions(changedDensity);
+		game1.setMapModus(mapModus);
+		game1.setGameMapHight(changedVerticalMap);
+		game1.setGameMapWidht(changedHorizontalMap);
 		savedOptions = true;
+
 	}
 
 	/**
@@ -259,6 +317,16 @@ public class OptionFrame extends JFrame implements WindowListener {
 	private void updateDensityLabel() {
 		densityLabel.setText(new BigDecimal(changedDensity).toString());
 		densityLabel.repaint();
+	}
+
+	private void updateVerticalMapLabel() {
+		verticalLabel.setText(new Integer(changedVerticalMap).toString());
+		verticalLabel.repaint();
+	}
+
+	private void updateHorizontalMapLabel() {
+		horizontalLabel.setText(new Integer(changedHorizontalMap).toString());
+		horizontalLabel.repaint();
 	}
 
 	/**
@@ -318,6 +386,12 @@ public class OptionFrame extends JFrame implements WindowListener {
 
 	@Override
 	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
