@@ -47,10 +47,9 @@ public class Game implements Runnable {
 	List<long[]> explosionList;
 	Calendar calendar;
 	long time;
-
-	public static int G = 15;
-
-	// public static int D = 75;
+	public static int startMapSize = 15;
+	public static double startDensity = 70;
+	static int mapModus = 1;
 
 	/**
 	 * Erzeugt ein neues Spielfeld mit 1-2 Spielern
@@ -129,8 +128,16 @@ public class Game implements Runnable {
 		bMapLoaded = bLoad;
 	}
 
-	public void setGameMapOptions(int GR) {
-		G = GR;
+	public void setGameMapOptions(int changedMapSize) {
+		startMapSize = changedMapSize;
+	}
+
+	public void setGameDensityOptions(double changedMapDensity) {
+		startDensity = changedMapDensity;
+	}
+
+	public void setMapModusOptions(int modus) {
+		mapModus = modus;
 	}
 
 	/**
@@ -292,8 +299,15 @@ public class Game implements Runnable {
 		testGenerator.setRandomAmount(5);
 		testGenerator.setRandomChance(50);
 		testGenerator.setModus(0);
-		generatedField.insertMap(testGenerator.createSquareMap(G));
-		// testGenerator.setGameDenseOptions(D);
+		if (mapModus == 1) {
+
+			generatedField.insertMap(testGenerator.createSquareMap(
+					startMapSize, startDensity));
+		} else {
+			generatedField.insertMap(testGenerator.createRectangleMap(20, 10,
+					startDensity));
+		}
+		// testGenerator.setDensityChance(2);
 		cacheField.insertMap(generatedField.getMap());
 		return generatedField;
 	}
@@ -361,14 +375,15 @@ public class Game implements Runnable {
 	 *            Hoehe und Breite des Spielfeldes
 	 * @return Erzeugtes Spielfeld
 	 */
-	public static Field createNewField(int iSize) {
+	public static Field createNewField(int iSize, double dRandomchance) {
 		FieldGenerator testGenerator = new FieldGenerator();
 		Field generatedField = new Field();
 		cacheField = new Field();
 		testGenerator.setRandomAmount(5);
 		testGenerator.setRandomChance(50);
 		testGenerator.setModus(0);
-		generatedField.insertMap(testGenerator.createSquareMap(iSize));
+		generatedField.insertMap(testGenerator.createSquareMap(iSize,
+				dRandomchance));
 		cacheField = generatedField;
 		cacheField.insertMap(generatedField.getMap());
 		return generatedField;

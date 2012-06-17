@@ -4,18 +4,22 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Label;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.math.BigDecimal;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.border.BevelBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -42,12 +46,22 @@ public class OptionFrame extends JFrame implements WindowListener {
 	private final Game game1;
 
 	private int changedMap;
-	private int changedDense;
+	private double changedDensity;
 	private boolean savedOptions = true;
 
 	private final JLabel mapLabel = new JLabel();
-	private final JLabel denseLabel = new JLabel();
+	private final JLabel densityLabel = new JLabel();
 	private final JPanel buttons;
+	static final String gapList[] = { "0", "2", "4", "6", "8", "10", "12",
+			"14", "16", "18" };
+	final static int maxGap = 20;
+	JComboBox horizontalGapComboBox;
+	JComboBox verticalGapComboBox;
+
+	public void initGaps() {
+		horizontalGapComboBox = new JComboBox(gapList);
+		verticalGapComboBox = new JComboBox(gapList);
+	}
 
 	/**
 	 * Erzeugt ein OpitonFrame und zeigt dieses an. Es besitzt verschiedene
@@ -59,8 +73,8 @@ public class OptionFrame extends JFrame implements WindowListener {
 	public OptionFrame(Game game) {
 
 		this.game1 = game;
-		changedMap = game1.G;
-		// changedDense = game1.D;
+		changedMap = game1.startMapSize;
+		changedDensity = game1.startDensity;
 		// Fenstereinstellungen
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
@@ -71,19 +85,56 @@ public class OptionFrame extends JFrame implements WindowListener {
 		int y = dim.height / 2 - (getHeight() / 2);
 		setLocation(x, y);
 		setResizable(false);
+		initGaps();
+		JPanel controls = new JPanel();
+		controls.setLayout(new GridLayout(0, 3));
 
-		JPanel center = new JPanel(new GridLayout(0, 3, 3, 3)); // das zentrale
-																// Panel auf dem
-																// die
-																// Opitonenliegen
+		JPanel center = new JPanel(new GridLayout(0, 3)); // das zentrale
+															// Panel auf dem
+															// die
+															// Opitonenliegen
+
+		center.setBorder(new BevelBorder(BevelBorder.RAISED));
+		controls.setBorder(new BevelBorder(BevelBorder.RAISED));
+		// controls.add(new Label(""));
+		controls.add(new Label(""));
+
+		controls.add(new Label("Settings for Rectangle Map", Label.CENTER));
+		controls.add(new Label(""));
+
+		// controls.add(new Label(""));
+
+		controls.add(new Label("width:"));
+		controls.add(new Label(""));
+		// controls.add(new Label(""));
+		controls.add(new Label("hight:"));
+		// controls.add(new Label(""));
+		// controls.add(new Label(""));
+		controls.add(horizontalGapComboBox);
+		controls.add(new Label(""));
+		controls.add(verticalGapComboBox);
+		controls.add(new Label(""));
+		controls.add(new Label(""));
+		controls.add(new Label(""));
 
 		// Zeile 1
 		JLabel lb1 = new JLabel("Spielfeldgröße:");
-		JSlider mapSlider = new JSlider(15, 30, changedMap);
+		JSlider mapSlider = new JSlider(13, 25, changedMap);
 		mapSlider.setMinorTickSpacing(1);
 		mapSlider.setMajorTickSpacing(10);
 		mapSlider.setPaintTicks(true);
 		updateMapLabel();
+
+		center.add(new Label(""));
+		center.add(new Label("Settings for Square Map", Label.CENTER));
+		center.add(new Label(""));
+
+		center.add(new Label(""));
+		center.add(new Label(""));
+		center.add(new Label(""));
+		center.add(lb1); // Zeile 1 Spalte 1
+		center.add(mapSlider);// Zeile 1 Spalte 2
+		center.add(mapLabel); // Zeile 1 Spalte 3
 
 		mapSlider.addChangeListener(new ChangeListener() {
 
@@ -93,7 +144,6 @@ public class OptionFrame extends JFrame implements WindowListener {
 				System.out.println("Neuer Wert Spielfeldgröße: "
 						+ ((JSlider) e.getSource()).getValue());
 				savedOptions = false;
-				System.out.println(changedMap);
 				updateMapLabel();
 			}
 		});
@@ -107,28 +157,28 @@ public class OptionFrame extends JFrame implements WindowListener {
 		// Zeile 2
 
 		JLabel lb2 = new JLabel("Mauerdichte:");
-		JSlider denseSlider = new JSlider(1, 100);
-		denseSlider.setMinorTickSpacing(5);
-		denseSlider.setMajorTickSpacing(50);
-		denseSlider.setPaintTicks(true);
+		JSlider densitySlider = new JSlider(1, 100);
+		densitySlider.setMinorTickSpacing(1);
+		densitySlider.setMajorTickSpacing(10);
+		densitySlider.setPaintTicks(true);
 
-		updateDenseLabel();
+		updateDensityLabel();
 
-		denseSlider.addChangeListener(new ChangeListener() {
+		densitySlider.addChangeListener(new ChangeListener() {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				changedDense = ((JSlider) e.getSource()).getValue();
+				changedDensity = ((JSlider) e.getSource()).getValue();
 				System.out.println("Neuer Wert Blockdichte: "
 						+ ((JSlider) e.getSource()).getValue());
 				savedOptions = false;
-				updateDenseLabel();
+				updateDensityLabel();
 			}
 		});
 
 		center.add(lb2); // Zeile 2 Spalte 1
-		center.add(denseSlider);// Zeile 2 Spalte 2
-		center.add(denseLabel); // Zeile 2 Spalte 3
+		center.add(densitySlider);// Zeile 2 Spalte 2
+		center.add(densityLabel); // Zeile 2 Spalte 3
 
 		// Zeile 3
 
@@ -176,7 +226,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 		buttons.add(cancelBt);
 
 		// Panels aufs Frame
-		// add(center, BorderLayout.NORTH);
+		add(controls, BorderLayout.NORTH);
 		add(center, BorderLayout.CENTER);
 		add(buttons, BorderLayout.SOUTH);
 
@@ -193,7 +243,7 @@ public class OptionFrame extends JFrame implements WindowListener {
 	private void acceptOptions() {
 
 		game1.setGameMapOptions(changedMap);
-		// fi.setGameDenseOptions(changedDense);
+		game1.setGameDensityOptions(changedDensity);
 		savedOptions = true;
 	}
 
@@ -206,9 +256,9 @@ public class OptionFrame extends JFrame implements WindowListener {
 		mapLabel.repaint();
 	}
 
-	private void updateDenseLabel() {
-		denseLabel.setText(new Integer(changedDense).toString());
-		denseLabel.repaint();
+	private void updateDensityLabel() {
+		densityLabel.setText(new BigDecimal(changedDensity).toString());
+		densityLabel.repaint();
 	}
 
 	/**

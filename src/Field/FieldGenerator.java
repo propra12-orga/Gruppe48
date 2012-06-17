@@ -26,6 +26,7 @@ public class FieldGenerator {
 	// private int densityRandomChance;
 	private double densityStartChance;
 	private double density;
+	private double dRandomchance;
 
 	public FieldGenerator() {
 
@@ -53,8 +54,11 @@ public class FieldGenerator {
 	 *            Hoehe der zu erstellenden Map
 	 * @return Erzeugte Map
 	 */
-	public FieldContent[][] createRectangleMap(int iWidth, int iHeight) {
+
+	public FieldContent[][] createRectangleMap(int iWidth, int iHeight,
+			double dRandomchance) {
 		Map = null;
+
 		Map = new FieldContent[iWidth][iHeight];
 		for (int i = 0; i < iWidth; i++) {
 			for (int j = 0; j < iHeight; j++) {
@@ -75,10 +79,10 @@ public class FieldGenerator {
 				}
 
 				else if ((i >= 3 && i <= iWidth) || (j >= 3 && j <= iHeight)) {
-					if (Math.random() <= densityStartChance / 100) // hier kann
-																	// man die
-																	// DICHTE
-																	// der
+					if (Math.random() <= dRandomchance / 100) // hier kann
+						// man die
+						// DICHTE
+						// der
 						// zerstoerbaren Bloecke
 						// veraendern
 						Map[i][j].setContent(STONE);
@@ -104,8 +108,8 @@ public class FieldGenerator {
 	 *            Seitenlaenge der zu erzeugenden Map
 	 * @return Erzeugte Map
 	 */
-	public FieldContent[][] createSquareMap(int iSize) {
-		return createRectangleMap(iSize, iSize);
+	public FieldContent[][] createSquareMap(int iSize, double dRandomchance) {
+		return createRectangleMap(iSize, iSize, dRandomchance);
 	}
 
 	/**
