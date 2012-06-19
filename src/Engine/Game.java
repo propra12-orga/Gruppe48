@@ -182,7 +182,6 @@ public class Game implements Runnable {
 													// neu gestartet, so wird
 													// wieder die vorherige Map
 													// benutzt
-			System.out.println(cacheField.getMap());
 		} else {
 			if (bMapLoaded) {
 				field = createNewField(sMapPath);
@@ -375,13 +374,14 @@ public class Game implements Runnable {
 				generatedField.insertMap(testGenerator.readMap(sMap));
 				iMaxPlayers = iMaxPlayersLoaded;
 			} else {
-				gui.showError("Die Map ist unspielbar, da kein Spieler vorhanden ist");
+				gui.showError("Diese Map ist unspielbar, da kein Spieler vorhanden ist");
 				setMapLoaded(false);
 				return null;
 			}
 		} else { // Gibt es Fehler beim Einlesen der Datei, so wird diese
 					// abgelehnt
-			gui.showError("Es gibt einen Fehler mit der Map oder sie ist nicht mehr vorhanden! Vorgang wird abgebrochen.");
+			gui.showError("Es gibt einen Fehler mit der Map, bitte ueberpruefen Sie die Eingabedatei!"
+					+ " Vorgang wird abgebrochen.");
 			setMapLoaded(false);
 			return null;
 		}

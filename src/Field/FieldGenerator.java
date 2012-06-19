@@ -167,6 +167,7 @@ public class FieldGenerator {
 		int zeilenAnzahl = 0;
 		int spielfeldBreite = 0;
 		int spielfeldHoehe = 0;
+		int ausgaenge = 0;
 		FileReader inputFile;
 		BufferedReader reader;
 		List<String> mapList = new ArrayList<String>();
@@ -193,14 +194,14 @@ public class FieldGenerator {
 		}
 		Map = null;
 		iCounter = mapList.get(0).length();
-		for (int i = 0; i < mapList.get(0).length(); i++) {
+		for (int i = 0; i < zeilenAnzahl; i++) {
 			// laengste Zeile wird ausgesucht um auf Symmetrie zu pruefen
 			if (iCounter < mapList.get(i).length()) {
 				iCounter = mapList.get(i).length();
 			}
 		}
 		iCounter2 = mapList.get(0).length();
-		for (int i = 0; i < mapList.get(0).length(); i++) {
+		for (int i = 0; i < zeilenAnzahl; i++) {
 			// kuerzeste Zeile wird ausgesucht um auf Symmetrie zu pruefen
 			if (iCounter2 >= mapList.get(i).length()) {
 				iCounter2 = mapList.get(i).length();
@@ -225,6 +226,7 @@ public class FieldGenerator {
 			}
 		}
 		if (spielfeldBreite != spielfeldHoehe | spielfeldHoehe != zeilenAnzahl) {
+			//testet ob das Spielfeld quadratisch ist
 			System.out.println("Spielfeld ist nicht quadratisch!");
 			System.out.println("Geforderte Spielfeldbreite:" + spielfeldBreite);
 			System.out.println("Spielfeldhoehe:" + spielfeldHoehe);
@@ -240,6 +242,28 @@ public class FieldGenerator {
 			} else {
 				System.out.println("Spielfeldbreite: " + iCounter2);
 			}
+			return null;
+		}
+		for (int i = 0; i < mapList.get(0).length(); i++) {
+			//Ueberpruefung der letzten Zeile, nur Wall erlaubt!	
+			if (mapList.get(zeilenAnzahl - 1).charAt(i) != 42) {
+				System.out
+						.println("Fehler in der letzten Zeile, nur unzerstoerbare Waende erlaubt!");
+				return null;
+			}
+		}
+		for (int i = 0; i < mapList.get(0).length(); i++) {
+			//Es darf nur einen Ausgang geben!
+			for (int j = 0; j < zeilenAnzahl; j++) {
+				if (mapList.get(j).charAt(i) == 69
+						| mapList.get(j).charAt(i) == 72) {
+					ausgaenge++;
+				}
+			}
+		}
+		if (ausgaenge > 1 | ausgaenge == 0) {
+			System.out
+					.println("Es darf nur und muss mindestens einen Ausgang geben!");
 			return null;
 		}
 		Map = new FieldContent[spielfeldHoehe][spielfeldBreite];
