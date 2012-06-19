@@ -182,6 +182,7 @@ public class Game implements Runnable {
 													// neu gestartet, so wird
 													// wieder die vorherige Map
 													// benutzt
+			System.out.println(cacheField.getMap());
 		} else {
 			if (bMapLoaded) {
 				field = createNewField(sMapPath);
@@ -330,7 +331,7 @@ public class Game implements Runnable {
 		testGenerator.setModus(fillModus);
 		System.out.println("Modus:" + fillModus + "     RandomAmount:"
 				+ startRandomAmount + "     RandomChance:" + startProbability);
-		cacheField.insertMap(generatedField.getMap());
+
 		if (mapModus == true) {
 
 			generatedField.insertMap(testGenerator.createSquareMap(
@@ -339,7 +340,7 @@ public class Game implements Runnable {
 			generatedField.insertMap(testGenerator.createRectangleMap(
 					rectangleMapWidht, rectangleMapHight, startDensity));
 		}
-
+		cacheField.insertMap(generatedField.getMap());
 		return generatedField;
 	}
 
@@ -415,7 +416,6 @@ public class Game implements Runnable {
 		testGenerator.setModus(0);
 		generatedField.insertMap(testGenerator.createSquareMap(iSize,
 				dRandomchance));
-		cacheField = generatedField;
 		cacheField.insertMap(generatedField.getMap());
 		return generatedField;
 	}
