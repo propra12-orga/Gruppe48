@@ -51,6 +51,10 @@ public class Game implements Runnable {
 	public static double startDensity = 70;
 	public static int rectangleMapWidht = 20;
 	public static int rectangleMapHight = 15;
+	public static int fillModus = 0;
+	public static int startProbability = 50;
+	public static int startRandomAmount = 5;
+
 	public static boolean mapModus = Options.OptionFrame.mapModus;
 
 	/**
@@ -148,6 +152,21 @@ public class Game implements Runnable {
 
 	public void setGameMapHight(int changedHightMapSize) {
 		rectangleMapHight = changedHightMapSize;
+	}
+
+	public void setFillModus(int fillMapModus) {
+
+		fillModus = fillMapModus;
+	}
+
+	public void setRAmount(int changedAmount) {
+
+		startRandomAmount = changedAmount;
+	}
+
+	public void setProbability(int changedProbability) {
+
+		startProbability = changedProbability;
 	}
 
 	/**
@@ -306,9 +325,11 @@ public class Game implements Runnable {
 		Field generatedField = new Field();
 		cacheField = new Field(); // Neues Spielfeld wird fuer einen etwaigen
 									// Neustart auf der selben Map gespeichert.
-		testGenerator.setRandomAmount(5);
-		testGenerator.setRandomChance(50);
-		testGenerator.setModus(0);
+		testGenerator.setRandomAmount(startRandomAmount);
+		testGenerator.setRandomChance(startProbability);
+		testGenerator.setModus(fillModus);
+		System.out.println("Modus:" + fillModus + "     RandomAmount:"
+				+ startRandomAmount + "     RandomChance:" + startProbability);
 		cacheField.insertMap(generatedField.getMap());
 		if (mapModus == true) {
 
