@@ -359,7 +359,7 @@ public class Game implements Runnable {
 			}
 		} else { // Gibt es Fehler beim Einlesen der Datei, so wird diese
 					// abgelehnt
-			gui.showError("Die Map enthaelt ungueltige Zeichen oder ist nicht mehr vorhanden! Vorgang wird abgebrochen.");
+			gui.showError("Es gibt einen Fehler mit der Map oder sie ist nicht mehr vorhanden! Vorgang wird abgebrochen.");
 			setMapLoaded(false);
 			return null;
 		}

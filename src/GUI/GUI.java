@@ -239,7 +239,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 			mainGame.setMapLoaded(true);
 			return mainGame.restart();
 		} else {
-			showError("Nichts ausgewaehlt");
 			return false;
 		}
 

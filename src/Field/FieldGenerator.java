@@ -163,24 +163,28 @@ public class FieldGenerator {
 	 */
 	public FieldContent[][] readMap(String sInputFile) {
 		int iCounter = 0;
+		int iCounter2 = 0;//fuer kleinere Zeilen als gefordert
+		int iCounter3 = 0;//fuer die Anzahl der Zeilen
+		int spielfeldBreite = 0;
+		int spielfeldHoehe = 0;
 		FileReader inputFile;
 		BufferedReader reader;
 		List<String> mapList = new ArrayList<String>();
+
 		try {
 			inputFile = new FileReader(sInputFile);
 		} catch (FileNotFoundException e) {
 			return null;
 		}
 		reader = new BufferedReader(inputFile);
-
 		try {
 			while (reader.ready()) {
 				mapList.add(reader.readLine());
+				iCounter3++;
 			}
 		} catch (IOException e) {
 			return null;
 		}
-
 		try {
 			reader.close();
 			inputFile.close();
@@ -189,17 +193,59 @@ public class FieldGenerator {
 		}
 		Map = null;
 		iCounter = mapList.get(0).length();
-		for (int i = 1; i < mapList.size(); i++) {
-			// laengste Zeile wird ausgesucht um die Groeße deszu erstellenden
-			// Arrays zu ermitteln
+		for (int i = 0; i < mapList.get(0).length(); i++) {
+			// laengste Zeile wird ausgesucht um auf Symmetrie zu pruefen
 			if (iCounter < mapList.get(i).length()) {
 				iCounter = mapList.get(i).length();
 			}
 		}
-		Map = new FieldContent[iCounter][mapList.size()];
+		iCounter2 = mapList.get(0).length();
+		for (int i = 0; i < mapList.get(0).length(); i++) {
+			// kuerzeste Zeile wird ausgesucht um auf Symmetrie zu pruefen
+			if (iCounter2 >= mapList.get(i).length()) {
+				iCounter2 = mapList.get(i).length();
+			}
+		}
+		for (int i = 0; i < mapList.get(0).length(); i++) {
+			//Spielfeldbreite wird ermittelt anhand der Anzahl der Waende
+			//der ersten Zeile
+			if (mapList.get(0).charAt(i) == 42) {
+				spielfeldBreite++;
+			} else {
+				return null;
+			}
+		}
+		for (int i = 0; i < mapList.get(0).length(); i++) {
+			//Spielfeldhoehe wird ermittelt anhand der Anzahl der Waende
+			//an den ersten Positionen der Spalten
+			if (mapList.get(i).charAt(0) == 42) {
+				spielfeldHoehe++;
+			} else {
+				return null;
+			}
+		}
+		if (spielfeldBreite != spielfeldHoehe | spielfeldHoehe != iCounter3) {
+			System.out.println("Spielfeld ist nicht quadratisch!");
+			System.out.println("Geforderte Spielfeldbreite:" + spielfeldBreite);
+			System.out.println("Spielfeldhoehe:" + spielfeldHoehe);
+			System.out.println("Anzahl der Zeilen:" + iCounter3);
+			return null;
+		}
+		if (iCounter != spielfeldBreite | iCounter2 != spielfeldBreite) {
+			//teste ob das Spielfeld symmetrisch ist
+			System.out.println("Spielfeld ist nicht symmetrisch!");
+			System.out.println("Geforderte Spielfeldbreite:" + spielfeldBreite);
+			if (iCounter != spielfeldBreite) {
+				System.out.println("Spielfeldbreite: " + iCounter);
+			} else {
+				System.out.println("Spielfeldbreite: " + iCounter2);
+			}
+			return null;
+		}
+		Map = new FieldContent[spielfeldHoehe][spielfeldBreite];
 		// Array wird erzeugt und initialisiert
-		for (int i = 0; i < mapList.size(); i++) {
-			for (int j = 0; j < iCounter; j++) {
+		for (int i = 0; i < spielfeldBreite; i++) {
+			for (int j = 0; j < spielfeldHoehe; j++) {
 				Map[j][i] = new FieldContent();
 				Map[j][i].setContent(EMPTY);
 			}
@@ -213,6 +259,9 @@ public class FieldGenerator {
 				case 32: // ' '
 					Map[i][iCounter].setContent(EMPTY);
 					break;
+				case 42: // '*'
+					Map[i][iCounter].setContent(WALL);
+					break;
 				case 35: // '#'
 					Map[i][iCounter].setContent(WALL);
 					break;
@@ -225,7 +274,7 @@ public class FieldGenerator {
 					break;
 				case 72: // 'H'
 					Map[i][iCounter].setContent(STONE);// fuer versteckten
-														// Ausgang
+					// Ausgang
 					Map[i][iCounter].setExit();
 					break;
 				case 80: // 'P'
@@ -235,7 +284,7 @@ public class FieldGenerator {
 					Map[i][iCounter].setContent(STONE);
 					break;
 				default: // Trifft der Algorithmus auf ein nicht bekanntes
-							// Zeichen, so wird der Vorang abgebrochen
+					// Zeichen, so wird der Vorang abgebrochen
 					return null;
 				}
 			}
@@ -243,6 +292,11 @@ public class FieldGenerator {
 			mapList.remove(0);
 		}
 		return Map;
+	}
+
+	private String nextLine(BufferedReader reader) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
