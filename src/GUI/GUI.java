@@ -181,7 +181,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 			new Options(game1);
 		}
 		if (object.getSource() == mapCreatorItem) {
-			System.out.println("Hier entsteht der Map Creator");
+			System.out.println("Hier entsteht der Map Creator!");
 		}
 	}
 
