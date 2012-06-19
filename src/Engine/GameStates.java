@@ -3,7 +3,7 @@ package Engine;
 /**
  * GameStates.java
  * 
- * @author pallepilla Alle GameStates werden hier als enum-Variablen defeniert
+ * @author Leonid Panich Alle GameStates werden hier als enum-Variablen defeniert
  */
 /**
  * 

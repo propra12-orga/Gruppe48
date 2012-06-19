@@ -1,5 +1,7 @@
 package Objects;
 
+import Engine.Sound;
+
 /**
  * Bomb.java
  * 
@@ -60,6 +62,7 @@ public class Bomb {
 	 */
 	public void detonate() {
 		explosionTime -= delay;
+		Sound.BOMB.play();
 		isExploded = true;
 	}
 

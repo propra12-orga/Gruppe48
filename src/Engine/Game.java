@@ -14,7 +14,7 @@ import Objects.Player;
 /**
  * Game.java
  * 
- * @author pallepilla
+ * @author Leonid Panich
  * 
  */
 public class Game implements Runnable {
@@ -1058,6 +1058,8 @@ public class Game implements Runnable {
 		game.insertGUI(gui);
 		Thread gameThread = new Thread(game);
 		gameThread.start();
+		Sound.init();
+		Sound.volume = Sound.Volume.LOW;
 
 	}
 }
