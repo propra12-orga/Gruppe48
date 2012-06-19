@@ -1,8 +1,6 @@
 package GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -24,7 +22,7 @@ import javax.swing.filechooser.FileFilter;
 import Engine.Game;
 import Field.Field;
 import Field.FieldGenerator;
-import Options.OptionFrame;
+import Options.Options;
 
 /**
  * GUI.java Diese Klasse erzeugt ein Frame und legt eine Menueleiste fest
@@ -68,12 +66,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		mainGame = game;
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		// this.setSize(new Dimension(480, 480));
-		setSize(480, 480);
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		int x = (dim.width - getWidth()) / 2;
-		int y = (dim.height - getHeight()) / 2;
-		setLocation(x, y);
+
+		this.setSize(480, 480);
 
 		/**
 		 * Menueleiste mit den Elementen:
@@ -178,7 +172,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 			multiplayer.setSelected(false);
 		}
 		if (object.getSource() == optionItem) {
-			new OptionFrame(game1);
+			new Options(game1);
 		}
 	}
 
