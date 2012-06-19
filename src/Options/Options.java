@@ -70,7 +70,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 		private JPanel buttons;
 		private JPanel mapPic;
 		private JLabel lblBild;
-		private ImageIcon pic = new ImageIcon("/images/MapOptionIcon.jpg");
+		private ImageIcon pic = new ImageIcon(
+				ClassLoader.getSystemResource("images/MapOptionIcon.jpg"));
 		private JPanel borderDummy;
 		JPanel textForRectangle = new JPanel(new GridLayout(0, 1));
 
@@ -109,10 +110,11 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			squareMapArea.setToolTipText("squareMapArea");
 			// squareMapArea.setBackground(Color.red);
 			squareMapArea.add(mapSlider);
-			TitledBorder square;
+			final TitledBorder square;
 			square = BorderFactory
 					.createTitledBorder("Choose the Size of a Square-Map");
 			squareMapArea.setBorder(square);
+			square.setTitleColor(Color.blue);
 
 			radioButtonMapModus = new JPanel(new GridLayout(1, 0));
 			radioButtonMapModus.setBounds(6, 6, 400, 50);
@@ -153,16 +155,17 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			lblBild = new JLabel(pic);
 			mapPic.add(lblBild);
 			borderDummy = new JPanel();
-			borderDummy.setBounds(25, 265, 300, 150);
+			borderDummy.setBounds(25, 270, 300, 145);
 			borderDummy.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.5f));
 			borderDummy.setVisible(true);
 			// borderDummy.setOpaque(true);
 			textForRectangle.setBounds(6, 200, 400, 320);
 			textForRectangle.add(new JLabel(""));
-			TitledBorder rectangle;
+			final TitledBorder rectangle;
 			rectangle = BorderFactory
 					.createTitledBorder("Choose the Size of a Rectangle-Map");
 			textForRectangle.setBorder(rectangle);
+			rectangle.setTitleColor(Color.lightGray);
 
 			add(borderDummy);
 			add(densityArea);
@@ -282,6 +285,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					horizontalSlider.setEnabled(false);
 					mapSlider.setEnabled(true);
 					borderDummy.setVisible(true);
+					square.setTitleColor(Color.BLUE);
+					rectangle.setTitleColor(Color.lightGray);
 
 				}
 
@@ -298,6 +303,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					mapSlider.setEnabled(false);
 					borderDummy.setVisible(false);
 					mapPic.setVisible(true);
+					square.setTitleColor(Color.lightGray);
+					rectangle.setTitleColor(Color.BLUE);
 
 				}
 
