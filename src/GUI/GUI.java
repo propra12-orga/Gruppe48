@@ -53,6 +53,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	private FieldGenerator readMap;
 	private Game mainGame;
 	private JMenuItem optionItem;
+	private JMenuItem mapCreatorItem;
 	private final Game game1;
 
 	public GUI(Game game) {
@@ -81,6 +82,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		setJMenuBar(menubar);
 		gameMenu = new JMenu("Game");
 		JMenu optionMenu = new JMenu("Options");
+		JMenu mapCreator = new JMenu("Map Creator");
 		startItem = new JMenuItem("New Game");
 		startItem.addActionListener(this);
 		openItem = new JMenuItem("Open Map");
@@ -99,6 +101,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		gameMenu.add(quitItem);
 		menubar.add(gameMenu);
 		menubar.add(optionMenu);
+		menubar.add(mapCreator);
+		mapCreatorItem = new JMenuItem("Create your own Map!");
+		mapCreatorItem.addActionListener(this);
+		mapCreator.add(mapCreatorItem);
 		optionItem = new JMenuItem("GameOptions");
 		optionItem.addActionListener(this);
 		optionMenu.add(optionItem);
@@ -173,6 +179,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		}
 		if (object.getSource() == optionItem) {
 			new Options(game1);
+		}
+		if (object.getSource() == mapCreatorItem) {
+			System.out.println("Hier entsteht der Map Creator");
 		}
 	}
 
