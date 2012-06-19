@@ -162,9 +162,9 @@ public class FieldGenerator {
 	 * @return Eingelesene Map
 	 */
 	public FieldContent[][] readMap(String sInputFile) {
-		int iCounter = 0;
-		int iCounter2 = 0;//fuer kleinere Zeilen als gefordert
-		int iCounter3 = 0;//fuer die Anzahl der Zeilen
+		int iCounter = 0; //fuer breitere Zeilen als gewollt
+		int iCounter2 = 0;//fuer kleinere Zeilen als gewollt
+		int zeilenAnzahl = 0;
 		int spielfeldBreite = 0;
 		int spielfeldHoehe = 0;
 		FileReader inputFile;
@@ -180,7 +180,7 @@ public class FieldGenerator {
 		try {
 			while (reader.ready()) {
 				mapList.add(reader.readLine());
-				iCounter3++;
+				zeilenAnzahl++;
 			}
 		} catch (IOException e) {
 			return null;
@@ -215,7 +215,7 @@ public class FieldGenerator {
 				return null;
 			}
 		}
-		for (int i = 0; i < mapList.get(0).length(); i++) {
+		for (int i = 0; i < spielfeldBreite; i++) {
 			//Spielfeldhoehe wird ermittelt anhand der Anzahl der Waende
 			//an den ersten Positionen der Spalten
 			if (mapList.get(i).charAt(0) == 42) {
@@ -224,11 +224,11 @@ public class FieldGenerator {
 				return null;
 			}
 		}
-		if (spielfeldBreite != spielfeldHoehe | spielfeldHoehe != iCounter3) {
+		if (spielfeldBreite != spielfeldHoehe | spielfeldHoehe != zeilenAnzahl) {
 			System.out.println("Spielfeld ist nicht quadratisch!");
 			System.out.println("Geforderte Spielfeldbreite:" + spielfeldBreite);
 			System.out.println("Spielfeldhoehe:" + spielfeldHoehe);
-			System.out.println("Anzahl der Zeilen:" + iCounter3);
+			System.out.println("Anzahl der Zeilen:" + zeilenAnzahl);
 			return null;
 		}
 		if (iCounter != spielfeldBreite | iCounter2 != spielfeldBreite) {

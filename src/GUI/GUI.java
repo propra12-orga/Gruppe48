@@ -22,6 +22,7 @@ import javax.swing.filechooser.FileFilter;
 import Engine.Game;
 import Field.Field;
 import Field.FieldGenerator;
+import Field.MapCreator;
 import Options.Options;
 
 /**
@@ -181,6 +182,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 			new Options(game1);
 		}
 		if (object.getSource() == mapCreatorItem) {
+			new MapCreator();
 			System.out.println("Hier entsteht der Map Creator!");
 		}
 	}
