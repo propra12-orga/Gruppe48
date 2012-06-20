@@ -193,37 +193,43 @@ public class FieldGenerator {
 			System.out.println(e);
 		}
 		Map = null;
-		iCounter = mapList.get(0).length();
-		for (int i = 0; i < zeilenAnzahl; i++) {
-			// laengste Zeile wird ausgesucht um auf Symmetrie zu pruefen
-			if (iCounter < mapList.get(i).length()) {
-				iCounter = mapList.get(i).length();
+		try {
+			iCounter = mapList.get(0).length();
+			for (int i = 0; i < zeilenAnzahl; i++) {
+				// laengste Zeile wird ausgesucht um auf Symmetrie zu pruefen
+				if (iCounter < mapList.get(i).length()) {
+					iCounter = mapList.get(i).length();
+				}
 			}
-		}
-		iCounter2 = mapList.get(0).length();
-		for (int i = 0; i < zeilenAnzahl; i++) {
-			// kuerzeste Zeile wird ausgesucht um auf Symmetrie zu pruefen
-			if (iCounter2 >= mapList.get(i).length()) {
-				iCounter2 = mapList.get(i).length();
+			iCounter2 = mapList.get(0).length();
+			for (int i = 0; i < zeilenAnzahl; i++) {
+				// kuerzeste Zeile wird ausgesucht um auf Symmetrie zu pruefen
+				if (iCounter2 >= mapList.get(i).length()) {
+					iCounter2 = mapList.get(i).length();
+				}
 			}
-		}
-		for (int i = 0; i < mapList.get(0).length(); i++) {
-			//Spielfeldbreite wird ermittelt anhand der Anzahl der Waende
-			//der ersten Zeile
-			if (mapList.get(0).charAt(i) == 42) {
-				spielfeldBreite++;
-			} else {
-				return null;
+			for (int i = 0; i < mapList.get(0).length(); i++) {
+				//Spielfeldbreite wird ermittelt anhand der Anzahl der Waende
+				//der ersten Zeile
+				if (mapList.get(0).charAt(i) == 42) {
+					spielfeldBreite++;
+				} else {
+					return null;
+				}
 			}
-		}
-		for (int i = 0; i < spielfeldBreite; i++) {
-			//Spielfeldhoehe wird ermittelt anhand der Anzahl der Waende
-			//an den ersten Positionen der Spalten
-			if (mapList.get(i).charAt(0) == 42) {
-				spielfeldHoehe++;
-			} else {
-				return null;
+			for (int i = 0; i < spielfeldBreite; i++) {
+				//Spielfeldhoehe wird ermittelt anhand der Anzahl der Waende
+				//an den ersten Positionen der Spalten
+				if (mapList.get(i).charAt(0) == 42) {
+					spielfeldHoehe++;
+				} else {
+					return null;
+				}
 			}
+		} catch (IndexOutOfBoundsException e) {
+			System.out
+					.println("In der ersten Reihe sind zuviele *, bzw Waende");
+			return null;
 		}
 		if (spielfeldBreite != spielfeldHoehe | spielfeldHoehe != zeilenAnzahl) {
 			//testet ob das Spielfeld quadratisch ist
