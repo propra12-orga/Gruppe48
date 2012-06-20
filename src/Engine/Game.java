@@ -344,7 +344,7 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * Erzeugt eine neue Map aus einer Datei
+	 * Erzeugt eine neue quadratische Map aus einer Datei
 	 * 
 	 * @param sMap
 	 *            Pfad zur Datei
@@ -353,14 +353,14 @@ public class Game implements Runnable {
 	 */
 	public static Field createNewField(String sMap) {
 		int iMaxPlayersLoaded = 0;
+		boolean freeSpace = false;
 		FieldGenerator testGenerator = new FieldGenerator();
 		Field generatedField = new Field();
 		Field fileTester = new Field();
 		cacheField = new Field();
 		fileTester.insertMap(testGenerator.readMap(sMap));
-		if (fileTester.getMap() != null) { // Die Anzahl der moeglichen
-											// Spielerstartplätze wird
-											// ueberprueft
+		if (fileTester.getMap() != null) {
+			// Die Anzahl der moeglichen Spielerstartplätze wird ueberprueft
 			for (int i = 0; i < fileTester.getMap().length; i++) {
 				for (int j = 0; j < fileTester.getMap()[0].length; j++) {
 					if (fileTester.getMap()[i][j].getContent() == 5) {
@@ -368,28 +368,52 @@ public class Game implements Runnable {
 					}
 				}
 			}
-			if (iMaxPlayersLoaded > 0) { // Gibt es keine Startplätze fuer
-											// Spieler, so wird die Map
+			//Es wird ueberprueft ob sich die maximal 2 Spieler bewegen koennen
+			for (int i = 0; i < fileTester.getMap().length; i++) {
+				for (int j = 0; j < fileTester.getMap()[0].length; j++) {
+					if (iMaxPlayersLoaded == 1) {
+						if (fileTester.getMap()[1][2].getContent() == 1
+								&& fileTester.getMap()[2][1].getContent() == 1) {
+							freeSpace = true;
+						}
+					} else if (iMaxPlayersLoaded == 2) {
+						if (fileTester.getMap()[1][2].getContent() == 1
+								&& fileTester.getMap()[2][1].getContent() == 1
+								&& fileTester.getMap()[fileTester.getMap().length - 2][fileTester
+										.getMap().length - 3].getContent() == 1
+								&& fileTester.getMap()[fileTester.getMap().length - 3][fileTester
+										.getMap().length - 2].getContent() == 1) {
+							freeSpace = true;
+						}
+					}
+				}
+			}
+			if (!freeSpace) {
+				System.out.println(fileTester.getMap()[1][2].getContent());
+				System.out.println(fileTester.getMap().length - 1);
+				gui.showError("Diese Map ist unspielbar, da die Spieler keine Bomben legen koennen "
+						+ "ohne dabei zu sterben!");
+				setMapLoaded(false);
+				return null;
+			}
+			if (iMaxPlayersLoaded > 0) { // Gibt es keine Startplätze fuer Spieler, so wird die Map
 											// abgelehnt
 				generatedField.insertMap(testGenerator.readMap(sMap));
 				iMaxPlayers = iMaxPlayersLoaded;
 			} else {
-				gui.showError("Diese Map ist unspielbar, da kein Spieler vorhanden ist");
+				gui.showError("Diese Map ist unspielbar, da kein Spieler vorhanden ist!");
 				setMapLoaded(false);
 				return null;
 			}
-		} else { // Gibt es Fehler beim Einlesen der Datei, so wird diese
-					// abgelehnt
+		} else { // Gibt es Fehler beim Einlesen der Datei, so wird diese abgelehnt
 			gui.showError("Es gibt einen Fehler mit der Map, bitte ueberpruefen Sie die Eingabedatei!"
 					+ " Vorgang wird abgebrochen.");
 			setMapLoaded(false);
 			return null;
 		}
 
-		if (iPlayerCount > iMaxPlayers) { // Soll die Map mit mehr Spielern
-											// gespielt werden koennen als
-											// vorhanden sind, so wird die Map
-											// abgelehnt
+		if (iPlayerCount > iMaxPlayers) { // Soll die Map mit mehr Spielern gespielt werden koennen als
+											// vorhanden sind, so wird die Map abgelehnt
 			gui.showError("Diese Map ist nicht mit so vielen Spielern spielbar");
 			gameState = GameStates.STOP;
 			setMapLoaded(false);
@@ -762,12 +786,11 @@ public class Game implements Runnable {
 	 * = hoch, j= links, k = unten, l = rechts, enter = Bombe legen
 	 */
 	private void handleMovement() {
-		if (iPlayerCount == 1) { // Abfragt der Spieleranzahl. Gibt es nur einen
+		if (iPlayerCount == 1) { // Abfrage der Spieleranzahl. Gibt es nur einen
 									// Spieler, so werden die Kontrollen fuer
-									// den
-									// 2. Spieler deaktiviert.
+									// den 2. Spieler deaktiviert.
 			switch (key) {
-			case 'w':
+			case 'w': //nach oben
 				switch (gameField.getField(player.getPosition()[1],
 						player.getPosition()[0] - 1).getContent()) {
 				case 1:
@@ -785,7 +808,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'a':
+			case 'a': //nach links
 				switch (gameField.getField(player.getPosition()[1] - 1,
 						player.getPosition()[0]).getContent()) {
 				case 1:
@@ -803,7 +826,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 's':
+			case 's': //nach unten
 				switch (gameField.getField(player.getPosition()[1],
 						player.getPosition()[0] + 1).getContent()) {
 				case 1:
@@ -821,7 +844,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'd':
+			case 'd': //nach rechts
 				switch (gameField.getField(player.getPosition()[1] + 1,
 						player.getPosition()[0]).getContent()) {
 				case 1:
@@ -839,16 +862,17 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case KeyEvent.VK_SPACE:
+			case KeyEvent.VK_SPACE://Bombe legen
 				bombList.add(new Bomb(player.getPosition()[0], player
 						.getPosition()[1], time));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
 				break;
 			}
 			key = 0;
-		} else {
+		} else { // Im 2 Spielermodus wird ausserdem die Spielerkollision abgefragt, da
+					// ein Spieler nicht durch den anderen durchgehen sollte als waere er Luft
 			switch (key) {
-			case 'w':
+			case 'w': //nach oben
 				switch (gameField.getField(player.getPosition()[1],
 						player.getPosition()[0] - 1).getContent()) {
 				case 1:
@@ -871,7 +895,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'a':
+			case 'a': //nach links
 				switch (gameField.getField(player.getPosition()[1] - 1,
 						player.getPosition()[0]).getContent()) {
 				case 1:
@@ -894,7 +918,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 's':
+			case 's': //nach unten
 				switch (gameField.getField(player.getPosition()[1],
 						player.getPosition()[0] + 1).getContent()) {
 				case 1:
@@ -917,7 +941,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'd':
+			case 'd': //nach rechts
 				switch (gameField.getField(player.getPosition()[1] + 1,
 						player.getPosition()[0]).getContent()) {
 				case 1:
@@ -940,12 +964,12 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case KeyEvent.VK_SPACE:
+			case KeyEvent.VK_SPACE: //Bombe legen
 				bombList.add(new Bomb(player.getPosition()[0], player
 						.getPosition()[1], time));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
 				break;
-			case 'i':
+			case 'i': //nach oben (2ter Spieler)
 				switch (gameField.getField(player2.getPosition()[1],
 						player2.getPosition()[0] - 1).getContent()) {
 				case 1:
@@ -968,7 +992,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'j':
+			case 'j': //nach links (2ter Spieler)
 				switch (gameField.getField(player2.getPosition()[1] - 1,
 						player2.getPosition()[0]).getContent()) {
 				case 1:
@@ -991,7 +1015,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'k':
+			case 'k': //nach unten (2ter Spieler)
 				switch (gameField.getField(player2.getPosition()[1],
 						player2.getPosition()[0] + 1).getContent()) {
 				case 1:
@@ -1014,7 +1038,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'l':
+			case 'l': //nach rechts (2ter Spieler)
 				switch (gameField.getField(player2.getPosition()[1] + 1,
 						player2.getPosition()[0]).getContent()) {
 				case 1:
@@ -1037,7 +1061,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case KeyEvent.VK_ENTER:
+			case KeyEvent.VK_ENTER: //Bombe legen (2ter Spieler)
 				bombList.add(new Bomb(player2.getPosition()[0], player2
 						.getPosition()[1], time));
 				gameField.setBomb(bombList.get(bombList.size() - 1));

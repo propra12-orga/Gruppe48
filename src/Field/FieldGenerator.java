@@ -50,46 +50,42 @@ public class FieldGenerator {
 	public FieldContent[][] createRectangleMap(int iWidth, int iHeight,
 			double dRandomchance) {
 		Map = null;
-
 		Map = new FieldContent[iWidth][iHeight];
 		for (int i = 0; i < iWidth; i++) {
 			for (int j = 0; j < iHeight; j++) {
-				Map[i][j] = new FieldContent();
+				Map[i][j] = new FieldContent(); //initialisiert jede Stelle des 
+				//zweidimensionalen Arrays
 			}
 		}
 
 		for (int i = 0; i < iWidth; i++) {
 			for (int j = 0; j < iHeight; j++) {
-				Map[i][j].setContent(FREE);
+				Map[i][j].setContent(FREE); //bestimmt jedes Feld zuerst als freies Feld
 			}
 		}
 		for (int i = 0; i < iWidth; i++) {
 			for (int j = 0; j < iHeight; j++) {
 				if ((i == 0) || (i == iWidth - 1) || (j == 0)
 						|| (j == iHeight - 1)) {
-					Map[i][j].setContent(WALL);
+					Map[i][j].setContent(WALL); //hier werden die aeußeren Mauern festgesetzt
 				}
 
 				else if ((i >= 3 && i <= iWidth) || (j >= 3 && j <= iHeight)) {
-					if (Math.random() <= dRandomchance / 100) // hier kann
-						// man die
-						// DICHTE
-						// der
-						// zerstoerbaren Bloecke
-						// veraendern
+					if (Math.random() <= dRandomchance / 100)
+						// hier kann man die DICHTE der zerstoerbaren Bloecke veraendern
 						Map[i][j].setContent(STONE);
 
 				}
 			}
 		}
 
-		setWalls();
+		setWalls(); //erzeugt die inneren unzerstoerbaren Waende abhaengig vom gewaehlten Modus
 		if (bCreateExit)
 			createRandomExit();
-		Map[1][1].setContent(PLAYER);
-		Map[iWidth - 2][iHeight - 2].setContent(PLAYER);
-		Map[iWidth - 3][iHeight - 2].setContent(FREE);
-		Map[iWidth - 2][iHeight - 3].setContent(FREE);
+		Map[1][1].setContent(PLAYER); //setzt den Spieler an die oberste linke Position
+		Map[iWidth - 2][iHeight - 2].setContent(PLAYER); //das ist der Platz fuer einen weiteren Spieler
+		Map[iWidth - 3][iHeight - 2].setContent(FREE); //diese beiden Plaetze muessen frei sein, sonst
+		Map[iWidth - 2][iHeight - 3].setContent(FREE); //koennen die Spieler nicht spielen ohne zu sterben
 		return Map;
 	}
 
@@ -180,7 +176,7 @@ public class FieldGenerator {
 		reader = new BufferedReader(inputFile);
 		try {
 			while (reader.ready()) {
-				mapList.add(reader.readLine());
+				mapList.add(reader.readLine()); //liest jede zeile einzeln ein
 				zeilenAnzahl++;
 			}
 		} catch (IOException e) {
@@ -325,7 +321,7 @@ public class FieldGenerator {
 	}
 
 	private String nextLine(BufferedReader reader) {
-		// TODO Auto-generated method stub
+		// Auto-generated method
 		return null;
 	}
 
@@ -525,12 +521,13 @@ public class FieldGenerator {
 	}
 
 	/**
-	 * Erzeugt Abhaengig von iModus, Waende auf der Map. Fuer genauere
-	 * Beschreibung der Modi siehe setModus()
+	 * Erzeugt abhaengig von iModus, Waende auf der Map.
 	 */
 	private void setWalls() {
 		switch (iModus) {
 		case 0:
+			//Jedes 2. Feld in jeder 
+			//2. Zeile wird mit einem festen Block versehen
 			for (int i = 0; i < Map.length; i++) {
 				for (int j = 0; j < Map[0].length; j++) {
 					if ((i % 2 == 0) && (j % 2 == 0)
@@ -542,6 +539,8 @@ public class FieldGenerator {
 			break;
 
 		case 1:
+			//Jedes 2. Feld in jeder 2. Zeile wird mit einer Chance
+			//von einem bestimmten Prozentsatz mit einem festen Block versehen
 			if (iModus == 1) {
 				for (int i = 0; i < Map.length; i++) {
 					for (int j = 0; j < Map[0].length; j++) {
@@ -556,6 +555,8 @@ public class FieldGenerator {
 			break;
 
 		case 2:
+			//Es werden auf zufaelligen Feldern feste Bloecke platziert,
+			//bis das Spielfeld voll ist oder ein bestimmter Wert erreicht wurde
 			if (iModus == 2) {
 				int iPosition = 0;
 				int iRandomPosition;
