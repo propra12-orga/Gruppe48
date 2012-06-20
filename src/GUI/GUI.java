@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -69,7 +70,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-		this.setSize(480, 480);
+		setSize(480, 480);
 
 		/**
 		 * Menueleiste mit den Elementen:
@@ -127,6 +128,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	public void insertField(Field field) {
 		gameField = field;
 		panel.insertField(field);
+		final Dimension d = this.getToolkit().getScreenSize();
+		this.setLocation((int) ((d.getWidth() - this.getWidth()) / 2),
+				(int) ((d.getHeight() - this.getHeight()) / 2));
+
 	}
 
 	/**
