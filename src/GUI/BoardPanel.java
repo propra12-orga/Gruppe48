@@ -34,8 +34,8 @@ public class BoardPanel extends JPanel {
 	List<ArrayList> iBoomList;
 
 	/**
-	 * Liest Bilddateien der anzuzeigenden Objekte ein und initialisiert interne
-	 * Listen
+	 * Erzeugt ein Objekt der Klasse BoardPanel Liest Bilddateien der
+	 * anzuzeigenden Objekte ein und initialisiert interne Listen
 	 * 
 	 */
 
@@ -65,7 +65,8 @@ public class BoardPanel extends JPanel {
 	}
 
 	/**
-	 * fuegt die Explosion dem Array zu
+	 * Fuegt die Explosionen einem internen Array hinzu, aus welchem die
+	 * Informationen zum zeichnen der Explosionen ausgelesen werden
 	 * 
 	 * @param list
 	 *            Liste der Felder mit Explosionen
@@ -94,8 +95,8 @@ public class BoardPanel extends JPanel {
 	}
 
 	/**
-	 * durchsucht Array und ordnet mittels switch case den Arrayelementen dessen
-	 * Images zu
+	 * durchsucht Spielfeld nach zu zeichnenden Objekten und erzeugt an den
+	 * entsprechenden Positionen die passenden Bilder ein
 	 * 
 	 * @param g
 	 *            die zu zeichnende Grafik

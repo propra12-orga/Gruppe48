@@ -9,6 +9,11 @@ import Objects.Player;
  * @author Alexander Hering
  */
 
+/**
+ * Die Klasse FieldContent erlaubt es ein Feld des Spielfeldes zu speichern und
+ * zu verändern
+ * 
+ */
 public class FieldContent {
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE;
 	private int iContent;
@@ -16,6 +21,10 @@ public class FieldContent {
 	private Player player;
 	private boolean bExit = false;
 
+	/**
+	 * Erzeugt ein Objekt der Klasse FieldContent Sein Inhalt wird mit null
+	 * initialisiert
+	 */
 	public FieldContent()
 
 	{

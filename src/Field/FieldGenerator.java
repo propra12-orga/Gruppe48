@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+/**
+ * 
+ * @author Alexander Die Klasse FieldGenerator stellt Funktionen zu Verfügung um
+ *         Spielfelder nach angegebenen Vorgaben zu erzeugen
+ */
 public class FieldGenerator {
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE;
 	private FieldContent Map[][];
@@ -21,6 +26,12 @@ public class FieldGenerator {
 	private int iModus, iRandomAmount;
 	private boolean bCreateExit;
 
+	/**
+	 * Erzeugt ein Objekt der Klasse FieldGenerator. Standardeinstellungen für
+	 * Optionen: Es wird ein Ausgang erzeugt Die Chance für Blöcke beim
+	 * Zufallsgenerator liegt bei 0% Die Anzahl der zu setzenden Blöcke ligt bei
+	 * 0
+	 */
 	public FieldGenerator() {
 
 		EMPTY = 0;
@@ -53,39 +64,50 @@ public class FieldGenerator {
 		Map = new FieldContent[iWidth][iHeight];
 		for (int i = 0; i < iWidth; i++) {
 			for (int j = 0; j < iHeight; j++) {
-				Map[i][j] = new FieldContent(); //initialisiert jede Stelle des 
-				//zweidimensionalen Arrays
+				Map[i][j] = new FieldContent(); // initialisiert jede Stelle des
+				// zweidimensionalen Arrays
 			}
 		}
 
 		for (int i = 0; i < iWidth; i++) {
 			for (int j = 0; j < iHeight; j++) {
-				Map[i][j].setContent(FREE); //bestimmt jedes Feld zuerst als freies Feld
+				Map[i][j].setContent(FREE); // bestimmt jedes Feld zuerst als
+											// freies Feld
 			}
 		}
 		for (int i = 0; i < iWidth; i++) {
 			for (int j = 0; j < iHeight; j++) {
 				if ((i == 0) || (i == iWidth - 1) || (j == 0)
 						|| (j == iHeight - 1)) {
-					Map[i][j].setContent(WALL); //hier werden die aeußeren Mauern festgesetzt
+					Map[i][j].setContent(WALL); // hier werden die aeußeren
+												// Mauern festgesetzt
 				}
 
 				else if ((i >= 3 && i <= iWidth) || (j >= 3 && j <= iHeight)) {
 					if (Math.random() <= dRandomchance / 100)
-						// hier kann man die DICHTE der zerstoerbaren Bloecke veraendern
+						// hier kann man die DICHTE der zerstoerbaren Bloecke
+						// veraendern
 						Map[i][j].setContent(STONE);
 
 				}
 			}
 		}
 
-		setWalls(); //erzeugt die inneren unzerstoerbaren Waende abhaengig vom gewaehlten Modus
+		setWalls(); // erzeugt die inneren unzerstoerbaren Waende abhaengig vom
+					// gewaehlten Modus
 		if (bCreateExit)
 			createRandomExit();
-		Map[1][1].setContent(PLAYER); //setzt den Spieler an die oberste linke Position
-		Map[iWidth - 2][iHeight - 2].setContent(PLAYER); //das ist der Platz fuer einen weiteren Spieler
-		Map[iWidth - 3][iHeight - 2].setContent(FREE); //diese beiden Plaetze muessen frei sein, sonst
-		Map[iWidth - 2][iHeight - 3].setContent(FREE); //koennen die Spieler nicht spielen ohne zu sterben
+		Map[1][1].setContent(PLAYER); // setzt den Spieler an die oberste linke
+										// Position
+		Map[iWidth - 2][iHeight - 2].setContent(PLAYER); // das ist der Platz
+															// fuer einen
+															// weiteren Spieler
+		Map[iWidth - 3][iHeight - 2].setContent(FREE); // diese beiden Plaetze
+														// muessen frei sein,
+														// sonst
+		Map[iWidth - 2][iHeight - 3].setContent(FREE); // koennen die Spieler
+														// nicht spielen ohne zu
+														// sterben
 		return Map;
 	}
 
@@ -158,8 +180,8 @@ public class FieldGenerator {
 	 * @return Eingelesene Map
 	 */
 	public FieldContent[][] readMap(String sInputFile) {
-		int iCounter = 0; //fuer breitere Zeilen als gewollt
-		int iCounter2 = 0;//fuer kleinere Zeilen als gewollt
+		int iCounter = 0; // fuer breitere Zeilen als gewollt
+		int iCounter2 = 0;// fuer kleinere Zeilen als gewollt
 		int zeilenAnzahl = 0;
 		int spielfeldBreite = 0;
 		int spielfeldHoehe = 0;
@@ -176,7 +198,7 @@ public class FieldGenerator {
 		reader = new BufferedReader(inputFile);
 		try {
 			while (reader.ready()) {
-				mapList.add(reader.readLine()); //liest jede zeile einzeln ein
+				mapList.add(reader.readLine()); // liest jede zeile einzeln ein
 				zeilenAnzahl++;
 			}
 		} catch (IOException e) {
@@ -205,8 +227,8 @@ public class FieldGenerator {
 				}
 			}
 			for (int i = 0; i < mapList.get(0).length(); i++) {
-				//Spielfeldbreite wird ermittelt anhand der Anzahl der Waende
-				//der ersten Zeile
+				// Spielfeldbreite wird ermittelt anhand der Anzahl der Waende
+				// der ersten Zeile
 				if (mapList.get(0).charAt(i) == 42) {
 					spielfeldBreite++;
 				} else {
@@ -214,8 +236,8 @@ public class FieldGenerator {
 				}
 			}
 			for (int i = 0; i < spielfeldBreite; i++) {
-				//Spielfeldhoehe wird ermittelt anhand der Anzahl der Waende
-				//an den ersten Positionen der Spalten
+				// Spielfeldhoehe wird ermittelt anhand der Anzahl der Waende
+				// an den ersten Positionen der Spalten
 				if (mapList.get(i).charAt(0) == 42) {
 					spielfeldHoehe++;
 				} else {
@@ -228,7 +250,7 @@ public class FieldGenerator {
 			return null;
 		}
 		if (spielfeldBreite != spielfeldHoehe | spielfeldHoehe != zeilenAnzahl) {
-			//testet ob das Spielfeld quadratisch ist
+			// testet ob das Spielfeld quadratisch ist
 			System.out.println("Spielfeld ist nicht quadratisch!");
 			System.out.println("Geforderte Spielfeldbreite:" + spielfeldBreite);
 			System.out.println("Spielfeldhoehe:" + spielfeldHoehe);
@@ -236,7 +258,7 @@ public class FieldGenerator {
 			return null;
 		}
 		if (iCounter != spielfeldBreite | iCounter2 != spielfeldBreite) {
-			//teste ob das Spielfeld symmetrisch ist
+			// teste ob das Spielfeld symmetrisch ist
 			System.out.println("Spielfeld ist nicht symmetrisch!");
 			System.out.println("Geforderte Spielfeldbreite:" + spielfeldBreite);
 			if (iCounter != spielfeldBreite) {
@@ -247,7 +269,7 @@ public class FieldGenerator {
 			return null;
 		}
 		for (int i = 0; i < mapList.get(0).length(); i++) {
-			//Ueberpruefung der letzten Zeile, nur Wall erlaubt!	
+			// Ueberpruefung der letzten Zeile, nur Wall erlaubt!
 			if (mapList.get(zeilenAnzahl - 1).charAt(i) != 42) {
 				System.out
 						.println("Fehler in der letzten Zeile, nur unzerstoerbare Waende erlaubt!");
@@ -255,7 +277,7 @@ public class FieldGenerator {
 			}
 		}
 		for (int i = 0; i < mapList.get(0).length(); i++) {
-			//Es darf nur einen Ausgang geben!
+			// Es darf nur einen Ausgang geben!
 			for (int j = 0; j < zeilenAnzahl; j++) {
 				if (mapList.get(j).charAt(i) == 69
 						| mapList.get(j).charAt(i) == 72) {
@@ -526,8 +548,8 @@ public class FieldGenerator {
 	private void setWalls() {
 		switch (iModus) {
 		case 0:
-			//Jedes 2. Feld in jeder 
-			//2. Zeile wird mit einem festen Block versehen
+			// Jedes 2. Feld in jeder
+			// 2. Zeile wird mit einem festen Block versehen
 			for (int i = 0; i < Map.length; i++) {
 				for (int j = 0; j < Map[0].length; j++) {
 					if ((i % 2 == 0) && (j % 2 == 0)
@@ -539,8 +561,8 @@ public class FieldGenerator {
 			break;
 
 		case 1:
-			//Jedes 2. Feld in jeder 2. Zeile wird mit einer Chance
-			//von einem bestimmten Prozentsatz mit einem festen Block versehen
+			// Jedes 2. Feld in jeder 2. Zeile wird mit einer Chance
+			// von einem bestimmten Prozentsatz mit einem festen Block versehen
 			if (iModus == 1) {
 				for (int i = 0; i < Map.length; i++) {
 					for (int j = 0; j < Map[0].length; j++) {
@@ -555,8 +577,9 @@ public class FieldGenerator {
 			break;
 
 		case 2:
-			//Es werden auf zufaelligen Feldern feste Bloecke platziert,
-			//bis das Spielfeld voll ist oder ein bestimmter Wert erreicht wurde
+			// Es werden auf zufaelligen Feldern feste Bloecke platziert,
+			// bis das Spielfeld voll ist oder ein bestimmter Wert erreicht
+			// wurde
 			if (iModus == 2) {
 				int iPosition = 0;
 				int iRandomPosition;

@@ -11,9 +11,21 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ * 
+ * @author Alexander Die Klasse MapCreator stellt dem Benutzer eine
+ *         Schnittstelle sowie einige Werkzeuge zu Verfügung um mit geringem
+ *         Aufwand selber Spielfelder zu erzeugen Sie erzeugt ihr eigenes
+ *         Fenster
+ */
 public class MapCreator extends JFrame implements WindowListener,
 		ActionListener {
 
+	/**
+	 * Erzeugt ein Objekt der Klasse MapCreator Das benutzte Fenster wird mit
+	 * einer Groesse von 800x600 Pixeln initialisiert, ist sichtbar und laesst
+	 * seine Größe nicht verändern
+	 */
 	public MapCreator() {
 		super("Create your OWN Map");
 		setVisible(true);
@@ -27,6 +39,13 @@ public class MapCreator extends JFrame implements WindowListener,
 		addWindowListener(this);
 	}
 
+	/**
+	 * Erzeugt ein Panel im Fenster von MapCreator, über welches sämtliche
+	 * Schaltflächen verfügbar gemacht werden
+	 * 
+	 * @author Alexander
+	 * 
+	 */
 	public class CreationPanel extends JPanel {
 		private ImageIcon player = new ImageIcon(
 				ClassLoader.getSystemResource("images/player.png"));

@@ -1,7 +1,8 @@
 package Objects;
 
 /**
- * Player.java
+ * Die Klasse Player stellt Methoden zur Verfügung um die aktuelle Position und
+ * id eines Spielers zu speichern und abzufragen
  * 
  * @author Martin Haase
  * 
@@ -28,7 +29,7 @@ public class Player {
 	/**
 	 * Gibt die Position des Spielers zurueck
 	 * 
-	 * @return Gibt die Position des Spielers als Array zurueck
+	 * @return Gibt die Position des Spielers als int[2] Array zurueck
 	 */
 	public int[] getPosition() {
 		int[] getPosition = new int[2];

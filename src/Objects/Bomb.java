@@ -3,11 +3,15 @@ package Objects;
 import Engine.Sound;
 
 /**
- * Bomb.java
+ * die Klasse Bomb stellt Methoden zu Verfuegung um die Position einer Bombe auf
+ * dem Spielfeld sowie ihre Restzeit bis zur Explosion zu speichern und
+ * auszulesen. Auch stellt sie die Moeglichkeit bereit eine Bombe vorzeitig
+ * detonieren zu lassen
  * 
  * @author Martin Haase
  * 
  */
+
 public class Bomb {
 	/**
 	 * Ist true, falls Bombe explodiert, ist sonst false

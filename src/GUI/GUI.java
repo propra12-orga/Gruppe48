@@ -58,11 +58,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	private JMenuItem mapCreatorItem;
 	private final Game game1;
 
+	/**
+	 * Erzeugt ein neues Objekt der Klasse GUI und initialisiert den zu
+	 * zeichnenden Frame mit einer Auflösung von 480x480 Pixeln, verhindert,
+	 * dass die Groesse veraendert werden kann. Ausserdem wird dem Frame ein
+	 * neues Objekt der Klasse BoardPanel hinzugefuegt.
+	 */
 	public GUI(Game game) {
 
-		/**
-		 * neues Panel und Frameeigenschaften
-		 */
 		this.game1 = game;
 		setFocusable(true);
 		panel = new BoardPanel();
@@ -78,7 +81,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		 * Ein Game-Menue mit den Untermenues: New Game: ein neues Spiel wird
 		 * gestartet Open Map: Es kann eine Karte aus einer Datei geladen werden
 		 * 1 Player: Startet den Einzelspieler Modus 2 Player: Startet des 2
-		 * Spieler Modus Quit: Schliesst das Fenster
+		 * Spieler Modus Quit: Schliesst das Fenster Ein Optionsmenü zum
+		 * Einstellen der Spielfeldgenerierungsoptionen
 		 */
 		menubar = new JMenuBar();
 		setJMenuBar(menubar);
@@ -120,7 +124,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	}
 
 	/**
-	 * setzt das Spielfeld auf das Panel
+	 * setzt das Spielfeld auf das Panel und veraendert die Groess des Frames
+	 * abhaenig von der Groesse des Spielfelds
 	 * 
 	 * @param field
 	 *            das einzufuegende Spielfeld

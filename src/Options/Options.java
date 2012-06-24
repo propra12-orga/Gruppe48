@@ -34,11 +34,23 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	private int changedVerticalMap;
 	private int changedHorizontalMap;
 	private boolean savedOptions = true;
+	/**
+	 * Ist mapModus = true, so wird eine quadratische Map erstellt, sonst wird
+	 * eine rechteckige Map erstellt
+	 */
 	public boolean mapModus = true;
 	public int fillModus;
 	public int changedRandomAmount;
 	public int changedProbability;
 
+	/**
+	 * Erstellt ein Objekt der Klasse Options und übergibt an Dieses die Game
+	 * Klasse an die es angehaengt werden soll. Zusaetzlich wird ein Frame
+	 * erzeugt und mit einer Groesse von 842 x 730 Pixeln initialisiert.
+	 * 
+	 * @param game
+	 *            Die Game Klasse an die das Optionsmenue angehaengt werden soll
+	 */
 	public Options(Game game) {
 		super("BomberMan-Options");
 		setVisible(true);
@@ -63,6 +75,11 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 
 	}
 
+	/**
+	 * Das MiddlePanel ist ein Panel, auf dem saemtliche anderen Panels des
+	 * Optionsmenues gelegt werden
+	 * 
+	 */
 	public class MiddlePanel extends JPanel {
 
 		private static final long serialVersionUID = 1L;
@@ -83,6 +100,18 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 		private ImageIcon pic = new ImageIcon(
 				ClassLoader.getSystemResource("images/MapOptionIcon.jpg"));
 
+		/**
+		 * Erzeugt ein Panel mit den angegebenen Massen
+		 * 
+		 * @param x
+		 *            Vertikale Position des Panels
+		 * @param y
+		 *            Horizontale Position des Panels
+		 * @param w
+		 *            Breite de Panels
+		 * @param h
+		 *            Hoehe des Panels
+		 */
 		public MiddlePanel(int x, int y, int w, int h) {
 			super(null);
 			setToolTipText("MiddlePanel");
@@ -281,6 +310,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			saveBt.addActionListener(new ActionListener() {
 
 				@Override
+				/**
+				 * Beim Klick auf den Save Button werden die Optionen gespeichert
+				 */
 				public void actionPerformed(ActionEvent e) {
 					acceptOptions();
 
@@ -290,6 +322,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			cancelBt.addActionListener(new ActionListener() {
 
 				@Override
+				/**
+				 * Beim Klick auf den Cancel Button wird das Fenster geschlossen ohne zu speichern
+				 */
 				public void actionPerformed(ActionEvent e) {
 					checkCancelWithoutSave();
 				}
@@ -299,6 +334,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			okBt.addActionListener(new ActionListener() {
 
 				@Override
+				/**
+				 * Beim Klick auf dne OK Button werden die Optionen gespeichert und das Fenster geschlossen
+				 */
 				public void actionPerformed(ActionEvent e) {
 					acceptOptions();
 					dispose();
@@ -308,6 +346,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			verticalSlider.addChangeListener(new ChangeListener() {
 
 				@Override
+				/**
+				 * Wird der vertikale Slider geaendert, so wird die Hoehe der zu erstellenden Map geaendert
+				 */
 				public void stateChanged(ChangeEvent e) {
 					changedVerticalMap = ((JSlider) e.getSource()).getValue();
 					System.out.println("Neuer Wert Spielfeldhöhe: "
@@ -322,6 +363,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			horizontalSlider.addChangeListener(new ChangeListener() {
 
 				@Override
+				/**
+				 * Wird der horizontale Slider geaendert, so wird die Breite der zu erstellenden Map geaendert
+				 */
 				public void stateChanged(ChangeEvent e) {
 					changedHorizontalMap = ((JSlider) e.getSource()).getValue();
 
@@ -335,6 +379,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			mapSlider.addChangeListener(new ChangeListener() {
 
 				@Override
+				/**
+				 * wird der mapSlider veraendert, so wird die Hoehe und Breite der zu erstellenden Map geaendert
+				 */
 				public void stateChanged(ChangeEvent e) {
 					changedMap = ((JSlider) e.getSource()).getValue();
 					System.out.println("Neuer Wert Spielfeldgröße: "
@@ -346,6 +393,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			densitySlider.addChangeListener(new ChangeListener() {
 
 				@Override
+				/**
+				 * wird der densitySlayer veraendert, so wird die Dichte der Bloecke des zu erstellendne Feldes geaendert
+				 */
 				public void stateChanged(ChangeEvent e) {
 					changedDensity = ((JSlider) e.getSource()).getValue();
 					System.out.println("Neuer Wert Blockdichte: "
@@ -358,6 +408,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			probabilitySlider.addChangeListener(new ChangeListener() {
 
 				@Override
+				/**
+				 * Wird der probabilitySlider veraendert, so wird die Chance auf zerstoerbare Bloecke des zu erstellenden Feldes fuer Modus 1 geaendert
+				 */
 				public void stateChanged(ChangeEvent e) {
 					changedProbability = ((JSlider) e.getSource()).getValue();
 					System.out.println("Wahrscheinlichkeit Modus1: "
@@ -370,6 +423,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			randomAmountSlider.addChangeListener(new ChangeListener() {
 
 				@Override
+				/**
+				 * Wird der probabilitySlider veraendert, so wird die Chance auf zerstoerbare Bloecke des zu erstellenden Feldes fuer Modus 2 geaendert
+				 */
 				public void stateChanged(ChangeEvent e) {
 					changedRandomAmount = ((JSlider) e.getSource()).getValue();
 					System.out.println("Amount Modus 2:: "
@@ -381,6 +437,10 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 
 			squareButton.addActionListener(new ActionListener() {
 
+				/**
+				 * Wird der squareButton angeklickt, so wird als naechstes eine
+				 * quadratische Map erstellt
+				 */
 				public void actionPerformed(ActionEvent e) {
 					mapModus = true;
 					rectangleButton.setSelected(false);
@@ -398,7 +458,10 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			});
 
 			rectangleButton.addActionListener(new ActionListener() {
-
+				/**
+				 * Wird der rectangleButton angeklickt, so wird als naechstes
+				 * eine rechteckige Map erstellt
+				 */
 				public void actionPerformed(ActionEvent e) {
 					mapModus = false;
 					squareButton.setSelected(false);
@@ -416,7 +479,10 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			});
 
 			modusZero.addActionListener(new ActionListener() {
-
+				/**
+				 * Wird der modusZero Button angeklickt, so wird der
+				 * Generierungmodus auf Modus 0 gesetzt
+				 */
 				public void actionPerformed(ActionEvent e) {
 					fillModus = 0;
 					System.out.println("fillModus:" + fillModus);
@@ -434,6 +500,10 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 
 			modusOne.addActionListener(new ActionListener() {
 
+				/**
+				 * Wird der modusOne Button angeklickt, so wird der
+				 * Generierungmodus auf Modus 1 gesetzt
+				 */
 				public void actionPerformed(ActionEvent e) {
 					fillModus = 1;
 					System.out.println("fillModus:" + fillModus);
@@ -452,7 +522,10 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			});
 
 			modusTwo.addActionListener(new ActionListener() {
-
+				/**
+				 * Wird der modusTwo Button angeklickt, so wird der
+				 * Generierungmodus auf Modus 2 gesetzt
+				 */
 				public void actionPerformed(ActionEvent e) {
 					fillModus = 2;
 					System.out.println("fillModus:" + fillModus);
@@ -516,47 +589,73 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	 */
 
 	@Override
+	/**
+	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
+	 */
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
+	/**
+	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
+	 */
 	public void windowActivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
+	/**
+	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
+	 */
 	public void windowClosed(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
+	/**
+	 * Beim schliessen des Fensters wird das Fenster geschlossen ohne die Optionen zu speichern
+	 */
 	public void windowClosing(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 		checkCancelWithoutSave();
 	}
 
 	@Override
+	/**
+	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
+	 */
 	public void windowDeactivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
+	/**
+	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
+	 */
 	public void windowDeiconified(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden
+	 * sein muss
+	 */
 	@Override
 	public void windowIconified(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden
+	 * sein muss
+	 */
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub

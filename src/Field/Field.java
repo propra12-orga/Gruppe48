@@ -13,10 +13,18 @@ import java.io.IOException;
 import Objects.Bomb;
 import Objects.Player;
 
+/**
+ * 
+ * @author Alexander Die Field Klass enthält Methoden um ein in ihr abgelegtes
+ *         Feld auszulesen oder zu verändern.
+ */
 public class Field {
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE;
 	private FieldContent map[][];
 
+	/**
+	 * Erzeugt ein Objekt der Klasse Field
+	 */
 	public Field() {
 		EMPTY = 0;
 		FREE = 1;
