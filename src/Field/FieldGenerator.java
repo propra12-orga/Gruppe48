@@ -244,6 +244,7 @@ public class FieldGenerator {
 					return null;
 				}
 			}
+
 		} catch (IndexOutOfBoundsException e) {
 			System.out
 					.println("In der ersten Reihe sind zuviele *, bzw Waende");
@@ -269,7 +270,15 @@ public class FieldGenerator {
 			return null;
 		}
 		for (int i = 0; i < mapList.get(0).length(); i++) {
-			// Ueberpruefung der letzten Zeile, nur Wall erlaubt!
+			// Es wird geprueft ob in der letzten Spalte nur Waende sind
+			if (mapList.get(i).charAt(spielfeldBreite - 1) != 42) {
+				System.out
+						.println("Fehler in der letzten Spalte, nur unzerstoerbare Waende erlaubt!");
+				return null;
+			}
+		}
+		for (int i = 0; i < mapList.get(0).length(); i++) {
+			// Ueberpruefung der letzten Zeile, nur Waende erlaubt!
 			if (mapList.get(zeilenAnzahl - 1).charAt(i) != 42) {
 				System.out
 						.println("Fehler in der letzten Zeile, nur unzerstoerbare Waende erlaubt!");

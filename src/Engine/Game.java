@@ -571,6 +571,7 @@ public class Game implements Runnable {
 								.getField(bombList.get(i).getPosition()[1],
 										bombList.get(i).getPosition()[0])
 								.getPlayer().getID();
+						Sound.GAME_OVER.play();
 					}
 					if (gameField.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0]).getBomb() != null) {
@@ -628,6 +629,7 @@ public class Game implements Runnable {
 								.getField(bombList.get(i).getPosition()[1],
 										bombList.get(i).getPosition()[0] - j)
 								.getPlayer().getID();
+						Sound.GAME_OVER.play();
 					}
 					if (gameField.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0] - j).getBomb() != null) {
@@ -681,6 +683,7 @@ public class Game implements Runnable {
 								.getField(bombList.get(i).getPosition()[1],
 										bombList.get(i).getPosition()[0] + j)
 								.getPlayer().getID();
+						Sound.GAME_OVER.play();
 					}
 					if (gameField.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0] + j).getBomb() != null) {
@@ -736,6 +739,7 @@ public class Game implements Runnable {
 								.getField(bombList.get(i).getPosition()[1] - j,
 										bombList.get(i).getPosition()[0])
 								.getPlayer().getID();
+						Sound.GAME_OVER.play();
 					}
 					if (gameField.getField(
 							bombList.get(i).getPosition()[1] - j,
@@ -795,6 +799,7 @@ public class Game implements Runnable {
 								.getField(bombList.get(i).getPosition()[1] + j,
 										bombList.get(i).getPosition()[0])
 								.getPlayer().getID();
+						Sound.GAME_OVER.play();
 					}
 					if (gameField.getField(
 							bombList.get(i).getPosition()[1] + j,
