@@ -10,7 +10,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
- * Sound.java
+ * Sound stellt Methoden zu Verfuegung um Toene im Spiel abspielen zu koennen
  * 
  * @author Leonid Panich
  * 
@@ -19,11 +19,18 @@ public enum Sound {
 
 	BOMB("sounds/bomb.wav"), GAME_OVER("sounds/gameover.wav"), STARTSOUND(
 			"sounds/bomb.wav");
-
+	/**
+	 * 
+	 * Gibt die verfuegbaren Lautstaerken an
+	 * 
+	 */
 	public static enum Volume {
 		MUTE, LOW, MEDIUM, HIGH
 	}
 
+	/**
+	 * Enthaelt die aktuelle Lautstaerke
+	 */
 	public static Volume volume = Volume.LOW;
 	private Clip clip;
 
@@ -45,7 +52,9 @@ public enum Sound {
 		}
 	}
 
-	// ein Ton spielen
+	/**
+	 * Spielt einen Sound ab
+	 */
 	public void play() {
 		if (volume != Volume.MUTE) {
 			if (clip.isRunning())

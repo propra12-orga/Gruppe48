@@ -12,10 +12,14 @@ import Objects.Bomb;
 import Objects.Player;
 
 /**
- * Game.java
+ * Die Klasse Game ist die Main-Klasse des Bomberman Projekts. Sie enthaelt die Spiellogik, ruft die GUI auf und verwaltet Benutzereingaben.
  * 
  * @author Leonid Panich
  * 
+ */
+/**
+ * Erzeugt ein neues Objekt der Klasse Game und initialisiert Diese. Standard
+ * maessig wird von einem einzelnen Spieler ausgegangen
  */
 public class Game implements Runnable {
 
@@ -47,14 +51,38 @@ public class Game implements Runnable {
 	List<long[]> explosionList;
 	Calendar calendar;
 	long time;
+	/**
+	 * Startgroesse der Map
+	 */
 	public static int startMapSize = 15;
+	/**
+	 * Startdichte der zerstoerbaren Bloecke
+	 */
 	public static double startDensity = 70;
+	/**
+	 * Breite der Map, falls eine rechteckige Map erzeugt wird
+	 */
 	public static int rectangleMapWidht = 20;
+	/**
+	 * Breite der Map, falls eine rechteckige Map erzeugt wird
+	 */
 	public static int rectangleMapHight = 15;
+	/**
+	 * Modus nach dem die Map mit Bloecken gefuellt werden soll
+	 */
 	public static int fillModus = 0;
+	/**
+	 * Startwarscheinlichkeit fuer das erstellen von Bloecken in Modus 1
+	 */
 	public static int startProbability = 50;
+	/**
+	 * Startwarscheinlichkeit fuer das erstellen von Bloecken in Modus 2
+	 */
 	public static int startRandomAmount = 5;
-
+	/**
+	 * Definiert ob eine rechteckige oder eine quadratische Map erstellt werden
+	 * soll
+	 */
 	public static boolean mapModus = Options.OptionFrame.mapModus;
 
 	/**
@@ -134,36 +162,87 @@ public class Game implements Runnable {
 		bMapLoaded = bLoad;
 	}
 
+	/**
+	 * Setzt die Groesse der Map auf den angegebenen Wert
+	 * 
+	 * @param changedMapSize
+	 *            neue Groesse der Map
+	 */
 	public void setGameMapOptions(int changedMapSize) {
 		startMapSize = changedMapSize;
 	}
 
+	/**
+	 * setzt die Dichte der zerstoerbaren Bloecke auf den angegebenen Wert
+	 * 
+	 * @param changedMapDensity
+	 *            neue Dichte der zerstoerbaren Bloecke
+	 */
 	public void setGameDensityOptions(double changedMapDensity) {
 		startDensity = changedMapDensity;
 	}
 
+	/**
+	 * Laesst entweder quadratische oder rechteckige Maps erzeugen
+	 * 
+	 * @param Mapmode
+	 *            Ist der Wert true, so werden quadratische Maps erzeugt. Sonst
+	 *            werden rechteckige Maps erzeugt
+	 */
 	public void setMapModus(boolean Mapmode) {
 		mapModus = Mapmode;
 	}
 
+	/**
+	 * Setzt die Breite der Map aud den angegeben Wert
+	 * 
+	 * @param changedWidhtMapSize
+	 *            neue Breite
+	 */
 	public void setGameMapWidht(int changedWidhtMapSize) {
 		rectangleMapWidht = changedWidhtMapSize;
 	}
 
+	/**
+	 * Setzt die Hoehe der Map auf den angegebenen Wert
+	 * 
+	 * @param changedHightMapSize
+	 *            neue Hoehe
+	 */
 	public void setGameMapHight(int changedHightMapSize) {
 		rectangleMapHight = changedHightMapSize;
 	}
 
+	/**
+	 * Setzt den Modus der Maperstellung auf den angegeben Wert
+	 * 
+	 * @param fillMapModus
+	 *            neuer Modus
+	 */
 	public void setFillModus(int fillMapModus) {
 
 		fillModus = fillMapModus;
 	}
 
+	/**
+	 * Setzt die Menge der zu setzenden Bloecke fuer Modus 2 auf den angebenen
+	 * Wert
+	 * 
+	 * @param changedAmount
+	 *            neue Anzahl an nicht zerstoerenden Bloecken
+	 */
 	public void setRAmount(int changedAmount) {
 
 		startRandomAmount = changedAmount;
 	}
 
+	/**
+	 * Setzt die Warscheinlichkeit der zu setzenden Bloecke fuer Modus 1 auf den
+	 * angebenen Wert
+	 * 
+	 * @param changedProbability
+	 *            neue Warscheinlichkeit
+	 */
 	public void setProbability(int changedProbability) {
 
 		startProbability = changedProbability;
@@ -368,7 +447,7 @@ public class Game implements Runnable {
 					}
 				}
 			}
-			//Es wird ueberprueft ob sich die maximal 2 Spieler bewegen koennen
+			// Es wird ueberprueft ob sich die maximal 2 Spieler bewegen koennen
 			for (int i = 0; i < fileTester.getMap().length; i++) {
 				for (int j = 0; j < fileTester.getMap()[0].length; j++) {
 					if (iMaxPlayersLoaded == 1) {
@@ -396,7 +475,8 @@ public class Game implements Runnable {
 				setMapLoaded(false);
 				return null;
 			}
-			if (iMaxPlayersLoaded > 0) { // Gibt es keine Startplätze fuer Spieler, so wird die Map
+			if (iMaxPlayersLoaded > 0) { // Gibt es keine Startplätze fuer
+											// Spieler, so wird die Map
 											// abgelehnt
 				generatedField.insertMap(testGenerator.readMap(sMap));
 				iMaxPlayers = iMaxPlayersLoaded;
@@ -405,15 +485,18 @@ public class Game implements Runnable {
 				setMapLoaded(false);
 				return null;
 			}
-		} else { // Gibt es Fehler beim Einlesen der Datei, so wird diese abgelehnt
+		} else { // Gibt es Fehler beim Einlesen der Datei, so wird diese
+					// abgelehnt
 			gui.showError("Es gibt einen Fehler mit der Map, bitte ueberpruefen Sie die Eingabedatei!"
 					+ " Vorgang wird abgebrochen.");
 			setMapLoaded(false);
 			return null;
 		}
 
-		if (iPlayerCount > iMaxPlayers) { // Soll die Map mit mehr Spielern gespielt werden koennen als
-											// vorhanden sind, so wird die Map abgelehnt
+		if (iPlayerCount > iMaxPlayers) { // Soll die Map mit mehr Spielern
+											// gespielt werden koennen als
+											// vorhanden sind, so wird die Map
+											// abgelehnt
 			gui.showError("Diese Map ist nicht mit so vielen Spielern spielbar");
 			gameState = GameStates.STOP;
 			setMapLoaded(false);
@@ -790,7 +873,7 @@ public class Game implements Runnable {
 									// Spieler, so werden die Kontrollen fuer
 									// den 2. Spieler deaktiviert.
 			switch (key) {
-			case 'w': //nach oben
+			case 'w': // nach oben
 				switch (gameField.getField(player.getPosition()[1],
 						player.getPosition()[0] - 1).getContent()) {
 				case 1:
@@ -808,7 +891,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'a': //nach links
+			case 'a': // nach links
 				switch (gameField.getField(player.getPosition()[1] - 1,
 						player.getPosition()[0]).getContent()) {
 				case 1:
@@ -826,7 +909,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 's': //nach unten
+			case 's': // nach unten
 				switch (gameField.getField(player.getPosition()[1],
 						player.getPosition()[0] + 1).getContent()) {
 				case 1:
@@ -844,7 +927,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'd': //nach rechts
+			case 'd': // nach rechts
 				switch (gameField.getField(player.getPosition()[1] + 1,
 						player.getPosition()[0]).getContent()) {
 				case 1:
@@ -862,17 +945,19 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case KeyEvent.VK_SPACE://Bombe legen
+			case KeyEvent.VK_SPACE:// Bombe legen
 				bombList.add(new Bomb(player.getPosition()[0], player
 						.getPosition()[1], time));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
 				break;
 			}
 			key = 0;
-		} else { // Im 2 Spielermodus wird ausserdem die Spielerkollision abgefragt, da
-					// ein Spieler nicht durch den anderen durchgehen sollte als waere er Luft
+		} else { // Im 2 Spielermodus wird ausserdem die Spielerkollision
+					// abgefragt, da
+					// ein Spieler nicht durch den anderen durchgehen sollte als
+					// waere er Luft
 			switch (key) {
-			case 'w': //nach oben
+			case 'w': // nach oben
 				switch (gameField.getField(player.getPosition()[1],
 						player.getPosition()[0] - 1).getContent()) {
 				case 1:
@@ -895,7 +980,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'a': //nach links
+			case 'a': // nach links
 				switch (gameField.getField(player.getPosition()[1] - 1,
 						player.getPosition()[0]).getContent()) {
 				case 1:
@@ -918,7 +1003,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 's': //nach unten
+			case 's': // nach unten
 				switch (gameField.getField(player.getPosition()[1],
 						player.getPosition()[0] + 1).getContent()) {
 				case 1:
@@ -941,7 +1026,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'd': //nach rechts
+			case 'd': // nach rechts
 				switch (gameField.getField(player.getPosition()[1] + 1,
 						player.getPosition()[0]).getContent()) {
 				case 1:
@@ -964,12 +1049,12 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case KeyEvent.VK_SPACE: //Bombe legen
+			case KeyEvent.VK_SPACE: // Bombe legen
 				bombList.add(new Bomb(player.getPosition()[0], player
 						.getPosition()[1], time));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
 				break;
-			case 'i': //nach oben (2ter Spieler)
+			case 'i': // nach oben (2ter Spieler)
 				switch (gameField.getField(player2.getPosition()[1],
 						player2.getPosition()[0] - 1).getContent()) {
 				case 1:
@@ -992,7 +1077,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'j': //nach links (2ter Spieler)
+			case 'j': // nach links (2ter Spieler)
 				switch (gameField.getField(player2.getPosition()[1] - 1,
 						player2.getPosition()[0]).getContent()) {
 				case 1:
@@ -1015,7 +1100,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'k': //nach unten (2ter Spieler)
+			case 'k': // nach unten (2ter Spieler)
 				switch (gameField.getField(player2.getPosition()[1],
 						player2.getPosition()[0] + 1).getContent()) {
 				case 1:
@@ -1038,7 +1123,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case 'l': //nach rechts (2ter Spieler)
+			case 'l': // nach rechts (2ter Spieler)
 				switch (gameField.getField(player2.getPosition()[1] + 1,
 						player2.getPosition()[0]).getContent()) {
 				case 1:
@@ -1061,7 +1146,7 @@ public class Game implements Runnable {
 					break;
 				}
 				break;
-			case KeyEvent.VK_ENTER: //Bombe legen (2ter Spieler)
+			case KeyEvent.VK_ENTER: // Bombe legen (2ter Spieler)
 				bombList.add(new Bomb(player2.getPosition()[0], player2
 						.getPosition()[1], time));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
