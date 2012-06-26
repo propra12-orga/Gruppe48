@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import javax.swing.JOptionPane;
+
 /**
  * 
  * @author Alexander Die Klasse FieldGenerator stellt Funktionen zu Verfügung um
@@ -246,13 +248,14 @@ public class FieldGenerator {
 			}
 
 		} catch (IndexOutOfBoundsException e) {
-			System.out
-					.println("In der ersten Reihe sind zuviele *, bzw Waende");
+			JOptionPane.showMessageDialog(null,
+					"Error at first row, Field is not quadratic!", "ERROR", 2);
 			return null;
 		}
 		if (spielfeldBreite != spielfeldHoehe | spielfeldHoehe != zeilenAnzahl) {
 			// testet ob das Spielfeld quadratisch ist
-			System.out.println("Spielfeld ist nicht quadratisch!");
+			JOptionPane.showMessageDialog(null, "Field is not quadratic!",
+					"ERROR", 2);
 			System.out.println("Geforderte Spielfeldbreite:" + spielfeldBreite);
 			System.out.println("Spielfeldhoehe:" + spielfeldHoehe);
 			System.out.println("Anzahl der Zeilen:" + zeilenAnzahl);
@@ -260,7 +263,8 @@ public class FieldGenerator {
 		}
 		if (iCounter != spielfeldBreite | iCounter2 != spielfeldBreite) {
 			// teste ob das Spielfeld symmetrisch ist
-			System.out.println("Spielfeld ist nicht symmetrisch!");
+			JOptionPane.showMessageDialog(null, "Field is not symmetric!",
+					"ERROR", 2);
 			System.out.println("Geforderte Spielfeldbreite:" + spielfeldBreite);
 			if (iCounter != spielfeldBreite) {
 				System.out.println("Spielfeldbreite: " + iCounter);
@@ -272,16 +276,22 @@ public class FieldGenerator {
 		for (int i = 0; i < mapList.get(0).length(); i++) {
 			// Es wird geprueft ob in der letzten Spalte nur Waende sind
 			if (mapList.get(i).charAt(spielfeldBreite - 1) != 42) {
-				System.out
-						.println("Fehler in der letzten Spalte, nur unzerstoerbare Waende erlaubt!");
+				JOptionPane
+						.showMessageDialog(
+								null,
+								"Error at last column, only indestructible Walls allowed!",
+								"ERROR", 2);
 				return null;
 			}
 		}
 		for (int i = 0; i < mapList.get(0).length(); i++) {
 			// Ueberpruefung der letzten Zeile, nur Waende erlaubt!
 			if (mapList.get(zeilenAnzahl - 1).charAt(i) != 42) {
-				System.out
-						.println("Fehler in der letzten Zeile, nur unzerstoerbare Waende erlaubt!");
+				JOptionPane
+						.showMessageDialog(
+								null,
+								"Error at last row, only indestructible Walls allowed!",
+								"ERROR", 2);
 				return null;
 			}
 		}
@@ -295,8 +305,8 @@ public class FieldGenerator {
 			}
 		}
 		if (ausgaenge > 1 | ausgaenge == 0) {
-			System.out
-					.println("Es darf nur und muss mindestens einen Ausgang geben!");
+			JOptionPane.showMessageDialog(null,
+					"It has to exist one and atleast one Exit!", "ERROR", 2);
 			return null;
 		}
 		Map = new FieldContent[spielfeldHoehe][spielfeldBreite];
@@ -342,6 +352,9 @@ public class FieldGenerator {
 					break;
 				default: // Trifft der Algorithmus auf ein nicht bekanntes
 					// Zeichen, so wird der Vorang abgebrochen
+					JOptionPane.showMessageDialog(null,
+							"Parsing Error, unknown character detected!",
+							"ERROR", 2);
 					return null;
 				}
 			}

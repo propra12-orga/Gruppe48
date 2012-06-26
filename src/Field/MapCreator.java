@@ -25,10 +25,9 @@ import javax.swing.border.TitledBorder;
 
 /**
  * 
- * @author Alexander Die Klasse MapCreator stellt dem Benutzer eine
- *         Schnittstelle sowie einige Werkzeuge zu Verfügung um mit geringem
- *         Aufwand selber Spielfelder zu erzeugen Sie erzeugt ihr eigenes
- *         Fenster
+ * @author Martin Die Klasse MapCreator stellt dem Benutzer eine Schnittstelle
+ *         sowie einige Werkzeuge zu Verfügung um mit geringem Aufwand selber
+ *         Spielfelder zu erzeugen Sie erzeugt ihr eigenes Fenster
  */
 public class MapCreator extends JFrame implements WindowListener,
 		ActionListener {
@@ -61,7 +60,7 @@ public class MapCreator extends JFrame implements WindowListener,
 	 * Erzeugt ein Panel im Fenster von MapCreator, über welches sämtliche
 	 * Schaltflächen verfügbar gemacht werden
 	 * 
-	 * @author Alexander
+	 * @author Martin
 	 * 
 	 */
 	public class CreationPanel extends JPanel {
@@ -99,34 +98,24 @@ public class MapCreator extends JFrame implements WindowListener,
 
 		private void init() {
 			JPanel grid = new JPanel();
-			grid.setLayout(new GridLayout(5, 5));
+			int mapSize = GUI.GUI.zahl;
+			grid.setLayout(new GridLayout(mapSize, mapSize));
 			//for (int i = 0; i < 25; i++) {
-			grid.add(new JButton(wall));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(""));
-			grid.add(new JButton(""));
-			grid.add(new JButton(""));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(""));
-			grid.add(new JButton(""));
-			grid.add(new JButton(""));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(""));
-			grid.add(new JButton(""));
-			grid.add(new JButton(""));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(wall));
-			grid.add(new JButton(wall));
-			grid.setBounds(10, 10, setArraySize(5), setArraySize(5));
+			for (int i = 0; i < mapSize + 1; i++) {
+				grid.add(new JButton(wall));
+			}
+			for (int j = 0; j < mapSize - 2; j++) {
+				for (int i = 0; i < mapSize - 2; i++) {
+					grid.add(new JButton(""));
+				}
+				for (int i = 0; i < 2; i++) {
+					grid.add(new JButton(wall));
+				}
+			}
+			for (int i = 0; i < mapSize - 1; i++) {
+				grid.add(new JButton(wall));
+			}
+			grid.setBounds(10, 10, setArraySize(mapSize), setArraySize(mapSize));
 			buttons = new JPanel(new GridLayout(0, 3));
 			buttons.setBounds(255, 640, 300, 40);
 			buttons.add(saveButton);

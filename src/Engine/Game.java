@@ -467,14 +467,6 @@ public class Game implements Runnable {
 					}
 				}
 			}
-			if (!freeSpace) {
-				System.out.println(fileTester.getMap()[1][2].getContent());
-				System.out.println(fileTester.getMap().length - 1);
-				gui.showError("Diese Map ist unspielbar, da die Spieler keine Bomben legen koennen "
-						+ "ohne dabei zu sterben!");
-				setMapLoaded(false);
-				return null;
-			}
 			if (iMaxPlayersLoaded > 0) { // Gibt es keine Startplätze fuer
 											// Spieler, so wird die Map
 											// abgelehnt
@@ -487,12 +479,17 @@ public class Game implements Runnable {
 			}
 		} else { // Gibt es Fehler beim Einlesen der Datei, so wird diese
 					// abgelehnt
-			gui.showError("Es gibt einen Fehler mit der Map, bitte ueberpruefen Sie die Eingabedatei!"
-					+ " Vorgang wird abgebrochen.");
+			//gui.showError("Es gibt einen Fehler mit der Map, bitte ueberpruefen Sie die Eingabedatei!"
+			//	+ " Vorgang wird abgebrochen.");
 			setMapLoaded(false);
 			return null;
 		}
-
+		if (!freeSpace) {
+			gui.showError("Diese Map ist unspielbar, da die Spieler keine Bomben legen koennen "
+					+ "ohne dabei zu sterben!");
+			setMapLoaded(false);
+			return null;
+		}
 		if (iPlayerCount > iMaxPlayers) { // Soll die Map mit mehr Spielern
 											// gespielt werden koennen als
 											// vorhanden sind, so wird die Map
