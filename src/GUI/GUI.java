@@ -56,6 +56,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	private Game mainGame;
 	private JMenuItem optionItem;
 	private JMenuItem mapCreatorItem;
+	static public int zahl;
 	private final Game game1;
 
 	/**
@@ -192,8 +193,30 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 			new Options(game1);
 		}
 		if (object.getSource() == mapCreatorItem) {
-			new MapCreator();
-			System.out.println("Hier entsteht der Map Creator!");
+			String size = JOptionPane.showInputDialog(
+					"Enter the desired Fieldsize(between 5 and 19):", 9);
+			try {
+				zahl = Integer.parseInt(size);
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(mapCreatorItem,
+						"Enter a number not a character!", "ERROR", 2);
+				return;
+			}
+			if (zahl > 19) {
+				JOptionPane.showMessageDialog(mapCreatorItem,
+						"The Fieldsize is too huge and is not denotable!",
+						"ERROR", 2);
+				return;
+			} else if (zahl < 5) {
+				JOptionPane
+						.showMessageDialog(
+								mapCreatorItem,
+								"The Fieldsize is too small and would not be playable!",
+								"ERROR", 2);
+				return;
+			} else {
+				new MapCreator();
+			}
 		}
 	}
 
