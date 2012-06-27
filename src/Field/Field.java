@@ -9,6 +9,7 @@ package Field;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 
 import Objects.Bomb;
 import Objects.Player;
@@ -18,7 +19,7 @@ import Objects.Player;
  * @author Alexander Die Field Klass enthält Methoden um ein in ihr abgelegtes
  *         Feld auszulesen oder zu verändern.
  */
-public class Field {
+public class Field implements Serializable {
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE;
 	private FieldContent map[][];
 

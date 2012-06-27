@@ -8,6 +8,7 @@ import java.util.List;
 import Field.Field;
 import Field.FieldGenerator;
 import GUI.GUI;
+import Network.Server;
 import Objects.Bomb;
 import Objects.Player;
 
@@ -49,6 +50,7 @@ public class Game implements Runnable {
 	static int iMaxPlayers = 0;
 	List<Bomb> bombList;
 	List<long[]> explosionList;
+	Server server = null;
 	Calendar calendar;
 	long time;
 	/**
@@ -246,6 +248,19 @@ public class Game implements Runnable {
 	public void setProbability(int changedProbability) {
 
 		startProbability = changedProbability;
+	}
+
+	public void startServer() {
+		if (bMapLoaded) {
+			server = new Server(createNewField(sMapPath));
+		} else {
+			server = new Server(createNewField());
+		}
+
+	}
+
+	public void connect(int port) {
+
 	}
 
 	/**
