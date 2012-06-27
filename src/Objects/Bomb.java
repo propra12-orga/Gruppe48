@@ -33,9 +33,10 @@ public class Bomb {
 	 * @param time
 	 *            Zeit zu der die Bombe gesetzt worden ist
 	 */
-	public Bomb(int xPos, int yPos, long time) {
+	public Bomb(int xPos, int yPos, long time, int radius) {
 		x = xPos;
 		y = yPos;
+		this.radius = radius;
 		explosionTime = time + delay;
 	}
 

@@ -8,7 +8,7 @@ package Objects;
  * 
  */
 public class Player {
-	int x, y, id;
+	int x, y, id, bRadius;
 
 	/**
 	 * Konstruktor der Klasse Player
@@ -23,6 +23,7 @@ public class Player {
 	public Player(int iXPos, int iYPos, int id) {
 		x = iXPos;
 		y = iYPos;
+		bRadius = 5;
 		this.id = id;
 	}
 
@@ -36,6 +37,14 @@ public class Player {
 		getPosition[0] = x;
 		getPosition[1] = y;
 		return getPosition;
+	}
+
+	public void setBombRadius(int radius) {
+		bRadius = radius;
+	}
+
+	public int getBombRadius() {
+		return bRadius;
 	}
 
 	/**

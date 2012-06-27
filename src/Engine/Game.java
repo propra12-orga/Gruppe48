@@ -111,6 +111,7 @@ public class Game implements Runnable {
 							break;
 						case 2:
 							player2 = new Player(i, j, 2);
+							player2.setBombRadius(3);
 							gameField.setPlayer(player2);
 							break;
 						}
@@ -310,6 +311,7 @@ public class Game implements Runnable {
 							break;
 						case 2:
 							player2 = new Player(j, i, 2);
+							player2.setBombRadius(3);
 							gameField.setPlayer(player2);
 							break;
 						}
@@ -494,8 +496,8 @@ public class Game implements Runnable {
 			}
 		} else { // Gibt es Fehler beim Einlesen der Datei, so wird diese
 					// abgelehnt
-			//gui.showError("Es gibt einen Fehler mit der Map, bitte ueberpruefen Sie die Eingabedatei!"
-			//	+ " Vorgang wird abgebrochen.");
+			// gui.showError("Es gibt einen Fehler mit der Map, bitte ueberpruefen Sie die Eingabedatei!"
+			// + " Vorgang wird abgebrochen.");
 			setMapLoaded(false);
 			return null;
 		}
@@ -964,7 +966,7 @@ public class Game implements Runnable {
 				break;
 			case KeyEvent.VK_SPACE:// Bombe legen
 				bombList.add(new Bomb(player.getPosition()[0], player
-						.getPosition()[1], time));
+						.getPosition()[1], time, player.getBombRadius()));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
 				break;
 			}
@@ -1068,7 +1070,7 @@ public class Game implements Runnable {
 				break;
 			case KeyEvent.VK_SPACE: // Bombe legen
 				bombList.add(new Bomb(player.getPosition()[0], player
-						.getPosition()[1], time));
+						.getPosition()[1], time, player.getBombRadius()));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
 				break;
 			case 'i': // nach oben (2ter Spieler)
@@ -1165,7 +1167,7 @@ public class Game implements Runnable {
 				break;
 			case KeyEvent.VK_ENTER: // Bombe legen (2ter Spieler)
 				bombList.add(new Bomb(player2.getPosition()[0], player2
-						.getPosition()[1], time));
+						.getPosition()[1], time, player2.getBombRadius()));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
 				break;
 			}

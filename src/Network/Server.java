@@ -24,8 +24,6 @@ public class Server implements Runnable {
 	PrintWriter output2;
 	ObjectOutputStream objectOutput1;
 	ObjectOutputStream objectOutput2;
-	ObjectInputStream objectInput1;
-	ObjectInputStream objectInput2;
 	Thread inputThread1;
 	Thread inputThread2;
 	Calendar calendar;
@@ -53,19 +51,25 @@ public class Server implements Runnable {
 
 			try {
 				client1 = server.accept();
-				/*
-				 * inputThread1 = new Thread( new Runnable(){
-				 * 
-				 * @Override public void run(){ try{ input1 = new
-				 * Scanner(client1.getInputStream()); }catch(IOException e) {
-				 * 
-				 * } } } ).start();
-				 */
+
+				// inputThread1 =
+
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							input1 = new Scanner(client1.getInputStream());
+						} catch (IOException e) {
+						}
+					}
+				}).start();
 
 				output1 = new PrintWriter(client1.getOutputStream());
 				objectOutput1 = new ObjectOutputStream(
 						client1.getOutputStream());
-				objectInput1 = new ObjectInputStream(client1.getInputStream());
+				// objectInput1 = new
+				// ObjectInputStream(client1.getInputStream());
 			} catch (IOException e) {
 				System.out.println(e);
 			}
