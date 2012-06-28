@@ -40,7 +40,7 @@ public class Player {
 	}
 
 	public void setBombRadius(int radius) {
-		bRadius = radius;
+		bRadius = radius++;
 	}
 
 	public int getBombRadius() {

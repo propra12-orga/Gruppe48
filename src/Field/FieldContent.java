@@ -15,11 +15,13 @@ import Objects.Player;
  * 
  */
 public class FieldContent {
-	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE;
+	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE, FIRE;
 	private int iContent;
 	private Bomb bomb;
 	private Player player;
 	private boolean bExit = false;
+	private boolean bFireItem = false;
+	private boolean bBombItem = false;
 
 	/**
 	 * Erzeugt ein Objekt der Klasse FieldContent Sein Inhalt wird mit null
@@ -35,6 +37,7 @@ public class FieldContent {
 		BOMB = 4;
 		PLAYER = 5;
 		STONE = 6;
+		FIRE = 7;
 		iContent = EMPTY;
 		bomb = null;
 		player = null;
@@ -61,6 +64,13 @@ public class FieldContent {
 		bExit = true;
 	}
 
+	public void setFireItem() {
+		bFireItem = true;
+	}
+
+	/*
+	 * public void setBombItem() { bBombItem = true; }
+	 */
 	/**
 	 * Fuegt Bombe in Feld ein
 	 * 
@@ -106,6 +116,13 @@ public class FieldContent {
 		return bExit;
 	}
 
+	public boolean isFireItem() {
+		return bFireItem;
+	}
+
+	/*
+	 * public boolean isBombItem() { return bBombItem; }
+	 */
 	/**
 	 * Gibt Inhalt des Feldes als Integer zurueck
 	 * 

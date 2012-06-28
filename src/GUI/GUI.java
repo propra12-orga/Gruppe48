@@ -39,6 +39,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	BufferedImage imgExit;
 	BufferedImage imgWall;
 	BufferedImage imgFree;
+	BufferedImage imgFireItem;
 	public BoardPanel panel;
 
 	/**

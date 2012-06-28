@@ -29,6 +29,8 @@ public class BoardPanel extends JPanel {
 	BufferedImage imgBomb;
 	BufferedImage imgBoom;
 	BufferedImage imgStone;
+	BufferedImage imgFireItem;
+	BufferedImage imgBombItem;
 	Field boardField;
 	List<int[]> iIntList;
 	List<ArrayList> iBoomList;
@@ -59,6 +61,10 @@ public class BoardPanel extends JPanel {
 					.getResource("/images/boom.png"));
 			imgStone = ImageIO.read(ImageIO.class
 					.getResource("/images/stone.png"));
+			imgFireItem = ImageIO.read(ImageIO.class
+					.getResource("/images/boomIcon.png"));
+			imgBombItem = ImageIO.read(ImageIO.class
+					.getResource("/images/bombItem.png"));
 		} catch (IOException e) {
 			System.out.println(e);
 		}
@@ -137,7 +143,23 @@ public class BoardPanel extends JPanel {
 																				// Feld
 										null);
 							}
-							break;
+							{
+
+								if (boardField.getField(i, j).isFireItem()) {
+									g.drawImage(imgFireItem, i * 32, j * 32,
+											32, 32, // Zeichnet // den //
+													// Ausgang
+											null);
+
+									/*
+									 * } if (boardField.getField(i, j)
+									 * .isBombItem()) { g.drawImage(imgBombItem,
+									 * i * 32, j * 32, 32, 32, // Zeichnet //
+									 * den // Ausgang null);
+									 */}
+								break;
+							}
+
 						case 2:
 							g.drawImage(imgWall, i * 32, j * 32, 32, 32, null); // Zeichnet
 																				// unzerstoerbare
@@ -148,6 +170,7 @@ public class BoardPanel extends JPanel {
 																					// zerstoerbaren
 																					// Stein
 							break;
+
 						}
 					}
 				}

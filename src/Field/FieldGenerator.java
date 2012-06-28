@@ -22,11 +22,15 @@ import javax.swing.JOptionPane;
  *         Spielfelder nach angegebenen Vorgaben zu erzeugen
  */
 public class FieldGenerator {
-	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE;
+	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE, FIRE,
+			BOMBITEM;
 	private FieldContent Map[][];
 	private float fRandomChance;
 	private int iModus, iRandomAmount;
 	private boolean bCreateExit;
+	private boolean bCreateFireItem;
+
+	// private boolean bCreateBombItem;
 
 	/**
 	 * Erzeugt ein Objekt der Klasse FieldGenerator. Standardeinstellungen für
@@ -43,10 +47,13 @@ public class FieldGenerator {
 		BOMB = 4;
 		PLAYER = 5;
 		STONE = 6;
+		FIRE = 7;
+		// BOMBITEM = 8;
 		iModus = 0;
 		fRandomChance = 0;
 		iRandomAmount = 0;
 		bCreateExit = true;
+		bCreateFireItem = true;
 
 	}
 
@@ -99,6 +106,11 @@ public class FieldGenerator {
 					// gewaehlten Modus
 		if (bCreateExit)
 			createRandomExit();
+		if (bCreateFireItem)
+			createRandomFireItem();
+		// if (bCreateBombItem)
+		// createRandomBombItem();
+
 		Map[1][1].setContent(PLAYER); // setzt den Spieler an die oberste linke
 										// Position
 		Map[iWidth - 2][iHeight - 2].setContent(PLAYER); // das ist der Platz
@@ -173,6 +185,14 @@ public class FieldGenerator {
 		bCreateExit = bSetExit;
 	}
 
+	public void createFireItem(boolean bSetFireItem) {
+		bCreateFireItem = bSetFireItem;
+	}
+
+	/*
+	 * public void createBombItem(boolean bSetBombItem) { bCreateBombItem =
+	 * bSetBombItem; }
+	 */
 	/**
 	 * Liest Map aus Datei aus und gibt sie als FieldContent[][] zurueck.
 	 * Erkennt automatisch ob die Map komprimiert oder unkomprimiert vorliegt.
@@ -383,6 +403,8 @@ public class FieldGenerator {
 		Map = readMap(sInputFile);
 		setWalls();
 		createRandomExit();
+		createRandomFireItem();
+		// createRandomBombItem();
 		return Map;
 	}
 
@@ -632,4 +654,47 @@ public class FieldGenerator {
 		}
 	}
 
+	private int CountSpace() {
+		int Count = 0;
+		for (int i = 0; i < Map.length; i++) {
+			for (int j = 0; j < Map[0].length; j++) {
+				if ((Map[i][j].getContent() == STONE)) {
+					Count++;
+				}
+			}
+		}
+		return Count;
+	}
+
+	private void createRandomFireItem() {
+		int Rand = (int) (Math.random() * CountSpace());
+
+		for (int i = 0; i < Map.length; i++) {
+			for (int j = 0; j < Map[0].length; j++) {
+				if ((Map[i][j].getContent() == STONE)) {
+					Rand--;
+					if (Rand == 0) {
+						Map[i][j].setFireItem();
+					}
+					return;
+				}
+
+			}
+		}
+	}
+
 }
+
+/*
+ * private void createRandomBombItem() { int Rand = (int) (Math.random() *
+ * CountSpace());
+ * 
+ * for (int i = 0; i < Map.length; i++) { for (int j = 0; j < Map[0].length;
+ * j++) { if ((Map[i][j].getContent() == STONE)) { Rand--; if (Rand == 0) {
+ * 
+ * Map[i][j].setBombItem(); return; }
+ * 
+ * } } }
+ * 
+ * }
+ */
