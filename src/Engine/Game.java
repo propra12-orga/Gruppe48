@@ -33,6 +33,7 @@ public class Game implements Runnable {
 	 */
 	public static GameStates gameState;
 	private static GUI gui;
+	private static Bomb bomb;
 	/**
 	 * Zuletzt gedrueckte Taste
 	 */
@@ -979,7 +980,7 @@ public class Game implements Runnable {
 				player.setBombRadius();
 				break;
 			case 'e':
-				System.out.println(Bomb.getBombStatus());
+				Bomb.setBMax();
 				break;
 			}
 			key = 0;
@@ -1081,12 +1082,19 @@ public class Game implements Runnable {
 				}
 				break;
 			case KeyEvent.VK_SPACE: // Bombe legen
-				bombList.add(new Bomb(player.getPosition()[0], player
-						.getPosition()[1], time, player.getBombRadius()));
+				if (Bomb.getBombStatus() == false)
+					bombList.add(new Bomb(player.getPosition()[0], player
+							.getPosition()[1], time, player.getBombRadius()));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
+				Bomb.setBombStatus();
+				Bomb.setgelegteBomb();
+
 				break;
 			case 'q':
 				player.setBombRadius();
+				break;
+			case 'e':
+				Bomb.setBMax();
 				break;
 			case 'u':
 				player2.setBombRadius();
@@ -1184,9 +1192,16 @@ public class Game implements Runnable {
 				}
 				break;
 			case KeyEvent.VK_ENTER: // Bombe legen (2ter Spieler)
-				bombList.add(new Bomb(player2.getPosition()[0], player2
-						.getPosition()[1], time, player2.getBombRadius()));
+				if (Bomb.getBombStatusP2() == false)
+					bombList.add(new Bomb(player2.getPosition()[0], player2
+							.getPosition()[1], time, player2.getBombRadius()));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
+				Bomb.setBombStatusP2();
+				Bomb.setgelegteBomb();
+
+				break;
+			case 'o':
+				Bomb.setBMaxP2();
 				break;
 			}
 			key = 0;

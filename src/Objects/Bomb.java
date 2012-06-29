@@ -18,12 +18,14 @@ public class Bomb {
 	 */
 	public static boolean isExploded = false;
 	public static boolean bombStatus = false;
+	public static boolean bombStatusP2 = false;
 	long delay = 3 * 1000;
 	long explosionTime;
 	int x;
 	int y;
 	int radius = 3;
-	static int zmax = 2;
+	static int bombMax = 1;
+	static int bombMaxP2 = 1;
 	static int m = 1;
 
 	/**
@@ -73,7 +75,9 @@ public class Bomb {
 		Sound.BOMB.play();
 		isExploded = true;
 		bombStatus = false;
-		System.out.println(bombStatus + "bombstatus detonate()");
+		bombStatusP2 = false;
+		System.out.println("bombstatus detonate():" + bombStatus);
+		System.out.println("bombstatusP2 detonate():" + bombStatusP2);
 		m = 1;
 
 	}
@@ -88,16 +92,31 @@ public class Bomb {
 	}
 
 	public static void setBombStatus() {
-		if (getM() <= zmax) {
+		if (getM() <= bombMax - 1) {
 			bombStatus = false;
-			System.out.println(getM() + "getM() if ");
-			System.out.println(bombStatus + "bombstatus if");
-			System.out.println(zmax + "zmax if");
+			System.out.println("getM() if: " + getM());
+			System.out.println("bombstatus if:" + bombStatus);
+			System.out.println("bombMax if:" + bombMax);
 
 		} else {
 			bombStatus = true;
-			System.out.println(bombStatus + "bombstatus else");
-			System.out.println(zmax + "zmax else");
+			System.out.println("bombstatus else:" + bombStatus);
+			System.out.println("bombMax else:" + bombMax);
+
+		}
+	}
+
+	public static void setBombStatusP2() {
+		if (getM() <= bombMaxP2 - 1) {
+			bombStatusP2 = false;
+			System.out.println("getM() if: " + getM());
+			System.out.println("bombstatusP2 if:" + bombStatusP2);
+			System.out.println("bombMaxP2 if:" + bombMaxP2);
+
+		} else {
+			bombStatusP2 = true;
+			System.out.println("bombstatusP2 else:" + bombStatusP2);
+			System.out.println("bombMaxP2 else:" + bombMaxP2);
 
 		}
 	}
@@ -106,11 +125,31 @@ public class Bomb {
 		return bombStatus;
 	}
 
+	public static boolean getBombStatusP2() {
+		return bombStatusP2;
+	}
+
 	public static void setgelegteBomb() {
 		m += 1;
 	}
 
 	public static int getM() {
 		return m;
+	}
+
+	public static void setBMax() {
+		bombMax += 1;
+	}
+
+	public static int getBMax() {
+		return bombMax;
+	}
+
+	public static void setBMaxP2() {
+		bombMaxP2 += 1;
+	}
+
+	public static int getBMaxP2() {
+		return bombMaxP2;
 	}
 }
