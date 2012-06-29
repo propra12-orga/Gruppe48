@@ -111,7 +111,7 @@ public class Game implements Runnable {
 							break;
 						case 2:
 							player2 = new Player(i, j, 2);
-							player2.setBombRadius(3);
+							// player2.setBombRadius(3);
 							gameField.setPlayer(player2);
 							break;
 						}
@@ -311,7 +311,7 @@ public class Game implements Runnable {
 							break;
 						case 2:
 							player2 = new Player(j, i, 2);
-							player2.setBombRadius(3);
+							// player2.setBombRadius(3);
 							gameField.setPlayer(player2);
 							break;
 						}
@@ -969,6 +969,9 @@ public class Game implements Runnable {
 						.getPosition()[1], time, player.getBombRadius()));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
 				break;
+			case 'q':
+				player.setBombRadius();
+				break;
 			}
 			key = 0;
 		} else { // Im 2 Spielermodus wird ausserdem die Spielerkollision
@@ -1072,6 +1075,12 @@ public class Game implements Runnable {
 				bombList.add(new Bomb(player.getPosition()[0], player
 						.getPosition()[1], time, player.getBombRadius()));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
+				break;
+			case 'q':
+				player.setBombRadius();
+				break;
+			case 'u':
+				player2.setBombRadius();
 				break;
 			case 'i': // nach oben (2ter Spieler)
 				switch (gameField.getField(player2.getPosition()[1],

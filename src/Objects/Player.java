@@ -23,7 +23,7 @@ public class Player {
 	public Player(int iXPos, int iYPos, int id) {
 		x = iXPos;
 		y = iYPos;
-		bRadius = 5;
+		bRadius = 2;
 		this.id = id;
 	}
 
@@ -39,8 +39,8 @@ public class Player {
 		return getPosition;
 	}
 
-	public void setBombRadius(int radius) {
-		bRadius = radius++;
+	public void setBombRadius() {
+		bRadius += 1;
 	}
 
 	public int getBombRadius() {
