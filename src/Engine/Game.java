@@ -87,6 +87,8 @@ public class Game implements Runnable {
 	 */
 	public static boolean mapModus = Options.OptionFrame.mapModus;
 
+	// public static boolean isExploded = Objects.Bomb.isExploded;
+
 	/**
 	 * Erzeugt ein neues Spielfeld mit 1-2 Spielern
 	 * 
@@ -965,12 +967,19 @@ public class Game implements Runnable {
 				}
 				break;
 			case KeyEvent.VK_SPACE:// Bombe legen
-				bombList.add(new Bomb(player.getPosition()[0], player
-						.getPosition()[1], time, player.getBombRadius()));
+				if (Bomb.getBombStatus() == false)
+					bombList.add(new Bomb(player.getPosition()[0], player
+							.getPosition()[1], time, player.getBombRadius()));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
+				Bomb.setBombStatus();
+				Bomb.setgelegteBomb();
 				break;
+
 			case 'q':
 				player.setBombRadius();
+				break;
+			case 'e':
+				System.out.println(Bomb.getBombStatus());
 				break;
 			}
 			key = 0;

@@ -16,12 +16,15 @@ public class Bomb {
 	/**
 	 * Ist true, falls Bombe explodiert, ist sonst false
 	 */
-	public boolean isExploded = false;
+	public static boolean isExploded = false;
+	public static boolean bombStatus = false;
 	long delay = 3 * 1000;
 	long explosionTime;
 	int x;
 	int y;
 	int radius = 3;
+	static int zmax = 2;
+	static int m = 1;
 
 	/**
 	 * Konstruktor der Klasse Bomb
@@ -69,6 +72,10 @@ public class Bomb {
 		explosionTime -= delay;
 		Sound.BOMB.play();
 		isExploded = true;
+		bombStatus = false;
+		System.out.println(bombStatus + "bombstatus detonate()");
+		m = 1;
+
 	}
 
 	/**
@@ -80,4 +87,30 @@ public class Bomb {
 		return radius;
 	}
 
+	public static void setBombStatus() {
+		if (getM() <= zmax) {
+			bombStatus = false;
+			System.out.println(getM() + "getM() if ");
+			System.out.println(bombStatus + "bombstatus if");
+			System.out.println(zmax + "zmax if");
+
+		} else {
+			bombStatus = true;
+			System.out.println(bombStatus + "bombstatus else");
+			System.out.println(zmax + "zmax else");
+
+		}
+	}
+
+	public static boolean getBombStatus() {
+		return bombStatus;
+	}
+
+	public static void setgelegteBomb() {
+		m += 1;
+	}
+
+	public static int getM() {
+		return m;
+	}
 }
