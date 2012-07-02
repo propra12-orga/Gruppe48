@@ -45,6 +45,7 @@ public class Game implements Runnable {
 	static boolean bMapLoaded = false;
 	static String sMapPath = "";
 	static int iPlayerCount = 1;
+	int iItemChance = 100;
 	int iNewPlayerCount = 1;
 	int iDefeatedPlayer = 0;
 	int iWinningPlayer = 0;
@@ -687,6 +688,10 @@ public class Game implements Runnable {
 										bombList.get(i).getPosition()[1],
 										bombList.get(i).getPosition()[0] - j)
 										.setContent(1);
+								createRandomItem(
+										bombList.get(i).getPosition()[1],
+										bombList.get(i).getPosition()[0] - j,
+										iItemChance);
 							}
 							break;
 						}
@@ -741,6 +746,10 @@ public class Game implements Runnable {
 										bombList.get(i).getPosition()[1],
 										bombList.get(i).getPosition()[0] + j)
 										.setContent(1);
+								createRandomItem(
+										bombList.get(i).getPosition()[1],
+										bombList.get(i).getPosition()[0] + j,
+										iItemChance);
 							}
 							break;
 						}
@@ -797,6 +806,10 @@ public class Game implements Runnable {
 										bombList.get(i).getPosition()[1] - j,
 										bombList.get(i).getPosition()[0])
 										.setContent(1);
+								createRandomItem(
+										bombList.get(i).getPosition()[1] - j,
+										bombList.get(i).getPosition()[0],
+										iItemChance);
 							}
 							break;
 						}
@@ -857,6 +870,10 @@ public class Game implements Runnable {
 										bombList.get(i).getPosition()[1] + j,
 										bombList.get(i).getPosition()[0])
 										.setContent(1);
+								createRandomItem(
+										bombList.get(i).getPosition()[1] + j,
+										bombList.get(i).getPosition()[0],
+										iItemChance);
 							}
 							break;
 						}
@@ -1208,6 +1225,13 @@ public class Game implements Runnable {
 			}
 			key = 0;
 		}
+	}
+
+	private void createRandomItem(int pos1, int pos2, int chance) {
+		if ((Math.random() * 100) > chance) {
+			return;
+		}
+		gameField.getField(pos1, pos2).setFireItem();
 	}
 
 	/**
