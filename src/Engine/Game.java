@@ -49,7 +49,7 @@ public class Game implements Runnable {
 	static boolean bMapLoaded = false;
 	static String sMapPath = "";
 	static int iPlayerCount = 1;
-	int iItemChance = 100;
+	int iItemChance = 15;
 	int iNewPlayerCount = 1;
 	int iDefeatedPlayer = 0;
 	int iWinningPlayer = 0;
@@ -999,6 +999,7 @@ public class Game implements Runnable {
 							player.getPosition()[0] - 1).isBombItem() == true) {
 						Bomb.setBombMax();
 					}
+
 					gameField.removePlayer(player);
 					player.moveUp();
 					gameField.setPlayer(player);
