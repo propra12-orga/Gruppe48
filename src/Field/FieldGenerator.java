@@ -28,8 +28,6 @@ public class FieldGenerator {
 	private float fRandomChance;
 	private int iModus, iRandomAmount;
 	private boolean bCreateExit;
-	private boolean bCreateFireItem;
-	private boolean bCreateBombItem;
 
 	// private boolean bCreateBombItem;
 
@@ -54,9 +52,6 @@ public class FieldGenerator {
 		fRandomChance = 0;
 		iRandomAmount = 0;
 		bCreateExit = true;
-		bCreateFireItem = true;
-		bCreateBombItem = true;
-
 	}
 
 	/**
@@ -181,10 +176,6 @@ public class FieldGenerator {
 	 */
 	public void createExit(boolean bSetExit) {
 		bCreateExit = bSetExit;
-	}
-
-	public void createFireItem(boolean bSetFireItem) {
-		bCreateFireItem = bSetFireItem;
 	}
 
 	/*

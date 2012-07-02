@@ -74,6 +74,14 @@ public class FieldContent implements Serializable {
 		bBombItem = true;
 	}
 
+	public void removeFireItem() {
+		bFireItem = false;
+	}
+
+	public void removeBombItem() {
+		bBombItem = false;
+	}
+
 	/**
 	 * Fuegt Bombe in Feld ein
 	 * 

@@ -49,7 +49,7 @@ public class Game implements Runnable {
 	static boolean bMapLoaded = false;
 	static String sMapPath = "";
 	static int iPlayerCount = 1;
-	int iItemChance = 15;
+	int iItemChance = 35;
 	int iNewPlayerCount = 1;
 	int iDefeatedPlayer = 0;
 	int iWinningPlayer = 0;
@@ -994,10 +994,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player.getPosition()[1],
 							player.getPosition()[0] - 1).isFireItem() == true) {
 						player.setBombRadius();
+						gameField.getField(player.getPosition()[1],
+								player.getPosition()[0] - 1).removeFireItem();
 					}
 					if (gameField.getField(player.getPosition()[1],
 							player.getPosition()[0] - 1).isBombItem() == true) {
 						Bomb.setBombMax();
+						gameField.getField(player.getPosition()[1],
+								player.getPosition()[0] - 1).removeBombItem();
 					}
 
 					gameField.removePlayer(player);
@@ -1021,10 +1025,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player.getPosition()[1] - 1,
 							player.getPosition()[0]).isFireItem() == true) {
 						player.setBombRadius();
+						gameField.getField(player.getPosition()[1] - 1,
+								player.getPosition()[0]).removeFireItem();
 					}
 					if (gameField.getField(player.getPosition()[1] - 1,
 							player.getPosition()[0]).isBombItem() == true) {
 						Bomb.setBombMax();
+						gameField.getField(player.getPosition()[1] - 1,
+								player.getPosition()[0]).removeBombItem();
 					}
 					gameField.removePlayer(player);
 					player.moveLeft();
@@ -1047,10 +1055,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player.getPosition()[1],
 							player.getPosition()[0] + 1).isFireItem() == true) {
 						player.setBombRadius();
+						gameField.getField(player.getPosition()[1],
+								player.getPosition()[0] + 1).removeFireItem();
 					}
 					if (gameField.getField(player.getPosition()[1],
 							player.getPosition()[0] + 1).isBombItem() == true) {
 						Bomb.setBombMax();
+						gameField.getField(player.getPosition()[1],
+								player.getPosition()[0] + 1).removeBombItem();
 					}
 					gameField.removePlayer(player);
 					player.moveDown();
@@ -1073,10 +1085,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player.getPosition()[1] + 1,
 							player.getPosition()[0]).isFireItem() == true) {
 						player.setBombRadius();
+						gameField.getField(player.getPosition()[1] + 1,
+								player.getPosition()[0]).removeFireItem();
 					}
 					if (gameField.getField(player.getPosition()[1] + 1,
 							player.getPosition()[0]).isBombItem() == true) {
 						Bomb.setBombMax();
+						gameField.getField(player.getPosition()[1] + 1,
+								player.getPosition()[0]).removeBombItem();
 					}
 					gameField.removePlayer(player);
 					player.moveRight();
@@ -1126,10 +1142,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player.getPosition()[1],
 							player.getPosition()[0] - 1).isFireItem() == true) {
 						player.setBombRadius();
+						gameField.getField(player.getPosition()[1],
+								player.getPosition()[0] - 1).removeFireItem();
 					}
 					if (gameField.getField(player.getPosition()[1],
 							player.getPosition()[0] - 1).isBombItem() == true) {
 						Bomb.setBombMax();
+						gameField.getField(player.getPosition()[1],
+								player.getPosition()[0] - 1).removeBombItem();
 					}
 					gameField.removePlayer(player);
 					player.moveUp();
@@ -1157,10 +1177,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player.getPosition()[1] - 1,
 							player.getPosition()[0]).isFireItem() == true) {
 						player.setBombRadius();
+						gameField.getField(player.getPosition()[1] - 1,
+								player.getPosition()[0]).removeFireItem();
 					}
 					if (gameField.getField(player.getPosition()[1] - 1,
 							player.getPosition()[0]).isBombItem() == true) {
 						Bomb.setBombMax();
+						gameField.getField(player.getPosition()[1] - 1,
+								player.getPosition()[0]).removeBombItem();
 					}
 
 					gameField.removePlayer(player);
@@ -1189,10 +1213,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player.getPosition()[1],
 							player.getPosition()[0] + 1).isFireItem() == true) {
 						player.setBombRadius();
+						gameField.getField(player.getPosition()[1],
+								player.getPosition()[0] + 1).removeFireItem();
 					}
 					if (gameField.getField(player.getPosition()[1],
 							player.getPosition()[0] + 1).isBombItem() == true) {
 						Bomb.setBombMax();
+						gameField.getField(player.getPosition()[1],
+								player.getPosition()[0] + 1).removeBombItem();
 					}
 					gameField.removePlayer(player);
 					player.moveDown();
@@ -1220,10 +1248,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player.getPosition()[1] + 1,
 							player.getPosition()[0]).isFireItem() == true) {
 						player.setBombRadius();
+						gameField.getField(player.getPosition()[1] + 1,
+								player.getPosition()[0]).removeFireItem();
 					}
 					if (gameField.getField(player.getPosition()[1] + 1,
 							player.getPosition()[0]).isBombItem() == true) {
 						Bomb.setBombMax();
+						gameField.getField(player.getPosition()[1] + 1,
+								player.getPosition()[0]).removeBombItem();
 					}
 					gameField.removePlayer(player);
 					player.moveRight();
@@ -1269,10 +1301,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player2.getPosition()[1],
 							player2.getPosition()[0] - 1).isFireItem() == true) {
 						player2.setBombRadius();
+						gameField.getField(player2.getPosition()[1],
+								player2.getPosition()[0] - 1).removeFireItem();
 					}
 					if (gameField.getField(player2.getPosition()[1],
 							player2.getPosition()[0] - 1).isBombItem() == true) {
 						Bomb.setBombMaxP2();
+						gameField.getField(player2.getPosition()[1],
+								player2.getPosition()[0] - 1).removeBombItem();
 					}
 					gameField.removePlayer(player2);
 					player2.moveUp();
@@ -1300,10 +1336,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player2.getPosition()[1] - 1,
 							player2.getPosition()[0]).isFireItem() == true) {
 						player2.setBombRadius();
+						gameField.getField(player2.getPosition()[1] - 1,
+								player2.getPosition()[0]).removeFireItem();
 					}
 					if (gameField.getField(player2.getPosition()[1] - 1,
 							player2.getPosition()[0]).isBombItem() == true) {
 						Bomb.setBombMaxP2();
+						gameField.getField(player2.getPosition()[1] - 1,
+								player2.getPosition()[0]).removeBombItem();
 					}
 					gameField.removePlayer(player2);
 					player2.moveLeft();
@@ -1331,10 +1371,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player2.getPosition()[1],
 							player2.getPosition()[0] + 1).isFireItem() == true) {
 						player2.setBombRadius();
+						gameField.getField(player2.getPosition()[1],
+								player2.getPosition()[0] + 1).removeFireItem();
 					}
 					if (gameField.getField(player2.getPosition()[1],
 							player2.getPosition()[0] + 1).isBombItem() == true) {
 						Bomb.setBombMaxP2();
+						gameField.getField(player2.getPosition()[1],
+								player2.getPosition()[0] + 1).removeBombItem();
 					}
 					gameField.removePlayer(player2);
 					player2.moveDown();
@@ -1362,10 +1406,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player2.getPosition()[1] + 1,
 							player2.getPosition()[0]).isFireItem() == true) {
 						player2.setBombRadius();
+						gameField.getField(player2.getPosition()[1] + 1,
+								player2.getPosition()[0]).removeFireItem();
 					}
 					if (gameField.getField(player2.getPosition()[1] + 1,
 							player2.getPosition()[0]).isBombItem() == true) {
 						Bomb.setBombMaxP2();
+						gameField.getField(player2.getPosition()[1] + 1,
+								player2.getPosition()[0]).removeBombItem();
 					}
 					gameField.removePlayer(player2);
 					player2.moveRight();

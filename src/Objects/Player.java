@@ -10,7 +10,7 @@ import java.io.Serializable;
  * 
  */
 public class Player implements Serializable {
-	int x, y, id, bRadius;
+	int x, y, id, bRadius, bCount;
 
 	/**
 	 * Konstruktor der Klasse Player
@@ -26,6 +26,7 @@ public class Player implements Serializable {
 		x = iXPos;
 		y = iYPos;
 		bRadius = 2;
+		bCount = 1;
 		this.id = id;
 	}
 
@@ -47,6 +48,14 @@ public class Player implements Serializable {
 
 	public int getBombRadius() {
 		return bRadius;
+	}
+
+	public void setBombCount(int count) {
+		bCount = count;
+	}
+
+	public int getBombCount() {
+		return bCount;
 	}
 
 	/**
