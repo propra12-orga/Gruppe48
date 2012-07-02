@@ -29,6 +29,7 @@ public class FieldGenerator {
 	private int iModus, iRandomAmount;
 	private boolean bCreateExit;
 	private boolean bCreateFireItem;
+	private boolean bCreateBombItem;
 
 	// private boolean bCreateBombItem;
 
@@ -48,12 +49,13 @@ public class FieldGenerator {
 		PLAYER = 5;
 		STONE = 6;
 		FIRE = 7;
-		// BOMBITEM = 8;
+		BOMBITEM = 8;
 		iModus = 0;
 		fRandomChance = 0;
 		iRandomAmount = 0;
 		bCreateExit = true;
 		bCreateFireItem = true;
+		bCreateBombItem = true;
 
 	}
 
@@ -106,10 +108,6 @@ public class FieldGenerator {
 					// gewaehlten Modus
 		if (bCreateExit)
 			createRandomExit();
-		if (bCreateFireItem)
-			createRandomFireItem();
-		// if (bCreateBombItem)
-		// createRandomBombItem();
 
 		Map[1][1].setContent(PLAYER); // setzt den Spieler an die oberste linke
 										// Position
@@ -403,8 +401,7 @@ public class FieldGenerator {
 		Map = readMap(sInputFile);
 		setWalls();
 		createRandomExit();
-		createRandomFireItem();
-		// createRandomBombItem();
+
 		return Map;
 	}
 
@@ -654,47 +651,4 @@ public class FieldGenerator {
 		}
 	}
 
-	private int CountSpace() {
-		int Count = 0;
-		for (int i = 0; i < Map.length; i++) {
-			for (int j = 0; j < Map[0].length; j++) {
-				if ((Map[i][j].getContent() == STONE)) {
-					Count++;
-				}
-			}
-		}
-		return Count;
-	}
-
-	private void createRandomFireItem() {
-		int Rand = (int) (Math.random() * CountSpace());
-
-		for (int i = 0; i < Map.length; i++) {
-			for (int j = 0; j < Map[0].length; j++) {
-				if ((Map[i][j].getContent() == STONE)) {
-					Rand--;
-					if (Rand == 0) {
-						Map[i][j].setFireItem();
-					}
-					return;
-				}
-
-			}
-		}
-	}
-
 }
-
-/*
- * private void createRandomBombItem() { int Rand = (int) (Math.random() *
- * CountSpace());
- * 
- * for (int i = 0; i < Map.length; i++) { for (int j = 0; j < Map[0].length;
- * j++) { if ((Map[i][j].getContent() == STONE)) { Rand--; if (Rand == 0) {
- * 
- * Map[i][j].setBombItem(); return; }
- * 
- * } } }
- * 
- * }
- */

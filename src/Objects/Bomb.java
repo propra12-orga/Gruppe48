@@ -139,19 +139,19 @@ public class Bomb implements Serializable {
 		return m;
 	}
 
-	public static void setBMax() {
+	public static void setBombMax() {
 		bombMax += 1;
 	}
 
-	public static int getBMax() {
+	public static int getBombMax() {
 		return bombMax;
 	}
 
-	public static void setBMaxP2() {
+	public static void setBombMaxP2() {
 		bombMaxP2 += 1;
 	}
 
-	public static int getBMaxP2() {
+	public static int getBombMaxP2() {
 		return bombMaxP2;
 	}
 

@@ -991,6 +991,14 @@ public class Game implements Runnable {
 							player.getPosition()[0] - 1).isExit() == true) {
 						gameState = GameStates.VICTORY;
 					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).isFireItem() == true) {
+						player.setBombRadius();
+					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).isBombItem() == true) {
+						Bomb.setBombMax();
+					}
 					gameField.removePlayer(player);
 					player.moveUp();
 					gameField.setPlayer(player);
@@ -1008,6 +1016,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player.getPosition()[1] - 1,
 							player.getPosition()[0]).isExit() == true) {
 						gameState = GameStates.VICTORY;
+					}
+					if (gameField.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).isFireItem() == true) {
+						player.setBombRadius();
+					}
+					if (gameField.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).isBombItem() == true) {
+						Bomb.setBombMax();
 					}
 					gameField.removePlayer(player);
 					player.moveLeft();
@@ -1027,6 +1043,14 @@ public class Game implements Runnable {
 							player.getPosition()[0] + 1).isExit() == true) {
 						gameState = GameStates.VICTORY;
 					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).isFireItem() == true) {
+						player.setBombRadius();
+					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).isBombItem() == true) {
+						Bomb.setBombMax();
+					}
 					gameField.removePlayer(player);
 					player.moveDown();
 					gameField.setPlayer(player);
@@ -1044,6 +1068,14 @@ public class Game implements Runnable {
 					if (gameField.getField(player.getPosition()[1] + 1,
 							player.getPosition()[0]).isExit() == true) {
 						gameState = GameStates.VICTORY;
+					}
+					if (gameField.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).isFireItem() == true) {
+						player.setBombRadius();
+					}
+					if (gameField.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).isBombItem() == true) {
+						Bomb.setBombMax();
 					}
 					gameField.removePlayer(player);
 					player.moveRight();
@@ -1064,7 +1096,7 @@ public class Game implements Runnable {
 				player.setBombRadius();
 				break;
 			case 'e':
-				Bomb.setBMax();
+				Bomb.setBombMax();
 				break;
 			}
 			key = 0;
@@ -1090,6 +1122,14 @@ public class Game implements Runnable {
 						iWinningPlayer = 1;
 						gameState = GameStates.VICTORY;
 					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).isFireItem() == true) {
+						player.setBombRadius();
+					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).isBombItem() == true) {
+						Bomb.setBombMax();
+					}
 					gameField.removePlayer(player);
 					player.moveUp();
 					gameField.setPlayer(player);
@@ -1113,6 +1153,15 @@ public class Game implements Runnable {
 						iWinningPlayer = 1;
 						gameState = GameStates.VICTORY;
 					}
+					if (gameField.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).isFireItem() == true) {
+						player.setBombRadius();
+					}
+					if (gameField.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).isBombItem() == true) {
+						Bomb.setBombMax();
+					}
+
 					gameField.removePlayer(player);
 					player.moveLeft();
 					gameField.setPlayer(player);
@@ -1135,6 +1184,14 @@ public class Game implements Runnable {
 							player.getPosition()[0] + 1).isExit() == true) {
 						iWinningPlayer = 1;
 						gameState = GameStates.VICTORY;
+					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).isFireItem() == true) {
+						player.setBombRadius();
+					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).isBombItem() == true) {
+						Bomb.setBombMax();
 					}
 					gameField.removePlayer(player);
 					player.moveDown();
@@ -1159,6 +1216,14 @@ public class Game implements Runnable {
 						iWinningPlayer = 1;
 						gameState = GameStates.VICTORY;
 					}
+					if (gameField.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).isFireItem() == true) {
+						player.setBombRadius();
+					}
+					if (gameField.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).isBombItem() == true) {
+						Bomb.setBombMax();
+					}
 					gameField.removePlayer(player);
 					player.moveRight();
 					gameField.setPlayer(player);
@@ -1178,7 +1243,7 @@ public class Game implements Runnable {
 				player.setBombRadius();
 				break;
 			case 'e':
-				Bomb.setBMax();
+				Bomb.setBombMax();
 				break;
 			case 'u':
 				player2.setBombRadius();
@@ -1199,6 +1264,14 @@ public class Game implements Runnable {
 							player2.getPosition()[0] - 1).isExit() == true) {
 						iWinningPlayer = 2;
 						gameState = GameStates.VICTORY;
+					}
+					if (gameField.getField(player2.getPosition()[1],
+							player2.getPosition()[0] - 1).isFireItem() == true) {
+						player2.setBombRadius();
+					}
+					if (gameField.getField(player2.getPosition()[1],
+							player2.getPosition()[0] - 1).isBombItem() == true) {
+						Bomb.setBombMaxP2();
 					}
 					gameField.removePlayer(player2);
 					player2.moveUp();
@@ -1223,6 +1296,14 @@ public class Game implements Runnable {
 						iWinningPlayer = 2;
 						gameState = GameStates.VICTORY;
 					}
+					if (gameField.getField(player2.getPosition()[1] - 1,
+							player2.getPosition()[0]).isFireItem() == true) {
+						player2.setBombRadius();
+					}
+					if (gameField.getField(player2.getPosition()[1] - 1,
+							player2.getPosition()[0]).isBombItem() == true) {
+						Bomb.setBombMaxP2();
+					}
 					gameField.removePlayer(player2);
 					player2.moveLeft();
 					gameField.setPlayer(player2);
@@ -1245,6 +1326,14 @@ public class Game implements Runnable {
 							player2.getPosition()[0] + 1).isExit() == true) {
 						iWinningPlayer = 2;
 						gameState = GameStates.VICTORY;
+					}
+					if (gameField.getField(player2.getPosition()[1],
+							player2.getPosition()[0] + 1).isFireItem() == true) {
+						player2.setBombRadius();
+					}
+					if (gameField.getField(player2.getPosition()[1],
+							player2.getPosition()[0] + 1).isBombItem() == true) {
+						Bomb.setBombMaxP2();
 					}
 					gameField.removePlayer(player2);
 					player2.moveDown();
@@ -1269,6 +1358,14 @@ public class Game implements Runnable {
 						iWinningPlayer = 2;
 						gameState = GameStates.VICTORY;
 					}
+					if (gameField.getField(player2.getPosition()[1] + 1,
+							player2.getPosition()[0]).isFireItem() == true) {
+						player2.setBombRadius();
+					}
+					if (gameField.getField(player2.getPosition()[1] + 1,
+							player2.getPosition()[0]).isBombItem() == true) {
+						Bomb.setBombMaxP2();
+					}
 					gameField.removePlayer(player2);
 					player2.moveRight();
 					gameField.setPlayer(player2);
@@ -1285,7 +1382,7 @@ public class Game implements Runnable {
 
 				break;
 			case 'o':
-				Bomb.setBMaxP2();
+				Bomb.getBombMaxP2();
 				break;
 			}
 			key = 0;
@@ -1296,7 +1393,11 @@ public class Game implements Runnable {
 		if ((Math.random() * 100) > chance) {
 			return;
 		}
-		gameField.getField(pos1, pos2).setFireItem();
+		if ((Math.random()) < 0.5) {
+			gameField.getField(pos1, pos2).setFireItem();
+		} else {
+			gameField.getField(pos1, pos2).setBombItem();
+		}
 	}
 
 	/**

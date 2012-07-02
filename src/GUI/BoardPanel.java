@@ -151,12 +151,11 @@ public class BoardPanel extends JPanel {
 													// Ausgang
 											null);
 
-									/*
-									 * } if (boardField.getField(i, j)
-									 * .isBombItem()) { g.drawImage(imgBombItem,
-									 * i * 32, j * 32, 32, 32, // Zeichnet //
-									 * den // Ausgang null);
-									 */}
+								}
+								if (boardField.getField(i, j).isBombItem()) {
+									g.drawImage(imgBombItem, i * 32, j * 32,
+											32, 32, null);
+								}
 								break;
 							}
 

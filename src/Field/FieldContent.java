@@ -70,9 +70,10 @@ public class FieldContent implements Serializable {
 		bFireItem = true;
 	}
 
-	/*
-	 * public void setBombItem() { bBombItem = true; }
-	 */
+	public void setBombItem() {
+		bBombItem = true;
+	}
+
 	/**
 	 * Fuegt Bombe in Feld ein
 	 * 
@@ -122,9 +123,10 @@ public class FieldContent implements Serializable {
 		return bFireItem;
 	}
 
-	/*
-	 * public boolean isBombItem() { return bBombItem; }
-	 */
+	public boolean isBombItem() {
+		return bBombItem;
+	}
+
 	/**
 	 * Gibt Inhalt des Feldes als Integer zurueck
 	 * 

@@ -62,9 +62,10 @@ public class Field implements Serializable {
 					map[i][j].setExit();
 				if (newMap[i][j].isFireItem())
 					map[i][j].setFireItem();
-				/*
-				 * if (newMap[i][j].isBombItem()) map[i][j].setBombItem();
-				 */}
+
+				if (newMap[i][j].isBombItem())
+					map[i][j].setBombItem();
+			}
 	}
 
 	/**
