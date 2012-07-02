@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -13,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,7 +36,7 @@ public class MapCreator extends JFrame implements WindowListener,
 		ActionListener {
 	private static final long serialVersionUID = 1L;
 	private boolean savedMap = true;
-	public int[][] Grid;
+	public int[][] array = new int[GUI.GUI.zahl + 1][GUI.GUI.zahl + 1];
 	public int height;
 	public int length;
 
@@ -45,7 +48,7 @@ public class MapCreator extends JFrame implements WindowListener,
 	public MapCreator() {
 		super("Create your OWN Map");
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(800, 720);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = dim.width / 2 - (getWidth() / 2);
@@ -68,16 +71,18 @@ public class MapCreator extends JFrame implements WindowListener,
 		JButton saveButton = new JButton("Save Map");
 		JButton cancelButton = new JButton("Cancel");
 		JButton helpButton = new JButton("Help");
-		private JLabel picStone;
-		private JLabel picWall;
-		private JLabel picFree;
-		private JLabel picExit;
-		private JLabel picPlayer;
-		private JPanel stonePic;
-		private JPanel wallPic;
-		private JPanel freePic;
-		private JPanel exitPic;
-		private JPanel playerPic;
+		private int FREE = 1;
+		private int WALL = 2;
+		private int EXIT = 3;
+		private int PLAYER = 5;
+		private int STONE = 6;
+		private int SELECTED = 1;
+		private JButton currentlySelected;
+		private JButton picStone;
+		private JButton picWall;
+		private JButton picFree;
+		private JButton picExit;
+		private JButton picPlayer;
 		private JPanel buttons;
 		private ImageIcon player = new ImageIcon(
 				ClassLoader.getSystemResource("images/player.png"));
@@ -89,6 +94,7 @@ public class MapCreator extends JFrame implements WindowListener,
 				ClassLoader.getSystemResource("images/wall.png"));
 		private ImageIcon free = new ImageIcon(
 				ClassLoader.getSystemResource("images/free.png"));
+		private ImageIcon selected = free;
 
 		public CreationPanel(int x, int y, int w, int h) {
 			super(null);
@@ -100,20 +106,39 @@ public class MapCreator extends JFrame implements WindowListener,
 			JPanel grid = new JPanel();
 			int mapSize = GUI.GUI.zahl;
 			grid.setLayout(new GridLayout(mapSize, mapSize));
-			//for (int i = 0; i < 25; i++) {
-			for (int i = 0; i < mapSize + 1; i++) {
+			for (int i = 0; i < mapSize; i++) {
+				grid.add(new JButton(wall));
+				array[0][i] = WALL;
+			}
+			for (int i = 1; i < mapSize - 1; i++) {
+				array[i][0] = WALL;
+				grid.add(new JButton(wall));
+				for (int j = 1; j < mapSize - 1; j++) {
+					grid.add(new JButton(free)).addFocusListener(
+							new FocusListener() {
+								@Override
+								public void focusGained(FocusEvent arg0) {
+									((AbstractButton) arg0.getComponent())
+											.setIcon(selected);
+									array[arg0.getComponent().getY() / 32][arg0
+											.getComponent().getX() / 32] = SELECTED;
+									savedMap = false;
+									return;
+								}
+
+								@Override
+								public void focusLost(FocusEvent arg0) {
+									arg0.getComponent().repaint();
+								}
+							});
+					array[i][j] = FREE;
+				}
+				array[i][mapSize - 1] = WALL;
 				grid.add(new JButton(wall));
 			}
-			for (int j = 0; j < mapSize - 2; j++) {
-				for (int i = 0; i < mapSize - 2; i++) {
-					grid.add(new JButton(""));
-				}
-				for (int i = 0; i < 2; i++) {
-					grid.add(new JButton(wall));
-				}
-			}
-			for (int i = 0; i < mapSize - 1; i++) {
+			for (int i = 0; i < mapSize; i++) {
 				grid.add(new JButton(wall));
+				array[mapSize - 1][i] = WALL;
 			}
 			grid.setBounds(10, 10, setArraySize(mapSize), setArraySize(mapSize));
 			buttons = new JPanel(new GridLayout(0, 3));
@@ -122,53 +147,103 @@ public class MapCreator extends JFrame implements WindowListener,
 			buttons.add(helpButton);
 			buttons.add(cancelButton);
 			buttons.setBorder(new BevelBorder(BevelBorder.RAISED));
-			stonePic = new JPanel();
-			stonePic.setBounds(700, 100, 53, 65);
-			picStone = new JLabel(stone);
-			stonePic.add(picStone);
-			TitledBorder modusStone;
-			modusStone = BorderFactory.createTitledBorder("Stone");
+			JLabel text = new JLabel("Currently Selected");
+			text.setBounds(670, 5, 130, 15);
+			currentlySelected = new JButton();
+			currentlySelected.setBounds(710, 25, 32, 32);
+			currentlySelected.setIcon(selected);
+			currentlySelected.setContentAreaFilled(false);
+			currentlySelected.setFocusable(false);
+			picStone = new JButton(stone);
+			picStone.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					selected = stone;
+					SELECTED = STONE;
+					currentlySelected.setIcon(selected);
+					currentlySelected.repaint();
+				}
+			});
+			picStone.setBounds(700, 100, 53, 50);
+			picStone.setContentAreaFilled(false);
+			TitledBorder modusStone = null;
+			modusStone = BorderFactory.createTitledBorder(modusStone, "Stone",
+					TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION);
 			modusStone.setTitleColor(Color.black);
-			stonePic.setBorder(modusStone);
-			wallPic = new JPanel();
-			wallPic.setBounds(700, 200, 53, 65);
-			picWall = new JLabel(wall);
-			wallPic.add(picWall);
-			TitledBorder modusWall;
-			modusWall = BorderFactory.createTitledBorder("Wall");
+			picStone.setBorder(modusStone);
+			picWall = new JButton(wall);
+			picWall.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					selected = wall;
+					SELECTED = WALL;
+					currentlySelected.setIcon(selected);
+					currentlySelected.repaint();
+				}
+			});
+			picWall.setBounds(700, 200, 53, 50);
+			picWall.setContentAreaFilled(false);
+			TitledBorder modusWall = null;
+			modusWall = BorderFactory.createTitledBorder(modusWall, "Wall",
+					TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION);
 			modusWall.setTitleColor(Color.black);
-			wallPic.setBorder(modusWall);
-			freePic = new JPanel();
-			freePic.setBounds(700, 300, 53, 65);
-			picFree = new JLabel(free);
-			freePic.add(picFree);
-			TitledBorder modusFree;
-			modusFree = BorderFactory.createTitledBorder("Free");
+			picWall.setBorder(modusWall);
+			picFree = new JButton(free);
+			picFree.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					selected = free;
+					SELECTED = FREE;
+					currentlySelected.setIcon(selected);
+					currentlySelected.repaint();
+				}
+			});
+			picFree.setBounds(700, 300, 53, 50);
+			picFree.setContentAreaFilled(false);
+			TitledBorder modusFree = null;
+			modusFree = BorderFactory.createTitledBorder(modusFree, "Free",
+					TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION);
 			modusFree.setTitleColor(Color.black);
-			freePic.setBorder(modusFree);
-			exitPic = new JPanel();
-			exitPic.setBounds(700, 400, 53, 65);
-			picExit = new JLabel(exit);
-			exitPic.add(picExit);
-			TitledBorder modusExit;
-			modusExit = BorderFactory.createTitledBorder("Exit");
+			picFree.setBorder(modusFree);
+			picExit = new JButton(exit);
+			picExit.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					selected = exit;
+					SELECTED = EXIT;
+					currentlySelected.setIcon(selected);
+					currentlySelected.repaint();
+				}
+			});
+			picExit.setBounds(700, 400, 53, 50);
+			picExit.setContentAreaFilled(false);
+			TitledBorder modusExit = null;
+			modusExit = BorderFactory.createTitledBorder(modusExit, "Exit",
+					TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION);
 			modusExit.setTitleColor(Color.black);
-			exitPic.setBorder(modusExit);
-			playerPic = new JPanel();
-			playerPic.setBounds(700, 500, 53, 65);
-			picPlayer = new JLabel(player);
-			playerPic.add(picPlayer);
-			TitledBorder modusPlayer;
-			modusPlayer = BorderFactory.createTitledBorder("Player");
+			picExit.setBorder(modusExit);
+			picPlayer = new JButton(player);
+			picPlayer.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					selected = player;
+					SELECTED = PLAYER;
+					currentlySelected.setIcon(selected);
+					currentlySelected.repaint();
+				}
+			});
+			picPlayer.setBounds(700, 500, 53, 50);
+			picPlayer.setContentAreaFilled(false);
+			TitledBorder modusPlayer = null;
+			modusPlayer = BorderFactory.createTitledBorder(modusPlayer,
+					"Player", TitledBorder.CENTER,
+					TitledBorder.DEFAULT_POSITION);
 			modusPlayer.setTitleColor(Color.black);
-			playerPic.setBorder(modusPlayer);
+			picPlayer.setBorder(modusPlayer);
 			add(grid);
 			add(buttons);
-			add(stonePic);
-			add(wallPic);
-			add(freePic);
-			add(exitPic);
-			add(playerPic);
+			add(text);
+			add(currentlySelected);
+			add(picStone);
+			add(picWall);
+			add(picFree);
+			add(picExit);
+			add(picPlayer);
 			saveButton.addActionListener(new ActionListener() {
 				/**
 				 * Beim Klick auf den Save Button wird die Map gespeichert und
@@ -176,8 +251,6 @@ public class MapCreator extends JFrame implements WindowListener,
 				 */
 				public void actionPerformed(ActionEvent e) {
 					save();
-					JOptionPane.showMessageDialog(rootPane,
-							"Map wurde erfolgreich gespeichert", "Success", 1);
 				}
 
 			});
@@ -200,14 +273,12 @@ public class MapCreator extends JFrame implements WindowListener,
 					JOptionPane
 							.showMessageDialog(
 									rootPane,
-									" You need to click on the position "
-											+ "in the array on the left side of your screen"
-											+ " \n and then afterwards choose which element "
-											+ "you want to put in your chosen field \n by "
-											+ "simply clicking on the symbol at the right."
-											+ " \n You need to fill every field of the array to "
-											+ "make it work correctly! \n"
-											+ " When you are finished you need to save the Map"
+									" You need to click on the element "
+											+ "you want to place on the right side of your screen"
+											+ " \n and then afterwards choose where the element "
+											+ "shall be placed in the field on the left side \n by "
+											+ "simply clicking on it."
+											+ " \n When you are finished you need to save the Map"
 											+ " by clicking on the Save Map button. \n It will "
 											+ "be saved in the maps folder of your game. "
 											+ "\n If you want to play your created Map you will"
@@ -231,18 +302,48 @@ public class MapCreator extends JFrame implements WindowListener,
 
 	private void save() {
 		try {
+			int playerCount = 0;
+			int exitCount = 0;
 			File file = new File("src/maps/savedMap.txt");
 			FileWriter writer = null;
 			writer = new FileWriter(file.getPath(), false);//fuer weitere optionen zum 
 			//speichern von mehreren maps parallel auf true setzen, und dann den dateinamen aendern
 			PrintWriter printer = new PrintWriter(writer);
-			printer.println("Hier kommt dann die Map rein mit den festgelegten zeichen!");
+			for (int i = 0; i < GUI.GUI.zahl; i++) {
+				for (int j = 0; j < GUI.GUI.zahl; j++) {
+					if (array[i][j] == 1) { //schreibt die freien Plaetze in das txt Dokument
+						printer.print(".");
+					} else if (array[i][j] == 2) {//schreibt die aueßeren Waende in das txt Dokument
+						printer.print("*");
+					} else if (array[i][j] == 3) {//schreibt den Ausgang in das txt Dokument
+						printer.print("E");
+						exitCount++;
+					} else if (array[i][j] == 5) {//schreibt die Spielerposition in das txt Dokument
+						printer.print("P");
+						playerCount++;
+					} else if (array[i][j] == 6) {//schreibt die zerstoerbaren Bloecke in das txt Dokument
+						printer.print("%");
+					}
+				}
+				printer.println();
+			}
+			if (playerCount == 0 | playerCount > 2 | exitCount == 0
+					| exitCount > 1) {
+				JOptionPane
+						.showMessageDialog(
+								rootPane,
+								"Check the amount of Exit(s)/Player(s), a Problem was detected!",
+								"Error", 1);
+				return;
+			}
 			writer.flush();
 			writer.close();
 			printer.flush();
 			printer.close();
 			if (file.exists()) {
-				System.out.println("Map wurde erfolgreich gespeichert!");
+				System.out.println("Map saved successfully!");
+				JOptionPane.showMessageDialog(rootPane,
+						"Map saved successfully", "Success", 1);
 				savedMap = true;
 			}
 		} catch (IOException e) {
@@ -252,15 +353,13 @@ public class MapCreator extends JFrame implements WindowListener,
 
 	private void checkCancelWithoutSave() {
 		if (!savedMap) {
-			String yesNoOptions[] = { "Ja", "Nein" };
+			String yesNoOptions[] = { "Yes", "No" };
 			int n = JOptionPane.showOptionDialog(null,
-					"Abbrechen ohne zu speichern ?", "Abbrechen",
+					"Exit without saving Changes?", "Cancel",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
 					null, yesNoOptions, yesNoOptions[0]);
-
 			if (n == JOptionPane.YES_OPTION) {
 				dispose();
-
 			}
 		} else {
 			dispose();
