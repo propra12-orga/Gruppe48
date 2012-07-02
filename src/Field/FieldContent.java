@@ -1,5 +1,7 @@
 package Field;
 
+import java.io.Serializable;
+
 import Objects.Bomb;
 import Objects.Player;
 
@@ -14,7 +16,7 @@ import Objects.Player;
  * zu verändern
  * 
  */
-public class FieldContent {
+public class FieldContent implements Serializable {
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE, FIRE;
 	private int iContent;
 	private Bomb bomb;

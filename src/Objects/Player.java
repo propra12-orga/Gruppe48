@@ -1,5 +1,7 @@
 package Objects;
 
+import java.io.Serializable;
+
 /**
  * Die Klasse Player stellt Methoden zur Verfügung um die aktuelle Position und
  * id eines Spielers zu speichern und abzufragen
@@ -7,7 +9,7 @@ package Objects;
  * @author Martin Haase
  * 
  */
-public class Player {
+public class Player implements Serializable {
 	int x, y, id, bRadius;
 
 	/**
