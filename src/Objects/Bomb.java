@@ -23,9 +23,9 @@ public class Bomb {
 	long explosionTime;
 	int x;
 	int y;
-	int radius = 3;
-	static int bombMax = 1;
-	static int bombMaxP2 = 1;
+	int radius;
+	static int bombMax;
+	static int bombMaxP2;
 	static int m = 1;
 
 	/**
@@ -151,5 +151,13 @@ public class Bomb {
 
 	public static int getBMaxP2() {
 		return bombMaxP2;
+	}
+
+	public static void setbombMax(int newbombMax) {
+		bombMax = newbombMax;
+	}
+
+	public static void setbombMaxP2(int newbombMax) {
+		bombMaxP2 = newbombMax;
 	}
 }

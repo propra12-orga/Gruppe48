@@ -274,6 +274,8 @@ public class Game implements Runnable {
 	 */
 	public boolean restart() {
 		Field field;
+		Bomb.setbombMax(1);
+		Bomb.setbombMaxP2(1);
 		if (bAutoRestart) {
 			field = new Field();
 			field.insertMap(cacheField.getMap()); // Wurde das Spiel automatisch
