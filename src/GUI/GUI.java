@@ -59,6 +59,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	private JMenuItem mapCreatorItem;
 	static public int zahl;
 	private final Game game1;
+	private JMenuItem savegame;
+	private JMenuItem loadgame;
 
 	/**
 	 * Erzeugt ein neues Objekt der Klasse GUI und initialisiert den zu
@@ -101,6 +103,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		singleplayer.addActionListener(this);
 		quitItem = new JMenuItem("Quit");
 		quitItem.addActionListener(this);
+		savegame = new JMenuItem("Save Game");
+		savegame.addActionListener(this);
+		loadgame = new JMenuItem("Load Game");
+		loadgame.addActionListener(this);
+		gameMenu.add(savegame);
+		gameMenu.add(loadgame);
+		gameMenu.addSeparator();
 		gameMenu.add(startItem);
 		gameMenu.add(openItem);
 		gameMenu.add(singleplayer);
@@ -179,6 +188,17 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		}
 		if (object.getSource() == quitItem) {
 			shutdown();
+
+		}
+		if (object.getSource() == savegame) {
+			saveGame();
+
+		}
+		if (object.getSource() == loadgame) {
+			if (openGame()) {
+
+				resize();
+			}
 		}
 		if (object.getSource() == multiplayer) {
 			mainGame.key = 0;
@@ -242,6 +262,61 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	 */
 	public void keyTyped(KeyEvent e) {
 		mainGame.key = e.getKeyChar();
+	}
+
+	public boolean saveGame() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(new FileFilter() {
+			@Override
+			public boolean accept(File f) {
+				return f.getName().toLowerCase().endsWith(".bmg") // BomberManGame
+						|| f.isDirectory();
+			}
+
+			@Override
+			public String getDescription() {
+				return "Bomberman Game";
+			}
+		});
+		int iOpened = fileChooser.showOpenDialog(null);
+		if (iOpened == JFileChooser.APPROVE_OPTION) { // Legt fest, was
+														// passiert, nachdem der
+														// "Öffnen"-Button
+														// gedrueckt wurde
+			File file = fileChooser.getSelectedFile();
+			mainGame.saveGame(file.getAbsolutePath());
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean openGame() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(new FileFilter() {
+			@Override
+			public boolean accept(File f) {
+				return f.getName().toLowerCase().endsWith(".bmg") // BomberManGame
+						|| f.isDirectory();
+			}
+
+			@Override
+			public String getDescription() {
+				return "Bomberman Game";
+			}
+		});
+		int iOpened = fileChooser.showOpenDialog(null);
+		if (iOpened == JFileChooser.APPROVE_OPTION) { // Legt fest, was
+														// passiert, nachdem der
+														// "Öffnen"-Button
+														// gedrueckt wurde
+			File file = fileChooser.getSelectedFile();
+			mainGame.loadGame(file.getAbsolutePath());
+			mainGame.setMapLoaded(true);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**

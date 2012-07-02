@@ -1,5 +1,7 @@
 package Objects;
 
+import java.io.Serializable;
+
 import Engine.Sound;
 
 /**
@@ -12,7 +14,7 @@ import Engine.Sound;
  * 
  */
 
-public class Bomb {
+public class Bomb implements Serializable {
 	/**
 	 * Ist true, falls Bombe explodiert, ist sonst false
 	 */

@@ -1,6 +1,11 @@
 package Engine;
 
 import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -33,7 +38,6 @@ public class Game implements Runnable {
 	 */
 	public static GameStates gameState;
 	private static GUI gui;
-	private static Bomb bomb;
 	/**
 	 * Zuletzt gedrueckte Taste
 	 */
@@ -266,6 +270,67 @@ public class Game implements Runnable {
 
 	public void connect(int port) {
 
+	}
+
+	public void saveGame(String path) {
+		try {
+			FileOutputStream fileOut = new FileOutputStream(path);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			GameState gs = new GameState(gameField.getMap(), explosionList,
+					bombList, player, player2);
+			out.writeObject(gs);
+			out.close();
+			fileOut.close();
+		} catch (IOException i) {
+			// i.printStackTrace();
+		}
+	}
+
+	public boolean loadGame(String savedGamePath) {
+		GameState savedGS = null;
+		try {
+			FileInputStream fileIn = new FileInputStream(savedGamePath);
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			savedGS = (GameState) in.readObject();
+			in.close();
+			fileIn.close();
+		} catch (IOException i) {
+			i.printStackTrace();
+			bMapLoaded = false;
+			gameState = GameStates.STOP;
+			return false;
+		} catch (ClassNotFoundException c) {
+			System.out.println("File " + savedGamePath + " is invalid");
+			c.printStackTrace();
+			bMapLoaded = false;
+			gameState = GameStates.STOP;
+			return false;
+		}
+		Field field;
+		Bomb.setbombMax(1);
+		Bomb.setbombMaxP2(1);
+		field = new Field();
+		field.insertMap(savedGS.map);
+		iPlayerCount = iNewPlayerCount;
+		for (int i = 0; i <= bombList.size() + 1; i++) { // Alle Explosionen
+															// werden entfernt
+			gui.panel.removeExplosions();
+		}
+		gameField = field;
+		if (savedGS.player != null)
+			player = savedGS.player;
+		if (savedGS.player2 != null)
+			player2 = savedGS.player2;
+		explosionList = savedGS.explosionList;
+		time = Calendar.getInstance().getTimeInMillis();
+		bombList = savedGS.bombList;
+		gameSpeed = 100;
+		gui.insertField(gameField);
+		gui.resize();
+		gui.repaint();
+		gameState = GameStates.STARTED;
+		bAutoRestart = false;
+		return true;
 	}
 
 	/**
