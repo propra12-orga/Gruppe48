@@ -29,19 +29,26 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 
 	private static Game gameOption;
 
-	private int changedMap;
-	private double changedDensity;
-	private int changedVerticalMap;
-	private int changedHorizontalMap;
+	private int changedMap;// Variable fuer die geaenderte Groeße der
+							// quadratischen Karte
+	private double changedDensity;// Variable fuer die geaenderte Dichte der
+									// zerstoerbaren Mauern
+	private int changedVerticalMap;// Variable fuer die geaenderte Hoehe der
+									// rechteckigen Karte
+	private int changedHorizontalMap;// Variable fuer die geaenderte Breite der
+										// rechteckigen Karte
 	private boolean savedOptions = true;
 	/**
 	 * Ist mapModus = true, so wird eine quadratische Map erstellt, sonst wird
 	 * eine rechteckige Map erstellt
 	 */
-	public boolean mapModus = true;
-	public int fillModus;
-	public int changedRandomAmount;
-	public int changedProbability;
+	public boolean mapModus = true; // ist true, wenn quadratische Karte
+									// ausgewaehlt
+	public int fillModus;// 1= Modus0, 2=Modus1, 3=Modus2
+	public int changedRandomAmount;// Variable fuer die geaenderte Anzahl
+									// unzerstoerbarer Bloecke Modus2
+	public int changedProbability;// Variable fuer die geaenderte
+									// Wahrscheinlichkeit Modus1
 
 	/**
 	 * Erstellt ein Objekt der Klasse Options und übergibt an Dieses die Game
@@ -101,7 +108,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				ClassLoader.getSystemResource("images/MapOptionIcon.jpg"));
 
 		/**
-		 * Erzeugt ein Panel mit den angegebenen Massen
+		 * Erzeugt ein Panel mit den angegebenen Massen auf dem die kleineren
+		 * Panel erzeugt werden
 		 * 
 		 * @param x
 		 *            Vertikale Position des Panels
@@ -120,6 +128,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 
 		}
 
+		/**
+		 * Die Komponenten fuer das MiddlePanel werden erzeugt
+		 */
 		private void initComp() {
 
 			final JRadioButton squareButton = new JRadioButton(
@@ -136,22 +147,23 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			final JSlider probabilitySlider = new JSlider(0, 100, 50);
 			JSlider densitySlider = new JSlider(0, 100, 70);
 			final JSlider mapSlider = new JSlider(10, 25, 15);
+
+			/**
+			 * Panel fuer den Slider der Dichte
+			 */
 			densityArea = new JPanel();
 			densityArea.setBounds(221, 540, 400, 80);
-			densityArea.setToolTipText("densityarea");
 			densityArea.add(densitySlider);
-			// densityArea.setBackground(Color.CYAN);
 			TitledBorder density;
 			density = BorderFactory.createTitledBorder("Density of Walls");
 			density.setTitleColor(Color.blue);
-
 			densityArea.setBorder(density);
-			// densityArea.setBorder(new BevelBorder(BevelBorder.RAISED));
 
+			/**
+			 * Panel fuer den Slider der Groeße quadratische Karte
+			 */
 			squareMapArea = new JPanel();
 			squareMapArea.setBounds(6, 90, 400, 80);
-			squareMapArea.setToolTipText("squareMapArea");
-			// squareMapArea.setBackground(Color.red);
 			squareMapArea.add(mapSlider);
 			final TitledBorder square;
 			square = BorderFactory
@@ -159,51 +171,55 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			squareMapArea.setBorder(square);
 			square.setTitleColor(Color.blue);
 
-			// radioButtonMapModus = new JPanel(new GridLayout(1, 0));
+			/**
+			 * Panel fuer die RadioButtons zur Auswahl quadratischer oder
+			 * rechteckiger Karte
+			 */
 			radioButtonMapModus.setBounds(6, 6, 400, 50);
-			radioButtonMapModus.setToolTipText("radioButtonMapModus");
-			// radioButtonMapModus.setBackground(Color.BLUE);
 			radioButtonMapModus.add(squareButton);
 			radioButtonMapModus.add(rectangleButton);
 			radioButtonMapModus.setBorder(new BevelBorder(BevelBorder.RAISED));
-
+			/**
+			 * Panel fuer den Slider Breite rechteckige Karte
+			 */
 			final JSlider horizontalSlider = new JSlider(5, 50, 20);
 			mapWidht = new JPanel();
 			mapWidht.setBounds(60, 435, 200, 47);
-			mapWidht.setToolTipText("mapWidht");
 			mapWidht.add(horizontalSlider);
-			// mapWidht.setBackground(Color.yellow);
 			mapWidht.setVisible(true);
-
+			/**
+			 * Panel fuer den Slider Höhe rechteckige Karte
+			 */
 			final JSlider verticalSlider = new JSlider(JSlider.VERTICAL, 5, 25,
 					15);
 			verticalSlider.setEnabled(true);
 			mapHight = new JPanel();
 			mapHight.setBounds(350, 240, 47, 205);
-			mapHight.setToolTipText("mapHight");
-			// mapHight.setBackground(Color.GREEN);
 			mapHight.add(verticalSlider);
+
+			/**
+			 * Panel fuer die Buttons OK, SAVE, ABBRECHEN
+			 */
 			buttons = new JPanel(new GridLayout(0, 3));
 			buttons.setBounds(221, 640, 400, 45);
-			buttons.setToolTipText("buttons");
-			// buttons.setBackground(Color.PINK);
 			buttons.add(okBt);
 			buttons.add(saveBt);
 			buttons.add(cancelBt);
 			buttons.setBorder(new BevelBorder(BevelBorder.RAISED));
-
+			/**
+			 * Panel fuer das Bild der Karte
+			 */
 			mapPic = new JPanel();
 			mapPic.setBounds(25, 265, 300, 150);
-			// mapPic.setBackground(Color.yellow);
-
 			lblBild = new JLabel(pic);
-
 			mapPic.add(lblBild);
 			grayedPic = new JPanel();
 			grayedPic.setBounds(25, 270, 300, 145);
 			grayedPic.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.5f));
 			grayedPic.setVisible(true);
-
+			/**
+			 * Panel fuer den Rahmen der Auswahl rechteckige Karte
+			 */
 			borderForRectangle.setBounds(6, 200, 400, 320);
 			borderForRectangle.add(new JLabel(""));
 			final TitledBorder rectangle;
@@ -212,10 +228,13 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			borderForRectangle.setBorder(rectangle);
 			rectangle.setTitleColor(Color.lightGray);
 
+			/**
+			 * Panel fuer die Auswahl der FüllModi
+			 */
+
 			radioMapFillModus = new JPanel(new GridLayout(0, 1));
 			radioMapFillModus.setBounds(430, 6, 400, 300);
 			radioMapFillModus.setToolTipText("radioButtonMapModus");
-			// radioMapFillModus.setBackground(Color.BLUE);
 			radioMapFillModus.add(modusZero);
 			radioMapFillModus
 					.add(new JLabel(
@@ -236,7 +255,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			modus = BorderFactory.createTitledBorder("Choose a Fill Modus");
 			modus.setTitleColor(Color.blue);
 			radioMapFillModus.setBorder(modus);
-
+			/**
+			 * Panel fuer den Slider Einstellungen Modus1
+			 */
 			randomAmountArea = new JPanel();
 			randomAmountArea.setBounds(430, 440, 400, 80);
 			randomAmountArea.setToolTipText("densityarea");
@@ -248,19 +269,21 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			amount.setTitleColor(Color.lightGray);
 			randomAmountArea.setBorder(amount);
 			randomAmountSlider.setEnabled(false);
-
+			/**
+			 * Panel fuer den Slider Einstellungen Modus2
+			 */
 			probabilityArea = new JPanel();
 			probabilityArea.setBounds(430, 340, 400, 80);
-			probabilityArea.setToolTipText("probabilityArea");
 			probabilityArea.add(probabilitySlider);
-			// densityArea.setBackground(Color.CYAN);
 			final TitledBorder probability;
 			probability = BorderFactory
 					.createTitledBorder("Probability of Modus 1");
 			probability.setTitleColor(Color.lightGray);
 			probabilityArea.setBorder(probability);
 			probabilitySlider.setEnabled(false);
-
+			/**
+			 * Fuegt alle Panel dem MiddelPanel hinzu
+			 */
 			add(grayedPic);
 			add(densityArea);
 			add(squareMapArea);
@@ -273,35 +296,47 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			add(radioMapFillModus);
 			add(randomAmountArea);
 			add(probabilityArea);
-
+			/**
+			 * Eigenschaften fuer Slider Dichte der Mauern
+			 */
 			densitySlider.setMinorTickSpacing(5);
 			densitySlider.setMajorTickSpacing(25);
 			densitySlider.setPaintTicks(true);
 			densitySlider.setPaintLabels(true);
-
+			/**
+			 * Eigenschaften fuer Slider quadratische Karte
+			 */
 			mapSlider.setMinorTickSpacing(1);
 			mapSlider.setMajorTickSpacing(5);
 			mapSlider.setPaintTicks(true);
 			mapSlider.setPaintLabels(true);
 			mapSlider.setEnabled(true);
-
+			/**
+			 * Eigenschaften fuer Slider Breite rechteckige Karte
+			 */
 			horizontalSlider.setMinorTickSpacing(1);
 			horizontalSlider.setMajorTickSpacing(5);
 			horizontalSlider.setPaintTicks(true);
 			horizontalSlider.setPaintLabels(true);
 			horizontalSlider.setEnabled(false);
-
+			/**
+			 * Eigenschaften fuer Slider Hoehe rechteckige Karte
+			 */
 			verticalSlider.setMinorTickSpacing(1);
 			verticalSlider.setMajorTickSpacing(5);
 			verticalSlider.setPaintTicks(true);
 			verticalSlider.setPaintLabels(true);
 			verticalSlider.setEnabled(false);
-
+			/**
+			 * Eigenschaften fuer Slider Modus2
+			 */
 			randomAmountSlider.setMinorTickSpacing(5);
 			randomAmountSlider.setMajorTickSpacing(25);
 			randomAmountSlider.setPaintTicks(true);
 			randomAmountSlider.setPaintLabels(true);
-
+			/**
+			 * Eigenschaften fuer Slider Modus1
+			 */
 			probabilitySlider.setMinorTickSpacing(5);
 			probabilitySlider.setMajorTickSpacing(25);
 			probabilitySlider.setPaintTicks(true);
@@ -545,6 +580,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 
 		}
 
+		/**
+		 * Wird ausgefuehrt, bei Betaetigung des OK- u. Save Buttons
+		 */
 		private void acceptOptions() {
 
 			gameOption.setGameMapOptions(changedMap);
