@@ -16,6 +16,7 @@ import GUI.GUI;
 import Network.Server;
 import Objects.Bomb;
 import Objects.Player;
+import Options.Options;
 
 /**
  * Die Klasse Game ist die Main-Klasse des Bomberman Projekts. Sie enthaelt die Spiellogik, ruft die GUI auf und verwaltet Benutzereingaben.
@@ -91,7 +92,7 @@ public class Game implements Runnable {
 	 * Definiert ob eine rechteckige oder eine quadratische Map erstellt werden
 	 * soll
 	 */
-	public static boolean mapModus = Options.OptionFrame.mapModus;
+	public static boolean mapModus = Options.mapModus;
 
 	// public static boolean isExploded = Objects.Bomb.isExploded;
 
@@ -138,8 +139,9 @@ public class Game implements Runnable {
 	}
 
 	/**
-	 * Gibt ein Field zurueck
+	 * gibt ein Field zurueck
 	 * 
+	 * @return das zurückzugebende Field
 	 */
 	public Field getField() {
 		return gameField;
@@ -311,6 +313,9 @@ public class Game implements Runnable {
 									// (Player1)am Spielstart auf eins;
 		Bomb.setBombMaxOnStartP2(0); // Setzt die Zahl maximal legbarer Bomben
 										// (Player2)am Spielstart auf eins;
+		Bomb.currentPlaced = 0;
+		Bomb.currentPlacedP2 = 0;
+
 		field = new Field();
 		field.insertMap(savedGS.map);
 		iPlayerCount = iNewPlayerCount;
@@ -346,6 +351,9 @@ public class Game implements Runnable {
 									// (Player1)am Spielstart auf eins;
 		Bomb.setBombMaxOnStartP2(0); // Setzt die Zahl maximal legbarer Bomben
 										// (Player2)am Spielstart auf eins;
+		Bomb.currentPlaced = 0;
+		Bomb.currentPlacedP2 = 0;
+
 		if (bAutoRestart) {
 			field = new Field();
 			field.insertMap(cacheField.getMap()); // Wurde das Spiel automatisch
