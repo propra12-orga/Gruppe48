@@ -185,6 +185,12 @@ public class Game implements Runnable {
 		startMapSize = changedMapSize;
 	}
 
+	/**
+	 * gibt die Anfangsgroesse der quadratischen Karte zurueck
+	 * 
+	 * @return gibt die Anfangsgroesse der quadratischen Karte an Options
+	 *         zurueck
+	 */
 	public int getStartMapSize() {
 		return startMapSize;
 	}
@@ -199,6 +205,11 @@ public class Game implements Runnable {
 		startDensity = changedMapDensity;
 	}
 
+	/**
+	 * gibt die Anfangsdichte der zerstoerbaren Mauern
+	 * 
+	 * @return gibt die Anfangsdichte der zerstoerbaren Mauern an die Options
+	 */
 	public double getStartDensity() {
 		return startDensity;
 	}
@@ -224,6 +235,11 @@ public class Game implements Runnable {
 		rectangleMapWidht = changedWidhtMapSize;
 	}
 
+	/**
+	 * gibt die Breite der rechteckigen Karte zurueck
+	 * 
+	 * @return Anfangsbreite der rechteckigen Karte
+	 */
 	public int getGameMapWidht() {
 		return rectangleMapWidht;
 	}
@@ -238,6 +254,11 @@ public class Game implements Runnable {
 		rectangleMapHight = changedHightMapSize;
 	}
 
+	/**
+	 * gibt die Hoehe der rechteckigen Karte zurueck
+	 * 
+	 * @return Anfangshoehe der rechteckigen Karte
+	 */
 	public int getGameMapHight() {
 		return rectangleMapHight;
 	}
@@ -253,6 +274,11 @@ public class Game implements Runnable {
 		fillModus = fillMapModus;
 	}
 
+	/**
+	 * Gibt die Startbedingung fuer den Fuellmodus zurueck
+	 * 
+	 * @return aktueller Wert des Fuellmodi
+	 */
 	public int getFillModus() {
 		return fillModus;
 	}
@@ -269,6 +295,11 @@ public class Game implements Runnable {
 		startRandomAmount = changedAmount;
 	}
 
+	/**
+	 * Gibt die Anfangsbedingung des Modi 1 zurueck
+	 * 
+	 * @return aktueller Wert des Modi1
+	 */
 	public int getRAmount() {
 		return startRandomAmount;
 	}
@@ -285,6 +316,11 @@ public class Game implements Runnable {
 		startProbability = changedProbability;
 	}
 
+	/**
+	 * Anfangsbedingung Modus2
+	 * 
+	 * @return aktuelle Wahrscheinlichkeit
+	 */
 	public int getProbability() {
 		return startProbability;
 	}
