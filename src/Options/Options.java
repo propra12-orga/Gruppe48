@@ -42,8 +42,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	 * Ist mapModus = true, so wird eine quadratische Map erstellt, sonst wird
 	 * eine rechteckige Map erstellt
 	 */
-	public boolean mapModus = true; // ist true, wenn quadratische Karte
-									// ausgewaehlt
+	public static boolean mapModus = true; // ist true, wenn quadratische Karte
+	// ausgewaehlt
 	public int fillModus;// 1= Modus0, 2=Modus1, 3=Modus2
 	public int changedRandomAmount;// Variable fuer die geaenderte Anzahl
 									// unzerstoerbarer Bloecke Modus2
@@ -71,14 +71,14 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 		addWindowListener(this);
 		add(new MiddlePanel(0, 0, 400, 150));
 
-		this.gameOption = game;
-		changedMap = gameOption.startMapSize;
-		changedDensity = gameOption.startDensity;
-		changedVerticalMap = gameOption.rectangleMapHight;
-		changedHorizontalMap = gameOption.rectangleMapWidht;
-		fillModus = gameOption.fillModus;
-		changedRandomAmount = gameOption.startRandomAmount;
-		changedProbability = gameOption.startProbability;
+		Options.gameOption = game;
+		changedMap = gameOption.getStartMapSize();
+		changedDensity = gameOption.getStartDensity();
+		changedVerticalMap = gameOption.getGameMapWidht();
+		changedHorizontalMap = gameOption.getGameMapHight();
+		fillModus = gameOption.getFillModus();
+		changedRandomAmount = gameOption.getRAmount();
+		changedProbability = gameOption.getProbability();
 
 	}
 

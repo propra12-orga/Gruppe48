@@ -185,6 +185,10 @@ public class Game implements Runnable {
 		startMapSize = changedMapSize;
 	}
 
+	public int getStartMapSize() {
+		return startMapSize;
+	}
+
 	/**
 	 * setzt die Dichte der zerstoerbaren Bloecke auf den angegebenen Wert
 	 * 
@@ -193,6 +197,10 @@ public class Game implements Runnable {
 	 */
 	public void setGameDensityOptions(double changedMapDensity) {
 		startDensity = changedMapDensity;
+	}
+
+	public double getStartDensity() {
+		return startDensity;
 	}
 
 	/**
@@ -216,6 +224,10 @@ public class Game implements Runnable {
 		rectangleMapWidht = changedWidhtMapSize;
 	}
 
+	public int getGameMapWidht() {
+		return rectangleMapWidht;
+	}
+
 	/**
 	 * Setzt die Hoehe der Map auf den angegebenen Wert
 	 * 
@@ -224,6 +236,10 @@ public class Game implements Runnable {
 	 */
 	public void setGameMapHight(int changedHightMapSize) {
 		rectangleMapHight = changedHightMapSize;
+	}
+
+	public int getGameMapHight() {
+		return rectangleMapHight;
 	}
 
 	/**
@@ -235,6 +251,10 @@ public class Game implements Runnable {
 	public void setFillModus(int fillMapModus) {
 
 		fillModus = fillMapModus;
+	}
+
+	public int getFillModus() {
+		return fillModus;
 	}
 
 	/**
@@ -249,6 +269,10 @@ public class Game implements Runnable {
 		startRandomAmount = changedAmount;
 	}
 
+	public int getRAmount() {
+		return startRandomAmount;
+	}
+
 	/**
 	 * Setzt die Warscheinlichkeit der zu setzenden Bloecke fuer Modus 1 auf den
 	 * angebenen Wert
@@ -259,6 +283,10 @@ public class Game implements Runnable {
 	public void setProbability(int changedProbability) {
 
 		startProbability = changedProbability;
+	}
+
+	public int getProbability() {
+		return startProbability;
 	}
 
 	public void startServer() {
