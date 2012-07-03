@@ -10,6 +10,8 @@ import java.io.Serializable;
  * 
  */
 public class Player implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	int x, y, id, bRadius, bCount;
 
 	/**
@@ -42,10 +44,18 @@ public class Player implements Serializable {
 		return getPosition;
 	}
 
+	/**
+	 * erhoeht den Bombenradius beim einsammeln eines items
+	 */
 	public void setBombRadius() {
 		bRadius += 1;
 	}
 
+	/**
+	 * gibt den Bombenradius zurück, damit die Bombe den Radius kennt
+	 * 
+	 * @return bRadius zurueckgegebener Bombenradius
+	 */
 	public int getBombRadius() {
 		return bRadius;
 	}
