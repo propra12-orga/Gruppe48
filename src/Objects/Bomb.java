@@ -8,7 +8,9 @@ import Engine.Sound;
  * die Klasse Bomb stellt Methoden zu Verfuegung um die Position einer Bombe auf
  * dem Spielfeld sowie ihre Restzeit bis zur Explosion zu speichern und
  * auszulesen. Auch stellt sie die Moeglichkeit bereit eine Bombe vorzeitig
- * detonieren zu lassen
+ * detonieren zu lassen. Es werden ausserdem die Eigenschaften des BombItems
+ * festgesetzt. Das BombItem ermoeglicht dem Spieler immer mehr Bomben auf
+ * einmal zu setzen
  * 
  * @author Martin Haase
  * 
