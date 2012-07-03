@@ -20,6 +20,7 @@ import Objects.Player;
  *         Feld auszulesen oder zu verändern.
  */
 public class Field implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE;
 	private FieldContent map[][];
 

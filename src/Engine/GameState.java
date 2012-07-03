@@ -8,6 +8,7 @@ import Objects.Bomb;
 import Objects.Player;
 
 public class GameState implements Serializable {
+	private static final long serialVersionUID = 1L;
 	public FieldContent[][] map;
 	public List<long[]> explosionList;
 	public List<Bomb> bombList;

@@ -26,29 +26,42 @@ import javax.swing.event.ChangeListener;
 import Engine.Game;
 
 public class Options extends JFrame implements WindowListener, ActionListener {
-
+	private static final long serialVersionUID = 1L;
 	private static Game gameOption;
-
-	private int changedMap;// Variable fuer die geaenderte Groeße der
-							// quadratischen Karte
-	private double changedDensity;// Variable fuer die geaenderte Dichte der
-									// zerstoerbaren Mauern
-	private int changedVerticalMap;// Variable fuer die geaenderte Hoehe der
-									// rechteckigen Karte
-	private int changedHorizontalMap;// Variable fuer die geaenderte Breite der
-										// rechteckigen Karte
+	/**
+	 * Variable fuer die geaenderte Groeße der quadratischen Karte
+	 */
+	private int changedMap;
+	/**
+	 * Variable fuer die geaenderte Dichte der zerstoerbaren Mauern
+	 */
+	private double changedDensity;
+	/**
+	 * Variable fuer die geaenderte Hoehe der rechteckigen Karte
+	 */
+	private int changedVerticalMap;
+	/**
+	 * Variable fuer die geaenderte Breite der rechteckigen Karte
+	 */
+	private int changedHorizontalMap;
 	private boolean savedOptions = true;
 	/**
 	 * Ist mapModus = true, so wird eine quadratische Map erstellt, sonst wird
 	 * eine rechteckige Map erstellt
 	 */
-	public static boolean mapModus = true; // ist true, wenn quadratische Karte
-	// ausgewaehlt
-	public int fillModus;// 1= Modus0, 2=Modus1, 3=Modus2
-	public int changedRandomAmount;// Variable fuer die geaenderte Anzahl
-									// unzerstoerbarer Bloecke Modus2
-	public int changedProbability;// Variable fuer die geaenderte
-									// Wahrscheinlichkeit Modus1
+	public static boolean mapModus = true;
+	/**
+	 * Bestimmt den Modus der gespielt werden soll 1= Modus0, 2=Modus1, 3=Modus2
+	 */
+	public int fillModus;
+	/**
+	 * Variable fuer die geaenderte Anzahl unzerstoerbarer Bloecke Modus2
+	 */
+	public int changedRandomAmount;
+	/**
+	 * Variable fuer die geaenderte Wahrscheinlichkeit Modus1
+	 */
+	public int changedProbability;
 
 	/**
 	 * Erstellt ein Objekt der Klasse Options und übergibt an Dieses die Game
@@ -116,7 +129,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 		 * @param y
 		 *            Horizontale Position des Panels
 		 * @param w
-		 *            Breite de Panels
+		 *            Breite des Panels
 		 * @param h
 		 *            Hoehe des Panels
 		 */
@@ -147,7 +160,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			final JSlider probabilitySlider = new JSlider(0, 100, 50);
 			JSlider densitySlider = new JSlider(0, 100, 70);
 			final JSlider mapSlider = new JSlider(10, 25, 15);
-
 			/**
 			 * Panel fuer den Slider der Dichte
 			 */
@@ -158,7 +170,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			density = BorderFactory.createTitledBorder("Density of Walls");
 			density.setTitleColor(Color.blue);
 			densityArea.setBorder(density);
-
 			/**
 			 * Panel fuer den Slider der Groeße quadratische Karte
 			 */
@@ -170,7 +181,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					.createTitledBorder("Choose the Size of a Square-Map");
 			squareMapArea.setBorder(square);
 			square.setTitleColor(Color.blue);
-
 			/**
 			 * Panel fuer die RadioButtons zur Auswahl quadratischer oder
 			 * rechteckiger Karte
@@ -227,11 +237,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					.createTitledBorder("Choose the Size of a Rectangle-Map");
 			borderForRectangle.setBorder(rectangle);
 			rectangle.setTitleColor(Color.lightGray);
-
 			/**
 			 * Panel fuer die Auswahl der FüllModi
 			 */
-
 			radioMapFillModus = new JPanel(new GridLayout(0, 1));
 			radioMapFillModus.setBounds(430, 6, 400, 300);
 			radioMapFillModus.setToolTipText("radioButtonMapModus");
@@ -250,7 +258,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			radioMapFillModus
 					.add(new JLabel(
 							"          - an chosen Amount of solid Blocks will be filled randomly"));
-
 			TitledBorder modus;
 			modus = BorderFactory.createTitledBorder("Choose a Fill Modus");
 			modus.setTitleColor(Color.blue);
@@ -341,21 +348,16 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			probabilitySlider.setMajorTickSpacing(25);
 			probabilitySlider.setPaintTicks(true);
 			probabilitySlider.setPaintLabels(true);
-
 			saveBt.addActionListener(new ActionListener() {
-
 				@Override
 				/**
 				 * Beim Klick auf den Save Button werden die Optionen gespeichert
 				 */
 				public void actionPerformed(ActionEvent e) {
 					acceptOptions();
-
 				}
 			});
-
 			cancelBt.addActionListener(new ActionListener() {
-
 				@Override
 				/**
 				 * Beim Klick auf den Cancel Button wird das Fenster geschlossen ohne zu speichern
@@ -363,11 +365,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				public void actionPerformed(ActionEvent e) {
 					checkCancelWithoutSave();
 				}
-
 			});
-
 			okBt.addActionListener(new ActionListener() {
-
 				@Override
 				/**
 				 * Beim Klick auf dne OK Button werden die Optionen gespeichert und das Fenster geschlossen
@@ -376,10 +375,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					acceptOptions();
 					dispose();
 				}
-
 			});
 			verticalSlider.addChangeListener(new ChangeListener() {
-
 				@Override
 				/**
 				 * Wird der vertikale Slider geaendert, so wird die Hoehe der zu erstellenden Map geaendert
@@ -394,9 +391,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					// repaint();
 				}
 			});
-
 			horizontalSlider.addChangeListener(new ChangeListener() {
-
 				@Override
 				/**
 				 * Wird der horizontale Slider geaendert, so wird die Breite der zu erstellenden Map geaendert
@@ -407,29 +402,24 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					System.out.println("Neuer Wert Spielfeldbreite: "
 							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
-
 				}
 			});
-
 			mapSlider.addChangeListener(new ChangeListener() {
-
 				@Override
 				/**
-				 * wird der mapSlider veraendert, so wird die Hoehe und Breite der zu erstellenden Map geaendert
+				 * Wird der mapSlider veraendert, so wird die Hoehe und Breite der zu erstellenden Map geaendert
 				 */
 				public void stateChanged(ChangeEvent e) {
 					changedMap = ((JSlider) e.getSource()).getValue();
 					System.out.println("Neuer Wert Spielfeldgröße: "
 							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
-
 				}
 			});
 			densitySlider.addChangeListener(new ChangeListener() {
-
 				@Override
 				/**
-				 * wird der densitySlayer veraendert, so wird die Dichte der Bloecke des zu erstellendne Feldes geaendert
+				 * Wird der densitySlayer veraendert, so wird die Dichte der Bloecke des zu erstellendne Feldes geaendert
 				 */
 				public void stateChanged(ChangeEvent e) {
 					changedDensity = ((JSlider) e.getSource()).getValue();
@@ -439,9 +429,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					// updateDensityLabel();
 				}
 			});
-
 			probabilitySlider.addChangeListener(new ChangeListener() {
-
 				@Override
 				/**
 				 * Wird der probabilitySlider veraendert, so wird die Chance auf zerstoerbare Bloecke des zu erstellenden Feldes fuer Modus 1 geaendert
@@ -454,9 +442,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					// updateDensityLabel();
 				}
 			});
-
 			randomAmountSlider.addChangeListener(new ChangeListener() {
-
 				@Override
 				/**
 				 * Wird der probabilitySlider veraendert, so wird die Chance auf zerstoerbare Bloecke des zu erstellenden Feldes fuer Modus 2 geaendert
@@ -466,12 +452,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					System.out.println("Amount Modus 2:: "
 							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
-
 				}
 			});
-
 			squareButton.addActionListener(new ActionListener() {
-
 				/**
 				 * Wird der squareButton angeklickt, so wird als naechstes eine
 				 * quadratische Map erstellt
@@ -487,11 +470,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					grayedPic.setVisible(true);
 					square.setTitleColor(Color.BLUE);
 					rectangle.setTitleColor(Color.lightGray);
-
 				}
-
 			});
-
 			rectangleButton.addActionListener(new ActionListener() {
 				/**
 				 * Wird der rectangleButton angeklickt, so wird als naechstes
@@ -508,11 +488,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					mapPic.setVisible(true);
 					square.setTitleColor(Color.lightGray);
 					rectangle.setTitleColor(Color.BLUE);
-
 				}
-
 			});
-
 			modusZero.addActionListener(new ActionListener() {
 				/**
 				 * Wird der modusZero Button angeklickt, so wird der
@@ -528,13 +505,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					probabilitySlider.setEnabled(false);
 					probability.setTitleColor(Color.lightGray);
 					amount.setTitleColor(Color.lightGray);
-
 				}
-
 			});
-
 			modusOne.addActionListener(new ActionListener() {
-
 				/**
 				 * Wird der modusOne Button angeklickt, so wird der
 				 * Generierungmodus auf Modus 1 gesetzt
@@ -551,11 +524,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					amount.setTitleColor(Color.lightGray);
 					// probabilityArea.setVisible(true);
 					// randomAmountArea.setVisible(false);
-
 				}
-
 			});
-
 			modusTwo.addActionListener(new ActionListener() {
 				/**
 				 * Wird der modusTwo Button angeklickt, so wird der
@@ -573,18 +543,14 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					amount.setTitleColor(Color.BLUE);
 					// randomAmountArea.setVisible(true);
 					// probabilityArea.setVisible(true);
-
 				}
-
 			});
-
 		}
 
 		/**
 		 * Wird ausgefuehrt, bei Betaetigung des OK- u. Save Buttons
 		 */
 		private void acceptOptions() {
-
 			gameOption.setGameMapOptions(changedMap);
 			gameOption.setGameDensityOptions(changedDensity);
 			gameOption.setMapModus(mapModus);
@@ -594,16 +560,13 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			gameOption.setProbability(changedProbability);
 			gameOption.setRAmount(changedRandomAmount);
 			savedOptions = true;
-
 		}
-
-		/**
-		 * Sicherheitsabfrage ob man ohne die Änderungzuspeichern das Fenster
-		 * schließen möchte
-		 */
-
 	}
 
+	/**
+	 * Sicherheitsabfrage ob man ohne die Änderungzuspeichern das Fenster
+	 * schließen möchte
+	 */
 	private void checkCancelWithoutSave() {
 		if (!savedOptions) {
 			String yesNoOptions[] = { "Ja", "Nein" };
@@ -611,33 +574,25 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					"Abbrechen ohne zu speichern ?", "Abbrechen",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
 					null, yesNoOptions, yesNoOptions[0]);
-
 			if (n == JOptionPane.YES_OPTION) {
 				dispose();
-
 			}
 		} else {
 			dispose();
 		}
 	}
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
-
 	@Override
 	/**
-	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
+	 * Leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
 	 */
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	/**
-	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
+	 * Leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
 	 */
 	public void windowActivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub
@@ -646,7 +601,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 
 	@Override
 	/**
-	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
+	 * Leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
 	 */
 	public void windowClosed(WindowEvent arg0) {
 		// TODO Auto-generated method stub
@@ -664,7 +619,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 
 	@Override
 	/**
-	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
+	 * Leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
 	 */
 	public void windowDeactivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub
@@ -673,7 +628,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 
 	@Override
 	/**
-	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
+	 * Leere Standardmethode, welche fuer die implementierte Klasse vorhanden sein muss
 	 */
 	public void windowDeiconified(WindowEvent arg0) {
 		// TODO Auto-generated method stub
@@ -681,7 +636,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	}
 
 	/**
-	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden
+	 * Leere Standardmethode, welche fuer die implementierte Klasse vorhanden
 	 * sein muss
 	 */
 	@Override
@@ -691,7 +646,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	}
 
 	/**
-	 * leere Standardmethode, welche fuer die implementierte Klasse vorhanden
+	 * Leere Standardmethode, welche fuer die implementierte Klasse vorhanden
 	 * sein muss
 	 */
 	@Override

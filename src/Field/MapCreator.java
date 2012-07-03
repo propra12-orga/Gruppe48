@@ -29,18 +29,24 @@ import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
+ * Die Klasse MapCreator stellt dem Benutzer eine Schnittstelle sowie einige
+ * Werkzeuge zu Verfügung um mit geringem Aufwand selber Spielfelder zu erzeugen
+ * Sie erzeugt ihr eigenes Fenster
  * 
- * @author Martin Die Klasse MapCreator stellt dem Benutzer eine Schnittstelle
- *         sowie einige Werkzeuge zu Verfügung um mit geringem Aufwand selber
- *         Spielfelder zu erzeugen Sie erzeugt ihr eigenes Fenster
+ * @author Martin
  */
 public class MapCreator extends JFrame implements WindowListener,
 		ActionListener {
 	private static final long serialVersionUID = 1L;
+	/**
+	 * Ob etwas an der Map geaendert wurde
+	 */
 	private boolean savedMap = true;
+	/**
+	 * Das Array in dem die Map gespeichert wird und anschließend in einem Text
+	 * Dokument gespeichert wird
+	 */
 	public int[][] array = new int[GUI.GUI.zahl + 1][GUI.GUI.zahl + 1];
-	public int height;
-	public int length;
 
 	/**
 	 * Erzeugt ein Objekt der Klasse MapCreator Das benutzte Fenster wird mit
@@ -102,12 +108,33 @@ public class MapCreator extends JFrame implements WindowListener,
 				ClassLoader.getSystemResource("images/free.png"));
 		private ImageIcon selected = free;
 
+		/**
+		 * Erzeugt ein Objekt der Klasse CreationPanel und definiert die Stelle
+		 * sowie Groesse des Panels und alle Elemente die es beeinhalten soll
+		 * 
+		 * @param x
+		 *            Die neue X-Koordinate an welcher das Panel gesetzt werden
+		 *            soll
+		 * @param y
+		 *            Die neue Y-Koordinate an welcher das Panel gesetzt werden
+		 *            soll
+		 * @param w
+		 *            Die Breite des Panels
+		 * @param h
+		 *            Die Hoehe des Panels
+		 */
 		public CreationPanel(int x, int y, int w, int h) {
 			super(null);
 			setBounds(x, y, w, h);
 			init();
 		}
 
+		/**
+		 * Hier werden alle Elemente des CreationPanels definiert, d.h. die Map
+		 * bestehend aus vielen Buttons, die drei Buttons(save,help,cancel) am
+		 * unteren Ende des Panels sowie die 6 verschiedenen Buttons die
+		 * bestimmen welches Element auf die Karte gezeichnet wird
+		 */
 		private void init() {
 			JPanel grid = new JPanel();
 			int mapSize = GUI.GUI.zahl;
@@ -147,6 +174,7 @@ public class MapCreator extends JFrame implements WindowListener,
 				array[mapSize - 1][i] = WALL;
 			}
 			grid.setBounds(10, 10, setArraySize(mapSize), setArraySize(mapSize));
+			//Die Buttons am unteren Ende des Panels
 			buttons = new JPanel(new GridLayout(0, 3));
 			buttons.setBounds(255, 640, 300, 40);
 			buttons.add(saveButton);
@@ -155,11 +183,13 @@ public class MapCreator extends JFrame implements WindowListener,
 			buttons.setBorder(new BevelBorder(BevelBorder.RAISED));
 			JLabel text = new JLabel("Currently Selected");
 			text.setBounds(670, 5, 130, 15);
+			//Der Button der anzeigt welches Element zum zeichnen grade ausgewaehlt wurde
 			currentlySelected = new JButton();
 			currentlySelected.setBounds(710, 25, 32, 32);
 			currentlySelected.setIcon(selected);
 			currentlySelected.setContentAreaFilled(false);
 			currentlySelected.setFocusable(false);
+			//Der Button fuer die zerstoerbaren Bloecke
 			picStone = new JButton(stone);
 			picStone.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -176,6 +206,7 @@ public class MapCreator extends JFrame implements WindowListener,
 					TitledBorder.CENTER, TitledBorder.ABOVE_BOTTOM);
 			modusStone.setTitleColor(Color.black);
 			picStone.setBorder(modusStone);
+			//Der Button fuer die unzerstoerbaren Waende
 			picWall = new JButton(wall);
 			picWall.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -192,6 +223,7 @@ public class MapCreator extends JFrame implements WindowListener,
 					TitledBorder.CENTER, TitledBorder.ABOVE_BOTTOM);
 			modusWall.setTitleColor(Color.black);
 			picWall.setBorder(modusWall);
+			//Der Button fuer den freien Platz
 			picFree = new JButton(free);
 			picFree.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -208,6 +240,7 @@ public class MapCreator extends JFrame implements WindowListener,
 					TitledBorder.CENTER, TitledBorder.ABOVE_BOTTOM);
 			modusFree.setTitleColor(Color.black);
 			picFree.setBorder(modusFree);
+			//Der Button fuer den Ausgang
 			picExit = new JButton(exit);
 			picExit.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -224,6 +257,7 @@ public class MapCreator extends JFrame implements WindowListener,
 					TitledBorder.CENTER, TitledBorder.ABOVE_BOTTOM);
 			modusExit.setTitleColor(Color.black);
 			picExit.setBorder(modusExit);
+			//Der Button fuer den versteckten Ausgang
 			picHiddenExit = new JButton(hiddenExit);
 			picHiddenExit.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -242,6 +276,7 @@ public class MapCreator extends JFrame implements WindowListener,
 					"Exit", TitledBorder.CENTER, TitledBorder.ABOVE_BOTTOM);
 			modusHiddenExit.setTitleColor(Color.black);
 			picHiddenExit.setBorder(modusHiddenExit);
+			//Der Button fuer den Spieler
 			picPlayer = new JButton(player);
 			picPlayer.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -271,8 +306,8 @@ public class MapCreator extends JFrame implements WindowListener,
 			add(picPlayer);
 			saveButton.addActionListener(new ActionListener() {
 				/**
-				 * Beim Klick auf den Save Button wird die Map gespeichert und
-				 * als .txt in den maps Ordner hinterlegt
+				 * Beim Klick auf den Save Button wird gefragt unter welchen
+				 * Namen und wo die Map gespeichert werden soll
 				 */
 				public void actionPerformed(ActionEvent e) {
 					save();
@@ -282,7 +317,8 @@ public class MapCreator extends JFrame implements WindowListener,
 			cancelButton.addActionListener(new ActionListener() {
 				/**
 				 * Beim Klick auf den Cancel Button wird das Fenster geschlossen
-				 * ohne zu speichern
+				 * falls nichts veraendert wurde, wurde etwas veraendert wird
+				 * abgefragt ob der Benutzer wirklich abbrechen will
 				 */
 				public void actionPerformed(ActionEvent e) {
 					checkCancelWithoutSave();
@@ -318,12 +354,28 @@ public class MapCreator extends JFrame implements WindowListener,
 		}
 	}
 
+	/**
+	 * Hier wird die Breite der Map berechnet, basierend auf der Pixelgroesse
+	 * der Bilder
+	 * 
+	 * @param x
+	 *            Die Anzahl der Felder die das Array haben soll
+	 * @return Die Breite die die Map in dem MapCreator haben wird
+	 */
 	public int setArraySize(int x) {
 		x = x * 32;
 		return x;
 
 	}
 
+	/**
+	 * Hier wird die Map gespeichert, erst oeffnet sich ein Fenster das abfragt
+	 * wo und unter welchen Namen die selbst erstellte Map gespeichert werden
+	 * soll, danach wenn auf Save gedrueckt wurde betrachtet die Methode alle
+	 * Felder des Arrays und fuer jede 1 wird ein . in das .txt Dokument
+	 * geschrieben, 2->*,3->E,4->H,5->P,6->%, so dass die Map einfach vom
+	 * eigenen Parser gelesen werden kann
+	 */
 	private void save() {
 		try {
 			int playerCount = 0;
@@ -415,6 +467,11 @@ public class MapCreator extends JFrame implements WindowListener,
 		}
 	}
 
+	/**
+	 * Prueft ob etwas an der eigenen Map veraendert worden ist, wenn nicht wird
+	 * das Fenster einfach geschlossen, wurde etwas veraendert wird erst
+	 * abgefragt ob der Benutzer sicher ist
+	 */
 	private void checkCancelWithoutSave() {
 		if (!savedMap) {
 			String yesNoOptions[] = { "Yes", "No" };

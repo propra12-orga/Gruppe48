@@ -20,7 +20,7 @@ import Field.Field;
  * 
  */
 public class BoardPanel extends JPanel {
-
+	private static final long serialVersionUID = 1L;
 	BufferedImage imgExit;
 	BufferedImage imgWall;
 	BufferedImage imgFree;
@@ -82,7 +82,7 @@ public class BoardPanel extends JPanel {
 	}
 
 	/**
-	 * entfernt Explosion aus dem Array
+	 * Entfernt die Explosionen aus dem Array
 	 */
 	public void removeExplosions() {
 		if (iBoomList.size() > 0) {
@@ -101,11 +101,11 @@ public class BoardPanel extends JPanel {
 	}
 
 	/**
-	 * durchsucht Spielfeld nach zu zeichnenden Objekten und erzeugt an den
+	 * Durchsucht Spielfeld nach zu zeichnenden Objekten und erzeugt an den
 	 * entsprechenden Positionen die passenden Bilder ein
 	 * 
 	 * @param g
-	 *            die zu zeichnende Grafik
+	 *            Die zu zeichnende Grafik
 	 */
 	public void buildWorld(Graphics g) {
 		// g.setColor(new Color(200, 200, 170));
@@ -147,14 +147,14 @@ public class BoardPanel extends JPanel {
 
 								if (boardField.getField(i, j).isFireItem()) {
 									g.drawImage(imgFireItem, i * 32, j * 32,
-											32, 32, // Zeichnet // den //
-													// Ausgang
+											32, 32, // Zeichnet das Item fuer die Erhoehung des Radius
 											null);
 
 								}
 								if (boardField.getField(i, j).isBombItem()) {
 									g.drawImage(imgBombItem, i * 32, j * 32,
-											32, 32, null);
+											32, 32, null); // Zeichnet das Item fuer die
+															//Steigerung an maximalen Bomben
 								}
 								break;
 							}
@@ -188,10 +188,10 @@ public class BoardPanel extends JPanel {
 	}
 
 	/**
-	 * durchsucht Array nach Explosionselementen und zeichnet diese
+	 * Durchsucht Array nach Explosionselementen und zeichnet diese
 	 * 
 	 * @param g
-	 *            die zu zeichnende Grafik
+	 *            Die zu zeichnende Grafik
 	 */
 	public void paintBoom(Graphics g) {
 		if (iBoomList.size() > 0) {

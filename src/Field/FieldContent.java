@@ -17,6 +17,7 @@ import Objects.Player;
  * 
  */
 public class FieldContent implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private static int EMPTY, FREE, WALL, EXIT, BOMB, PLAYER, STONE, FIRE;
 	private int iContent;
 	private Bomb bomb;
