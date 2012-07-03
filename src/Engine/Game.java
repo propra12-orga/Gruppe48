@@ -307,8 +307,10 @@ public class Game implements Runnable {
 			return false;
 		}
 		Field field;
-		Bomb.setbombMax(1);
-		Bomb.setbombMaxP2(1);
+		Bomb.setBombMaxOnStart(0); // Setzt die Zahl maximal legbarer Bomben
+									// (Player1)am Spielstart auf eins;
+		Bomb.setBombMaxOnStartP2(0); // Setzt die Zahl maximal legbarer Bomben
+										// (Player2)am Spielstart auf eins;
 		field = new Field();
 		field.insertMap(savedGS.map);
 		iPlayerCount = iNewPlayerCount;
@@ -340,8 +342,10 @@ public class Game implements Runnable {
 	 */
 	public boolean restart() {
 		Field field;
-		Bomb.setbombMax(1);
-		Bomb.setbombMaxP2(1);
+		Bomb.setBombMaxOnStart(0); // Setzt die Zahl maximal legbarer Bomben
+									// (Player1)am Spielstart auf eins;
+		Bomb.setBombMaxOnStartP2(0); // Setzt die Zahl maximal legbarer Bomben
+										// (Player2)am Spielstart auf eins;
 		if (bAutoRestart) {
 			field = new Field();
 			field.insertMap(cacheField.getMap()); // Wurde das Spiel automatisch
@@ -1105,8 +1109,12 @@ public class Game implements Runnable {
 					bombList.add(new Bomb(player.getPosition()[0], player
 							.getPosition()[1], time, player.getBombRadius()));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
+				if (Bomb.getBombStatus() == false) {
+					Bomb.setCurrentPlacedBomb();
+				}
 				Bomb.setBombStatus();
-				Bomb.setgelegteBomb();
+
+				System.out.println(Bomb.getCurrentPlacedP2());
 				break;
 
 			case 'q':
@@ -1268,8 +1276,12 @@ public class Game implements Runnable {
 					bombList.add(new Bomb(player.getPosition()[0], player
 							.getPosition()[1], time, player.getBombRadius()));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
+				if (Bomb.getBombStatus() == false) {
+					Bomb.setCurrentPlacedBomb();
+				}
 				Bomb.setBombStatus();
-				Bomb.setgelegteBomb();
+
+				System.out.println(Bomb.getCurrentPlacedP2());
 
 				break;
 			case 'q':
@@ -1426,12 +1438,16 @@ public class Game implements Runnable {
 					bombList.add(new Bomb(player2.getPosition()[0], player2
 							.getPosition()[1], time, player2.getBombRadius()));
 				gameField.setBomb(bombList.get(bombList.size() - 1));
+				if (Bomb.getBombStatusP2() == false) {
+					Bomb.setCurrentPlacedBombP2();
+				}
 				Bomb.setBombStatusP2();
-				Bomb.setgelegteBomb();
+
+				System.out.println(Bomb.getCurrentPlacedP2());
 
 				break;
 			case 'o':
-				Bomb.getBombMaxP2();
+				Bomb.setBombMaxP2();
 				break;
 			}
 			key = 0;

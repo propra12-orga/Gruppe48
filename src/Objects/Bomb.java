@@ -21,14 +21,15 @@ public class Bomb implements Serializable {
 	public static boolean isExploded = false;
 	public static boolean bombStatus = false;
 	public static boolean bombStatusP2 = false;
-	long delay = 3 * 1000;
+	long delay = 7 * 1000;
 	long explosionTime;
 	int x;
 	int y;
 	int radius;
 	static int bombMax;
 	static int bombMaxP2;
-	static int m = 1;
+	public static int currentPlaced = 0;
+	public static int currentPlacedP2 = 0;
 
 	/**
 	 * Konstruktor der Klasse Bomb
@@ -76,11 +77,6 @@ public class Bomb implements Serializable {
 		explosionTime -= delay;
 		Sound.BOMB.play();
 		isExploded = true;
-		bombStatus = false;
-		bombStatusP2 = false;
-		System.out.println("bombstatus detonate():" + bombStatus);
-		System.out.println("bombstatusP2 detonate():" + bombStatusP2);
-		m = 1;
 
 	}
 
@@ -93,10 +89,15 @@ public class Bomb implements Serializable {
 		return radius;
 	}
 
+	/**
+	 * Vergleicht den Wert aktuell gelegter Bomben(Player1) mit dem Wert maximal
+	 * erlaubter legbarer Bomben. Ist der Wert kleiner, bekommt bombstatus den
+	 * wert false Ist er größer dann true
+	 */
 	public static void setBombStatus() {
-		if (getM() <= bombMax - 1) {
+		if (getCurrentPlaced() <= bombMax) {
 			bombStatus = false;
-			System.out.println("getM() if: " + getM());
+			System.out.println("getM() if: " + getCurrentPlaced());
 			System.out.println("bombstatus if:" + bombStatus);
 			System.out.println("bombMax if:" + bombMax);
 
@@ -108,10 +109,15 @@ public class Bomb implements Serializable {
 		}
 	}
 
+	/**
+	 * Vergleicht den Wert aktuell gelegter Bomben(Player2) mit dem Wert maximal
+	 * erlaubter legbarer Bomben. Ist der Wert kleiner, bekommt bombstatus den
+	 * wert false Ist er größer dann true
+	 */
 	public static void setBombStatusP2() {
-		if (getM() <= bombMaxP2 - 1) {
+		if (getCurrentPlacedP2() <= bombMaxP2) {
 			bombStatusP2 = false;
-			System.out.println("getM() if: " + getM());
+			System.out.println("getM() if: " + getCurrentPlaced());
 			System.out.println("bombstatusP2 if:" + bombStatusP2);
 			System.out.println("bombMaxP2 if:" + bombMaxP2);
 
@@ -131,12 +137,20 @@ public class Bomb implements Serializable {
 		return bombStatusP2;
 	}
 
-	public static void setgelegteBomb() {
-		m += 1;
+	public static void setCurrentPlacedBomb() {
+		currentPlaced += 1;
 	}
 
-	public static int getM() {
-		return m;
+	public static int getCurrentPlaced() {
+		return currentPlaced;
+	}
+
+	public static void setCurrentPlacedBombP2() {
+		currentPlacedP2 += 1;
+	}
+
+	public static int getCurrentPlacedP2() {
+		return currentPlacedP2;
 	}
 
 	public static void setBombMax() {
@@ -155,11 +169,12 @@ public class Bomb implements Serializable {
 		return bombMaxP2;
 	}
 
-	public static void setbombMax(int newbombMax) {
-		bombMax = newbombMax;
+	public static void setBombMaxOnStart(int newBombMax) {
+		bombMax = newBombMax;
 	}
 
-	public static void setbombMaxP2(int newbombMax) {
-		bombMaxP2 = newbombMax;
+	public static void setBombMaxOnStartP2(int newBombMax) {
+		bombMax = newBombMax;
 	}
+
 }

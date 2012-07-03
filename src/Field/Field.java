@@ -114,6 +114,7 @@ public class Field implements Serializable {
 		if (bInBounds(newBomb.getPosition()[1], newBomb.getPosition()[0])) {
 			map[newBomb.getPosition()[1]][newBomb.getPosition()[0]]
 					.insertBomb(newBomb);
+
 		} else {
 			return;
 		}
@@ -153,6 +154,15 @@ public class Field implements Serializable {
 	 */
 	public void removeBomb(Bomb bomb) {
 		map[bomb.getPosition()[1]][bomb.getPosition()[0]].removeBomb();
+		Bomb.bombStatus = false; // gibt an, ob aktuell eine Bombe auf dem
+									// Spielfeld
+		// liegt (Spieler1)
+		Bomb.bombStatusP2 = false;// gibt an, ob aktuell eine Bombe auf dem
+									// Spielfeld
+		// liegt (Spieler2)
+		Bomb.currentPlaced = Bomb.getCurrentPlaced() - 1;
+		Bomb.currentPlacedP2 = Bomb.getCurrentPlacedP2() - 1;
+
 	}
 
 	/**
