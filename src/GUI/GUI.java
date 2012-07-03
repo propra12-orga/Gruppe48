@@ -34,7 +34,7 @@ import Options.Options;
  */
 public class GUI extends JFrame implements ActionListener, KeyListener,
 		WindowListener {
-
+	private static final long serialVersionUID = 1L;
 	Field gameField;
 	BufferedImage imgExit;
 	BufferedImage imgWall;
@@ -76,7 +76,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		mainGame = game;
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
 		setSize(480, 480);
 
 		/**
@@ -135,11 +134,11 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	}
 
 	/**
-	 * setzt das Spielfeld auf das Panel und veraendert die Groess des Frames
+	 * Setzt das Spielfeld auf das Panel und veraendert die Groess des Frames
 	 * abhaenig von der Groesse des Spielfelds
 	 * 
 	 * @param field
-	 *            das einzufuegende Spielfeld
+	 *            Das einzufuegende Spielfeld
 	 */
 	public void insertField(Field field) {
 		gameField = field;
@@ -250,7 +249,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 
 	@Override
 	/**
-	 * wird ausgefuehrt, wenn die Taste innerhalb eines kurzen
+	 * Wird ausgefuehrt, wenn die Taste innerhalb eines kurzen
 	 * Zeitraums gedrueckt und losgelassen wird
 	 */
 	public void keyReleased(KeyEvent arg0) {
@@ -258,7 +257,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 
 	@Override
 	/**
-	 * wird ausgefuehrt, wenn die Taste losgelassen wird
+	 * Wird ausgefuehrt, wenn die Taste losgelassen wird
 	 */
 	public void keyTyped(KeyEvent e) {
 		mainGame.key = e.getKeyChar();
