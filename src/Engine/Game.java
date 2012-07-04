@@ -1088,14 +1088,177 @@ public class Game implements Runnable {
 		if (iPlayerCount == 1) { // Abfrage der Spieleranzahl. Gibt es nur einen
 									// Spieler, so werden die Kontrollen fuer
 									// den 2. Spieler deaktiviert.
+			switch (key) {
+			case 'w': // nach oben
 
+				switch (gameField.getField(player.getPosition()[1],
+						player.getPosition()[0] - 1).getContent()) {
+				case 1:
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).getBomb() != null) {
+						break;
+					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).getPlayer() != null) {
+						break;
+					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).isExit() == true) {
+						iWinningPlayer = 1;
+						gameState = GameStates.VICTORY;
+					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).isFireItem() == true) {
+						player.setBombRadius();
+						gameField.getField(player.getPosition()[1],
+								player.getPosition()[0] - 1).removeFireItem();
+					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] - 1).isBombItem() == true) {
+						Bomb.setBombMax();
+						gameField.getField(player.getPosition()[1],
+								player.getPosition()[0] - 1).removeBombItem();
+					}
+					gameField.removePlayer(player);
+					player.moveUp();
+					gameField.setPlayer(player);
+					break;
+				}
+				break;
+			case 'a': // nach links
+				switch (gameField.getField(player.getPosition()[1] - 1,
+						player.getPosition()[0]).getContent()) {
+				case 1:
+					if (gameField.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).getBomb() != null) {
+						break;
+					}
+					if (gameField.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).getPlayer() != null) {
+						break;
+					}
+					if (gameField.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).isExit() == true) {
+						iWinningPlayer = 1;
+						gameState = GameStates.VICTORY;
+					}
+					if (gameField.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).isFireItem() == true) {
+						player.setBombRadius();
+						gameField.getField(player.getPosition()[1] - 1,
+								player.getPosition()[0]).removeFireItem();
+					}
+					if (gameField.getField(player.getPosition()[1] - 1,
+							player.getPosition()[0]).isBombItem() == true) {
+						Bomb.setBombMax();
+						gameField.getField(player.getPosition()[1] - 1,
+								player.getPosition()[0]).removeBombItem();
+					}
+
+					gameField.removePlayer(player);
+					player.moveLeft();
+					gameField.setPlayer(player);
+					break;
+				}
+				break;
+			case 's': // nach unten
+				switch (gameField.getField(player.getPosition()[1],
+						player.getPosition()[0] + 1).getContent()) {
+				case 1:
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).getBomb() != null) {
+						break;
+					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).getPlayer() != null) {
+						break;
+					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).isExit() == true) {
+						iWinningPlayer = 1;
+						gameState = GameStates.VICTORY;
+					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).isFireItem() == true) {
+						player.setBombRadius();
+						gameField.getField(player.getPosition()[1],
+								player.getPosition()[0] + 1).removeFireItem();
+					}
+					if (gameField.getField(player.getPosition()[1],
+							player.getPosition()[0] + 1).isBombItem() == true) {
+						Bomb.setBombMax();
+						gameField.getField(player.getPosition()[1],
+								player.getPosition()[0] + 1).removeBombItem();
+					}
+					gameField.removePlayer(player);
+					player.moveDown();
+					gameField.setPlayer(player);
+					break;
+				}
+				break;
+			case 'd': // nach rechts
+				switch (gameField.getField(player.getPosition()[1] + 1,
+						player.getPosition()[0]).getContent()) {
+				case 1:
+					if (gameField.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).getBomb() != null) {
+						break;
+					}
+					if (gameField.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).getPlayer() != null) {
+						break;
+					}
+					if (gameField.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).isExit() == true) {
+						iWinningPlayer = 1;
+						gameState = GameStates.VICTORY;
+					}
+					if (gameField.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).isFireItem() == true) {
+						player.setBombRadius();
+						gameField.getField(player.getPosition()[1] + 1,
+								player.getPosition()[0]).removeFireItem();
+					}
+					if (gameField.getField(player.getPosition()[1] + 1,
+							player.getPosition()[0]).isBombItem() == true) {
+						Bomb.setBombMax();
+						gameField.getField(player.getPosition()[1] + 1,
+								player.getPosition()[0]).removeBombItem();
+					}
+					gameField.removePlayer(player);
+					player.moveRight();
+					gameField.setPlayer(player);
+					break;
+				}
+				break;
+			case KeyEvent.VK_SPACE: // Bombe legen
+				if (Bomb.getBombStatus() == false)
+					bombList.add(new Bomb(player.getPosition()[0], player
+							.getPosition()[1], time, player.getBombRadius()));
+				gameField.setBomb(bombList.get(bombList.size() - 1));
+				if (Bomb.getBombStatus() == false) {
+					Bomb.setCurrentPlacedBomb();
+				}
+				Bomb.setBombStatus();
+
+				System.out.println(Bomb.getCurrentPlacedP2());
+
+				break;
+			case 'q':
+				player.setBombRadius();
+				break;
+			case 'e':
+				Bomb.setBombMax();
+				break;
+			}
+			key = 0;
 		} else { // Im 2 Spielermodus wird ausserdem die Spielerkollision
 					// abgefragt, da
 					// ein Spieler nicht durch den anderen durchgehen sollte als
 					// waere er Luft
 			switch (key) {
 			case 'w': // nach oben
-				System.out.println("blafasel");
+
 				switch (gameField.getField(player.getPosition()[1],
 						player.getPosition()[0] - 1).getContent()) {
 				case 1:

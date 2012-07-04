@@ -221,11 +221,11 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 			new Options(game1);
 		}
 		if (object.getSource() == hostgame) {
-			game1.hostGame();
+			mainGame.hostGame();
 		}
 		if (object.getSource() == joingame) {
 			String ip = JOptionPane.showInputDialog(null, "IP");
-			game1.joinGame(ip);
+			mainGame.joinGame(ip);
 		}
 		if (object.getSource() == mapCreatorItem) {
 			String size = JOptionPane.showInputDialog(
@@ -275,6 +275,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	 * Wird ausgefuehrt, wenn die Taste losgelassen wird
 	 */
 	public void keyTyped(KeyEvent e) {
+		System.out.println("bla");
 		mainGame.key = e.getKeyChar();
 	}
 
