@@ -1,14 +1,15 @@
 package Network;
 
-import java.util.Scanner;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class NetworkInputStream extends Thread {
 
-	Scanner input;
+	ObjectInputStream input;
 	boolean streamStatus;
 
-	public NetworkInputStream(Scanner sStream) {
-		input = sStream;
+	public NetworkInputStream(ObjectInputStream oStream) {
+		input = oStream;
 	}
 
 	public void run() {
@@ -18,15 +19,33 @@ public class NetworkInputStream extends Thread {
 	}
 
 	public String getNextEvent() {
-		return input.nextLine();
+		try {
+			return input.readUTF();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
+		}
 	}
 
-	public void drop() {
-		while (input.hasNext())
-			input.nextLine();
+	public Object getNextObject() throws ClassNotFoundException, IOException {
+		return input.readObject();
+	}
+
+	public int getNextInt() throws ClassNotFoundException, IOException {
+		return input.readInt();
 	}
 
 	public boolean nextEventAvailible() {
-		return input.hasNext();
+		try {
+			if (input.available() > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
