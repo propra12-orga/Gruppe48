@@ -157,12 +157,13 @@ public class Field implements Serializable {
 		map[bomb.getPosition()[1]][bomb.getPosition()[0]].removeBomb();
 		Bomb.bombStatus = false; // gibt an, ob aktuell eine Bombe auf dem
 									// Spielfeld
-		// liegt (Spieler1)
+									// liegt (Spieler1)
 		Bomb.bombStatusP2 = false;// gibt an, ob aktuell eine Bombe auf dem
 									// Spielfeld
-		// liegt (Spieler2)
-		Bomb.currentPlaced = Bomb.getCurrentPlaced() - 1;
-		Bomb.currentPlacedP2 = Bomb.getCurrentPlacedP2() - 1;
+									// liegt (Spieler2)
+
+		Bomb.currentPlaced = 0;
+		Bomb.currentPlacedP2 = 0;
 
 	}
 
