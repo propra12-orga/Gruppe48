@@ -9,6 +9,11 @@ import java.net.UnknownHostException;
 import Field.Field;
 import Objects.Player;
 
+/**
+ * 
+ * @author Alexander Client Klasse, welche Funktionen zur Kommunikation mit
+ *         einem Gameserver zu Verfügung stellt
+ */
 public class Client extends Thread {
 	Socket socket;
 	NetworkInputStream input;
@@ -22,6 +27,16 @@ public class Client extends Thread {
 	String event;
 	boolean newEvent;
 
+	/**
+	 * Erzeugt ein Objekt der Klasse Client
+	 * 
+	 * @param ip
+	 *            IP-Adresse des Servers zu dem Verbindung aufgenommen werden
+	 *            soll
+	 * @param port
+	 *            Portnummer des Servers zu dem Verbindung aufgenommen werden
+	 *            soll
+	 */
 	public Client(String ip, int port) {
 		this.ip = ip;
 		this.port = port;
@@ -30,6 +45,10 @@ public class Client extends Thread {
 
 	}
 
+	/**
+	 * Hauptmethode des Clients, die sämtliche Anfragen des Servers regelst
+	 * sowie dem Server Tastendrücke mitteilt
+	 */
 	public void run() {
 		try {
 			socket = new Socket(ip, port);
@@ -87,14 +106,44 @@ public class Client extends Thread {
 		}
 	}
 
+	/**
+	 * Gibt zurück, ob eine neue Nachricht vom server eingetroffen ist
+	 * 
+	 * @return Ist = true, falls neue Nachricht vorhanden ist, ist sonst = false
+	 */
 	public boolean getEvent() {
 		return newEvent;
 	}
 
+	/**
+	 * Methode zum zurücksetzen der Nachrichtmarkierung
+	 */
 	public void resetEvent() {
 		newEvent = false;
 	}
 
+	/**
+	 * Teilt dem Server mit, dass eine Bombe gelegt wurde
+	 */
+	public void placeBomb() {
+		try {
+			output.writeUTF("bomb");
+			output.writeInt(clientNumber);
+			output.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Teilt dem Server mit, dass der Spieler sich bewegen will
+	 * 
+	 * @param x
+	 *            Erste Richtungskoordinate
+	 * @param y
+	 *            Zweite Richtungskoordinate
+	 */
 	public void movePlayer(int x, int y) {
 		try {
 			output.writeUTF("move");
@@ -108,14 +157,20 @@ public class Client extends Thread {
 		}
 	}
 
-	public void setPlayer(Player newPlayer) {
-		localPlayer = newPlayer;
-	}
-
+	/**
+	 * Gibt den vom Server erhaltenen Spieler zurück
+	 * 
+	 * @return Vom Server erhaltener Spieler
+	 */
 	public Player getPlayer() {
 		return localPlayer;
 	}
 
+	/**
+	 * Gibt den vom Server erhaltenes Spielfeld zurück
+	 * 
+	 * @return Vom Server erhaltene Spielfeld
+	 */
 	public Field getField() {
 		return localField;
 	}

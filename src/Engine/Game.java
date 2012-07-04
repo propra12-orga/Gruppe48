@@ -335,11 +335,25 @@ public class Game implements Runnable {
 
 	}
 
+	/**
+	 * Erzeugt einen neuen Client und verbindet ihn mit einem Server
+	 * 
+	 * @param ip
+	 *            IP-Adresse des zu verbindenden Servers
+	 * @param port
+	 *            Portnummer des zu verbindenden Servers
+	 */
 	public void connect(String ip, int port) {
 		client = new Client(ip, port);
 		client.start();
 	}
 
+	/**
+	 * Speichert den aktuellen Spielstand und gibt diesen in einer Datei aus
+	 * 
+	 * @param path
+	 *            Pfad unter dem die Datei gespeichert werden soll
+	 */
 	public void saveGame(String path) {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(path);
@@ -354,6 +368,12 @@ public class Game implements Runnable {
 		}
 	}
 
+	/**
+	 * Baut eine Verbindung zum Gameserver unter der Angegebenen IP-Adresse auf
+	 * 
+	 * @param ip
+	 *            IP-Adresse des zu verbindenden Servers
+	 */
 	public void joinGame(String ip) {
 		iNewPlayerCount = 2;
 		gameState = GameStates.STARTED;
@@ -362,6 +382,10 @@ public class Game implements Runnable {
 
 	}
 
+	/**
+	 * Setzt einen neuen Spielserver auf Port 30000 auf, erzeugt einen Client
+	 * und verbindet sich selbst mit dem Server
+	 */
 	public void hostGame() {
 		iNewPlayerCount = 2;
 		restart();
@@ -370,6 +394,13 @@ public class Game implements Runnable {
 		network = true;
 	}
 
+	/**
+	 * Lädt einen gespeicherten Spielstand aus einer Datei ein
+	 * 
+	 * @param savedGamePath
+	 *            Pfad des Spielstandes
+	 * @return Spielstand
+	 */
 	public boolean loadGame(String savedGamePath) {
 		GameState savedGS = null;
 		try {
@@ -571,7 +602,9 @@ public class Game implements Runnable {
 				player = client.getPlayer();
 				client.resetEvent();
 				gui.insertField(gameField);
+				gui.resize();
 				gui.repaint();
+
 			}
 
 		} else {
@@ -1579,7 +1612,7 @@ public class Game implements Runnable {
 		}
 	}
 
-	public void handleNetworkMovement() {
+	private void handleNetworkMovement() {
 		switch (key) {
 		case 'w': // nach oben
 			client.movePlayer(0, -1);
@@ -1594,7 +1627,7 @@ public class Game implements Runnable {
 			client.movePlayer(1, 0);
 			break;
 		case KeyEvent.VK_SPACE:// Bombe legen
-
+			client.placeBomb();
 			break;
 
 		}

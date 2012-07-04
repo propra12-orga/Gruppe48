@@ -3,15 +3,22 @@ package Network;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import Engine.Game;
 import Field.Field;
+import Objects.Bomb;
 import Objects.Player;
 
+/**
+ * 
+ * @author Alexander Serverklasse, welche Funktionen zum hosten eines spiels
+ *         bereitstellt
+ */
 public class Server extends Thread {
 
 	ServerSocket server;
@@ -32,11 +39,24 @@ public class Server extends Thread {
 	Game game;
 	Field gameField;
 	int[] moveArray;
+	List<Bomb> bombList;
 
+	/**
+	 * Erzeugt ein Objekt vom Typ Server und übergibt diesem ein Spielfeld sowie
+	 * beide Spieler
+	 * 
+	 * @param field
+	 *            Spielfeld auf dem gespielt werden soll
+	 * @param player1
+	 *            Erster Spieler
+	 * @param player2
+	 *            Zweiter Spieler
+	 */
 	public Server(Field field, Player player1, Player player2) {
 		client1 = null;
 		client2 = null;
 		input = null;
+		bombList = new ArrayList<Bomb>();
 		this.player1 = player1;
 		this.player2 = player2;
 		gameField = field;
@@ -45,6 +65,10 @@ public class Server extends Thread {
 
 	}
 
+	/**
+	 * Hauptmethode des Servers. Initialisiert die Verbindun und regelt die
+	 * gesamte Spielmechanik
+	 */
 	public void run() {
 		try {
 			server = new ServerSocket(30000);
@@ -146,16 +170,10 @@ public class Server extends Thread {
 		}
 		while (true) {
 			try {
+				time = calendar.getInstance().getTimeInMillis();
 				System.out.println("run");
 				if (((input1.nextEventAvailible()) || (input2
 						.nextEventAvailible()))) {
-					if (input1.nextEventAvailible()) {
-						input = input1;
-						System.out.println(1);
-					} else {
-						input = input2;
-						System.out.println(2);
-					}
 					if (input1.nextEventAvailible()) {
 						input = input1;
 						System.out.println(1);
@@ -169,7 +187,7 @@ public class Server extends Thread {
 						if (event.equals("move")) {
 							System.out.println("moving");
 							try {
-								player = (Player) input1.getNextObject();
+								player = (Player) input.getNextObject();
 							} catch (ClassNotFoundException e) {
 								e.printStackTrace();
 							}
@@ -229,12 +247,15 @@ public class Server extends Thread {
 											player2 = (Player) input
 													.getNextObject();
 										}
+									} else {
+										if (event.equals("bomb")) {
+											setBomb(input.getNextInt());
+										}
 									}
 								}
 							}
 						}
 					}
-
 				}
 			} catch (IOException e) {
 
@@ -253,8 +274,24 @@ public class Server extends Thread {
 		}
 	}
 
-	public InetAddress getIP() {
-		return server.getInetAddress();
+	private void setBomb(int playernumber) {
+		if (playernumber == 1) {
+			player = player1;
+		} else {
+			player = player2;
+		}
+		gameField.setBomb(new Bomb(player.getPosition()[0], player
+				.getPosition()[1], time, player.getBombRadius()));
+		bombList.add(gameField.getField(player.getPosition()[0],
+				player.getPosition()[1]).getBomb());
+	}
+
+	private void handleBombs() {
+		for (int i = 0; i < bombList.size(); i++) {
+			if (bombList.get(i).getTimer() <= time) {
+				bombList.remove(i);
+			}
+		}
 	}
 
 	private void handleMovement(Player player, int[] direction) {
@@ -263,6 +300,40 @@ public class Server extends Thread {
 		switch (gameField.getField(player.getPosition()[1] + direction[0],
 				player.getPosition()[0] + direction[1]).getContent()) {
 		case 1:
+			if (gameField.getField(player.getPosition()[1] + direction[0],
+					player.getPosition()[0] + direction[1]).getPlayer() != null) {
+				break;
+			}
+			if (gameField.getField(player.getPosition()[1] + direction[0],
+					player.getPosition()[0] + direction[1]).isExit()) {
+				break;
+			}
+			if (gameField.getField(player.getPosition()[1] + direction[0],
+					player.getPosition()[0] + direction[1]).getBomb() != null) {
+				break;
+			}
+			if (gameField.getField(player.getPosition()[1] + direction[0],
+					player.getPosition()[0] + direction[1]).isFireItem()) {
+				player.setBombRadius();
+				gameField.getField(player.getPosition()[1] + direction[0],
+						player.getPosition()[0] + direction[1])
+						.removeFireItem();
+				moved = true;
+				break;
+			}
+			if (gameField.getField(player.getPosition()[1] + direction[0],
+					player.getPosition()[0] + direction[1]).isBombItem()) {
+				if (player.getID() == 1) {
+					Bomb.setBombMax();
+				} else {
+					Bomb.setBombMaxP2();
+				}
+				gameField.getField(player.getPosition()[1] + direction[0],
+						player.getPosition()[0] + direction[1])
+						.removeBombItem();
+				moved = true;
+				break;
+			}
 			moved = true;
 			break;
 		}
