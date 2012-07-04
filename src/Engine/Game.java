@@ -329,14 +329,10 @@ public class Game implements Runnable {
 	}
 
 	public void startServer() {
-		if (bMapLoaded) {
-			server = new Server(createNewField(sMapPath), player, player2);
-		} else {
-			server = new Server(createNewField(), player, player2);
-		}
+		server = new Server(gameField, player, player2);
 		server.start();
 		network = true;
-		iNewPlayerCount = 2;
+
 	}
 
 	public void connect(String ip, int port) {
@@ -359,9 +355,11 @@ public class Game implements Runnable {
 	}
 
 	public void joinGame(String ip) {
-
+		iNewPlayerCount = 2;
+		gameState = GameStates.STARTED;
 		connect(ip, 30000);
 		network = true;
+
 	}
 
 	public void hostGame() {
@@ -569,14 +567,13 @@ public class Game implements Runnable {
 			handleNetworkMovement();
 			// handleBombs();
 			if (client.getEvent()) {
-				System.out.println("new event");
 				gameField = client.getField();
 				player = client.getPlayer();
 				client.resetEvent();
+				gui.insertField(gameField);
+				gui.repaint();
 			}
-			gui.insertField(gameField);
-			gui.repaint();
-			System.out.println("blafasel");
+
 		} else {
 			time = Calendar.getInstance().getTimeInMillis();
 			handleBombs();

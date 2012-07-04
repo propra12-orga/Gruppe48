@@ -147,14 +147,17 @@ public class BoardPanel extends JPanel {
 
 								if (boardField.getField(i, j).isFireItem()) {
 									g.drawImage(imgFireItem, i * 32, j * 32,
-											32, 32, // Zeichnet das Item fuer die Erhoehung des Radius
+											32, 32, // Zeichnet das Item fuer
+													// die Erhoehung des Radius
 											null);
 
 								}
 								if (boardField.getField(i, j).isBombItem()) {
 									g.drawImage(imgBombItem, i * 32, j * 32,
-											32, 32, null); // Zeichnet das Item fuer die
-															//Steigerung an maximalen Bomben
+											32, 32, null); // Zeichnet das Item
+															// fuer die
+															// Steigerung an
+															// maximalen Bomben
 								}
 								break;
 							}

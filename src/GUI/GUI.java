@@ -275,7 +275,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	 * Wird ausgefuehrt, wenn die Taste losgelassen wird
 	 */
 	public void keyTyped(KeyEvent e) {
-		System.out.println("bla");
 		mainGame.key = e.getKeyChar();
 	}
 

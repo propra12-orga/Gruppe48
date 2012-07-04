@@ -75,10 +75,8 @@ public class Server extends Thread {
 				System.out.println("null");
 				return;
 			}
-			System.out.println("sending message");
 			output1.writeUTF("waiting");
 			output1.flush();
-			System.out.println("message sent");
 			timeout = calendar.getInstance().getTimeInMillis();
 
 			while (time < timeout + 60000) {
@@ -146,13 +144,11 @@ public class Server extends Thread {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-
 		while (true) {
 			try {
 				System.out.println("run");
 				if (((input1.nextEventAvailible()) || (input2
 						.nextEventAvailible()))) {
-					System.out.println("availble");
 					if (input1.nextEventAvailible()) {
 						input = input1;
 						System.out.println(1);
@@ -177,25 +173,22 @@ public class Server extends Thread {
 							} catch (ClassNotFoundException e) {
 								e.printStackTrace();
 							}
-							System.out.println("player accepted");
 							moveArray[0] = input.getNextInt();
 							moveArray[1] = input.getNextInt();
-							System.out.println("handling movement");
-							System.out.println(player);
-							System.out.println(moveArray[0]);
-							System.out.println(moveArray[1]);
 							handleMovement(player, moveArray);
-							System.out.println("handled movement");
 							output1.writeUTF("map");
 							output2.writeUTF("map");
 							output1.flush();
 							output2.flush();
-							System.out.println("wrote map");
+							System.out.println("Server 2, 1 = "
+									+ gameField.getField(1, 2).getPlayer());
+							System.out.println("Server Player = "
+									+ player.getPosition()[0] + " "
+									+ player.getPosition()[1]);
 							output1.writeObject(gameField);
 							output2.writeObject(gameField);
 							output1.flush();
 							output2.flush();
-							System.out.println("wrote object");
 							if (input == input1) {
 								output1.writeUTF("player");
 								output1.flush();
@@ -248,7 +241,6 @@ public class Server extends Thread {
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-			System.out.println("xyz");
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -275,8 +267,6 @@ public class Server extends Thread {
 			break;
 		}
 		if (moved) {
-			System.out.println("PlayerPosition =  " + player.getPosition()[0]
-					+ ", " + player.getPosition()[1]);
 			switch (direction[0]) {
 			case -1:
 				gameField.removePlayer(player);
@@ -287,7 +277,6 @@ public class Server extends Thread {
 				gameField.removePlayer(player);
 				player.moveRight();
 				gameField.setPlayer(player);
-				System.out.println("movedright");
 				break;
 			case 0:
 				if (direction[1] == 1) {
@@ -301,14 +290,6 @@ public class Server extends Thread {
 				}
 				break;
 			}
-
 		}
-		System.out.println(" new PlayerPosition =  " + player.getPosition()[0]
-				+ ", " + player.getPosition()[1]);
-	}
-
-	public void initializePlayers(Player player1, Player player2) {
-		this.player1 = player1;
-		this.player2 = player2;
 	}
 }

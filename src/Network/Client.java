@@ -27,6 +27,7 @@ public class Client extends Thread {
 		this.port = port;
 		clientNumber = 0;
 		newEvent = false;
+
 	}
 
 	public void run() {
@@ -52,8 +53,6 @@ public class Client extends Thread {
 				if (input.nextEventAvailible()) {
 
 					event = input.getNextEvent();
-					System.out
-							.println("client " + clientNumber + " = " + event);
 					if (event.equals("waiting")) {
 					}
 					if (event.equals("ready")) {
@@ -61,15 +60,23 @@ public class Client extends Thread {
 					}
 					if (event.equals("map")) {
 						localField = (Field) input.getNextObject();
+						System.out.println("map update");
+						System.out.println("Client 2, 1 = "
+								+ localField.getField(1, 2).getContent());
+						newEvent = true;
 					}
 					if (event.equals("player")) {
 						localPlayer = (Player) input.getNextObject();
+
+						System.out.println("Client Player = "
+								+ localPlayer.getPosition()[0] + " "
+								+ localPlayer.getPosition()[1]);
 					}
 					if (event.equals("initialized")) {
 						output.writeUTF("ok");
 						output.flush();
 					}
-					newEvent = true;
+
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -89,8 +96,6 @@ public class Client extends Thread {
 	}
 
 	public void movePlayer(int x, int y) {
-
-		System.out.println("taste gedrückt");
 		try {
 			output.writeUTF("move");
 			output.flush();
@@ -113,10 +118,6 @@ public class Client extends Thread {
 
 	public Field getField() {
 		return localField;
-	}
-
-	public void setField(Field newField) {
-		localField = newField;
 	}
 
 }
