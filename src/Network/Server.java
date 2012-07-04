@@ -69,6 +69,7 @@ public class Server extends Thread {
 				input1.start();
 				objectOutput1 = new ObjectOutputStream(
 						client1.getOutputStream());
+				objectOutput1.flush();
 				objectInput1 = new ObjectInputStream(client1.getInputStream());
 			} catch (IOException e) {
 				System.out.println(e);
@@ -96,6 +97,7 @@ public class Server extends Thread {
 				input2.start();
 				objectOutput2 = new ObjectOutputStream(
 						client2.getOutputStream());
+				objectOutput2.flush();
 				objectInput2 = new ObjectInputStream(client2.getInputStream());
 			} catch (IOException e) {
 				System.out.println(e);
@@ -135,6 +137,18 @@ public class Server extends Thread {
 			objectOutput2.writeObject(player2);
 			objectOutput1.flush();
 			objectOutput2.flush();
+			output1.println("initialized");
+			output2.println("initialized");
+			output1.flush();
+			output2.flush();
+			while (!input1.nextEventAvailible()) {
+
+			}
+			while (!input2.nextEventAvailible()) {
+
+			}
+			input1.getNextEvent();
+			input2.getNextEvent();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -142,8 +156,9 @@ public class Server extends Thread {
 		while (true) {
 			try {
 				System.out.println("run");
-				if (((input1.nextEventAvailible()) || (input2
-						.nextEventAvailible()))) {
+				// if (((input1.nextEventAvailible()) || (input2
+				// .nextEventAvailible()))) {
+				if (input1.nextEventAvailible()) {
 					System.out.println("availble");
 					if (input1.nextEventAvailible()) {
 						input = input1;

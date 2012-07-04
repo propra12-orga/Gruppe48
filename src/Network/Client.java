@@ -28,6 +28,7 @@ public class Client extends Thread {
 	public Client(String ip, int port) {
 		this.ip = ip;
 		this.port = port;
+		clientNumber = 0;
 		newEvent = false;
 	}
 
@@ -38,6 +39,7 @@ public class Client extends Thread {
 			input = new NetworkInputStream(new Scanner(socket.getInputStream()));
 			input.start();
 			objectOutput = new ObjectOutputStream(socket.getOutputStream());
+			objectOutput.flush();
 			objectInput = new ObjectInputStream(socket.getInputStream());
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -49,7 +51,8 @@ public class Client extends Thread {
 				if (input.nextEventAvailible()) {
 
 					event = input.getNextEvent();
-					System.out.println("client = " + event);
+					System.out
+							.println("client " + clientNumber + " = " + event);
 					if (event.equals("waiting")) {
 					}
 					if (event.equals("ready")) {
@@ -60,6 +63,10 @@ public class Client extends Thread {
 					}
 					if (event.equals("player")) {
 						localPlayer = (Player) objectInput.readObject();
+					}
+					if (event.equals("initialized")) {
+						output.println("ok");
+						output.flush();
 					}
 					newEvent = true;
 				}

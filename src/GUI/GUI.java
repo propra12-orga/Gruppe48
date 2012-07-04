@@ -61,6 +61,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	private final Game game1;
 	private JMenuItem savegame;
 	private JMenuItem loadgame;
+	private JMenuItem hostgame;
+	private JMenuItem joingame;
 
 	/**
 	 * Erzeugt ein neues Objekt der Klasse GUI und initialisiert den zu
@@ -106,6 +108,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		savegame.addActionListener(this);
 		loadgame = new JMenuItem("Load Game");
 		loadgame.addActionListener(this);
+		hostgame = new JMenuItem("Host Game");
+		hostgame.addActionListener(this);
+		joingame = new JMenuItem("Join Game");
+		joingame.addActionListener(this);
 		gameMenu.add(savegame);
 		gameMenu.add(loadgame);
 		gameMenu.addSeparator();
@@ -113,6 +119,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		gameMenu.add(openItem);
 		gameMenu.add(singleplayer);
 		gameMenu.add(multiplayer);
+		gameMenu.add(hostgame);
+		gameMenu.add(joingame);
 		gameMenu.addSeparator();
 		gameMenu.add(quitItem);
 		menubar.add(gameMenu);
@@ -211,6 +219,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		}
 		if (object.getSource() == optionItem) {
 			new Options(game1);
+		}
+		if (object.getSource() == hostgame) {
+			game1.hostGame();
+		}
+		if (object.getSource() == joingame) {
+			String ip = JOptionPane.showInputDialog(null, "IP");
+			game1.joinGame(ip);
 		}
 		if (object.getSource() == mapCreatorItem) {
 			String size = JOptionPane.showInputDialog(

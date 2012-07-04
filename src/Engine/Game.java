@@ -53,7 +53,7 @@ public class Game implements Runnable {
 	static int iPlayerCount = 1;
 	boolean network = false;
 	int iItemChance = 35;
-	int iNewPlayerCount = 2;
+	int iNewPlayerCount = 1;
 	int iDefeatedPlayer = 0;
 	int iWinningPlayer = 0;
 	static int iMaxPlayers = 0;
@@ -358,6 +358,20 @@ public class Game implements Runnable {
 		}
 	}
 
+	public void joinGame(String ip) {
+
+		connect(ip, 30000);
+		network = true;
+	}
+
+	public void hostGame() {
+		iNewPlayerCount = 2;
+		restart();
+		startServer();
+		connect("127.0.0.1", 30000);
+		network = true;
+	}
+
 	public boolean loadGame(String savedGamePath) {
 		GameState savedGS = null;
 		try {
@@ -483,10 +497,6 @@ public class Game implements Runnable {
 		gui.repaint();
 		gameState = GameStates.STARTED;
 		bAutoRestart = false;
-		startServer();
-		connect("127.0.0.1", 30000);
-		Client client2 = new Client("127.0.0.1", 30000);
-		client2.start();
 		return true;
 	}
 
