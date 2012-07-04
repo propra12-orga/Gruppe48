@@ -574,7 +574,9 @@ public class Game implements Runnable {
 				player = client.getPlayer();
 				client.resetEvent();
 			}
-
+			gui.insertField(gameField);
+			gui.repaint();
+			System.out.println("blafasel");
 		} else {
 			time = Calendar.getInstance().getTimeInMillis();
 			handleBombs();
@@ -1093,6 +1095,7 @@ public class Game implements Runnable {
 					// waere er Luft
 			switch (key) {
 			case 'w': // nach oben
+				System.out.println("blafasel");
 				switch (gameField.getField(player.getPosition()[1],
 						player.getPosition()[0] - 1).getContent()) {
 				case 1:

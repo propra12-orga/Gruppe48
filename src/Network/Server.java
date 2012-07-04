@@ -267,6 +267,7 @@ public class Server extends Thread {
 
 	private void handleMovement(Player player, int[] direction) {
 		boolean moved = false;
+
 		switch (gameField.getField(player.getPosition()[1] + direction[0],
 				player.getPosition()[0] + direction[1]).getContent()) {
 		case 1:
@@ -274,29 +275,36 @@ public class Server extends Thread {
 			break;
 		}
 		if (moved) {
-			gameField
-					.getField(player.getPosition()[1], player.getPosition()[0])
-					.removePlayer();
+			System.out.println("PlayerPosition =  " + player.getPosition()[0]
+					+ ", " + player.getPosition()[1]);
 			switch (direction[0]) {
 			case -1:
+				gameField.removePlayer(player);
 				player.moveLeft();
+				gameField.setPlayer(player);
 				break;
 			case 1:
+				gameField.removePlayer(player);
 				player.moveRight();
+				gameField.setPlayer(player);
+				System.out.println("movedright");
 				break;
 			case 0:
 				if (direction[1] == 1) {
+					gameField.removePlayer(player);
 					player.moveDown();
+					gameField.setPlayer(player);
 				} else {
+					gameField.removePlayer(player);
 					player.moveUp();
+					gameField.setPlayer(player);
 				}
 				break;
 			}
-			gameField.getField(player.getPosition()[1] + direction[0],
-					player.getPosition()[0] + direction[1])
-					.insertPlayer(player);
 
 		}
+		System.out.println(" new PlayerPosition =  " + player.getPosition()[0]
+				+ ", " + player.getPosition()[1]);
 	}
 
 	public void initializePlayers(Player player1, Player player2) {
