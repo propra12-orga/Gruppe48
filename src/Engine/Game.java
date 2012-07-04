@@ -13,6 +13,7 @@ import java.util.List;
 import Field.Field;
 import Field.FieldGenerator;
 import GUI.GUI;
+import Network.Client;
 import Network.Server;
 import Objects.Bomb;
 import Objects.Player;
@@ -50,14 +51,16 @@ public class Game implements Runnable {
 	static boolean bMapLoaded = false;
 	static String sMapPath = "";
 	static int iPlayerCount = 1;
+	boolean network = false;
 	int iItemChance = 35;
-	int iNewPlayerCount = 1;
+	int iNewPlayerCount = 2;
 	int iDefeatedPlayer = 0;
 	int iWinningPlayer = 0;
 	static int iMaxPlayers = 0;
 	List<Bomb> bombList;
 	List<long[]> explosionList;
 	Server server = null;
+	Client client = null;
 	Calendar calendar;
 	long time;
 	/**
@@ -327,15 +330,18 @@ public class Game implements Runnable {
 
 	public void startServer() {
 		if (bMapLoaded) {
-			server = new Server(createNewField(sMapPath));
+			server = new Server(createNewField(sMapPath), player, player2);
 		} else {
-			server = new Server(createNewField());
+			server = new Server(createNewField(), player, player2);
 		}
-
+		server.start();
+		network = true;
+		iNewPlayerCount = 2;
 	}
 
-	public void connect(int port) {
-
+	public void connect(String ip, int port) {
+		client = new Client(ip, port);
+		client.start();
 	}
 
 	public void saveGame(String path) {
@@ -477,6 +483,10 @@ public class Game implements Runnable {
 		gui.repaint();
 		gameState = GameStates.STARTED;
 		bAutoRestart = false;
+		startServer();
+		connect("127.0.0.1", 30000);
+		Client client2 = new Client("127.0.0.1", 30000);
+		client2.start();
 		return true;
 	}
 
@@ -545,15 +555,27 @@ public class Game implements Runnable {
 	 * abgearbeitet, Spieler bewegt und das Spielfeld aktualisiert
 	 */
 	public void start() {
-		time = Calendar.getInstance().getTimeInMillis();
-		handleBombs();
-		handleMovement();
-		gui.insertField(gameField);
-		gui.repaint();
-		try {
-			Thread.sleep(gameSpeed);
-		} catch (Exception ex) {
-			System.out.println(ex);
+		if (network) {
+			handleNetworkMovement();
+			// handleBombs();
+			if (client.getEvent()) {
+				System.out.println("new event");
+				gameField = client.getField();
+				player = client.getPlayer();
+				client.resetEvent();
+			}
+
+		} else {
+			time = Calendar.getInstance().getTimeInMillis();
+			handleBombs();
+			handleMovement();
+			gui.insertField(gameField);
+			gui.repaint();
+			try {
+				Thread.sleep(gameSpeed);
+			} catch (Exception ex) {
+				System.out.println(ex);
+			}
 		}
 	}
 
@@ -1054,149 +1076,7 @@ public class Game implements Runnable {
 		if (iPlayerCount == 1) { // Abfrage der Spieleranzahl. Gibt es nur einen
 									// Spieler, so werden die Kontrollen fuer
 									// den 2. Spieler deaktiviert.
-			switch (key) {
-			case 'w': // nach oben
-				switch (gameField.getField(player.getPosition()[1],
-						player.getPosition()[0] - 1).getContent()) {
-				case 1:
-					if (gameField.getField(player.getPosition()[1],
-							player.getPosition()[0] - 1).getBomb() != null) {
-						break;
-					}
-					if (gameField.getField(player.getPosition()[1],
-							player.getPosition()[0] - 1).isExit() == true) {
-						gameState = GameStates.VICTORY;
-					}
-					if (gameField.getField(player.getPosition()[1],
-							player.getPosition()[0] - 1).isFireItem() == true) {
-						player.setBombRadius();
-						gameField.getField(player.getPosition()[1],
-								player.getPosition()[0] - 1).removeFireItem();
-					}
-					if (gameField.getField(player.getPosition()[1],
-							player.getPosition()[0] - 1).isBombItem() == true) {
-						Bomb.setBombMax();
-						gameField.getField(player.getPosition()[1],
-								player.getPosition()[0] - 1).removeBombItem();
-					}
 
-					gameField.removePlayer(player);
-					player.moveUp();
-					gameField.setPlayer(player);
-					break;
-				}
-				break;
-			case 'a': // nach links
-				switch (gameField.getField(player.getPosition()[1] - 1,
-						player.getPosition()[0]).getContent()) {
-				case 1:
-					if (gameField.getField(player.getPosition()[1] - 1,
-							player.getPosition()[0]).getBomb() != null) {
-						break;
-					}
-					if (gameField.getField(player.getPosition()[1] - 1,
-							player.getPosition()[0]).isExit() == true) {
-						gameState = GameStates.VICTORY;
-					}
-					if (gameField.getField(player.getPosition()[1] - 1,
-							player.getPosition()[0]).isFireItem() == true) {
-						player.setBombRadius();
-						gameField.getField(player.getPosition()[1] - 1,
-								player.getPosition()[0]).removeFireItem();
-					}
-					if (gameField.getField(player.getPosition()[1] - 1,
-							player.getPosition()[0]).isBombItem() == true) {
-						Bomb.setBombMax();
-						gameField.getField(player.getPosition()[1] - 1,
-								player.getPosition()[0]).removeBombItem();
-					}
-					gameField.removePlayer(player);
-					player.moveLeft();
-					gameField.setPlayer(player);
-					break;
-				}
-				break;
-			case 's': // nach unten
-				switch (gameField.getField(player.getPosition()[1],
-						player.getPosition()[0] + 1).getContent()) {
-				case 1:
-					if (gameField.getField(player.getPosition()[1],
-							player.getPosition()[0] + 1).getBomb() != null) {
-						break;
-					}
-					if (gameField.getField(player.getPosition()[1],
-							player.getPosition()[0] + 1).isExit() == true) {
-						gameState = GameStates.VICTORY;
-					}
-					if (gameField.getField(player.getPosition()[1],
-							player.getPosition()[0] + 1).isFireItem() == true) {
-						player.setBombRadius();
-						gameField.getField(player.getPosition()[1],
-								player.getPosition()[0] + 1).removeFireItem();
-					}
-					if (gameField.getField(player.getPosition()[1],
-							player.getPosition()[0] + 1).isBombItem() == true) {
-						Bomb.setBombMax();
-						gameField.getField(player.getPosition()[1],
-								player.getPosition()[0] + 1).removeBombItem();
-					}
-					gameField.removePlayer(player);
-					player.moveDown();
-					gameField.setPlayer(player);
-					break;
-				}
-				break;
-			case 'd': // nach rechts
-				switch (gameField.getField(player.getPosition()[1] + 1,
-						player.getPosition()[0]).getContent()) {
-				case 1:
-					if (gameField.getField(player.getPosition()[1] + 1,
-							player.getPosition()[0]).getBomb() != null) {
-						break;
-					}
-					if (gameField.getField(player.getPosition()[1] + 1,
-							player.getPosition()[0]).isExit() == true) {
-						gameState = GameStates.VICTORY;
-					}
-					if (gameField.getField(player.getPosition()[1] + 1,
-							player.getPosition()[0]).isFireItem() == true) {
-						player.setBombRadius();
-						gameField.getField(player.getPosition()[1] + 1,
-								player.getPosition()[0]).removeFireItem();
-					}
-					if (gameField.getField(player.getPosition()[1] + 1,
-							player.getPosition()[0]).isBombItem() == true) {
-						Bomb.setBombMax();
-						gameField.getField(player.getPosition()[1] + 1,
-								player.getPosition()[0]).removeBombItem();
-					}
-					gameField.removePlayer(player);
-					player.moveRight();
-					gameField.setPlayer(player);
-					break;
-				}
-				break;
-			case KeyEvent.VK_SPACE:// Bombe legen
-				if (Bomb.getBombStatus() == false)
-					bombList.add(new Bomb(player.getPosition()[0], player
-							.getPosition()[1], time, player.getBombRadius()));
-				gameField.setBomb(bombList.get(bombList.size() - 1));
-				if (Bomb.getBombStatus() == false) {
-					Bomb.setCurrentPlacedBomb();
-				}
-				Bomb.setBombStatus();
-
-				System.out.println(Bomb.getCurrentPlacedP2());
-				break;
-
-			case 'q':
-				player.setBombRadius();
-				break;
-			case 'e':
-				Bomb.setBombMax();
-				break;
-			}
-			key = 0;
 		} else { // Im 2 Spielermodus wird ausserdem die Spielerkollision
 					// abgefragt, da
 					// ein Spieler nicht durch den anderen durchgehen sollte als
@@ -1524,6 +1404,28 @@ public class Game implements Runnable {
 			}
 			key = 0;
 		}
+	}
+
+	public void handleNetworkMovement() {
+		switch (key) {
+		case 'w': // nach oben
+			client.movePlayer(0, -1);
+			break;
+		case 'a': // nach links
+			client.movePlayer(-1, 0);
+			break;
+		case 's': // nach unten
+			client.movePlayer(0, 1);
+			break;
+		case 'd': // nach rechts
+			client.movePlayer(1, 0);
+			break;
+		case KeyEvent.VK_SPACE:// Bombe legen
+
+			break;
+
+		}
+		key = 0;
 	}
 
 	private void createRandomItem(int pos1, int pos2, int chance) {
