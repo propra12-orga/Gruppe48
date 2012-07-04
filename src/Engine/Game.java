@@ -576,7 +576,7 @@ public class Game implements Runnable {
 			}
 			gui.insertField(gameField);
 			gui.repaint();
-			System.out.println("blafasel");
+			//System.out.println("blafasel");
 		} else {
 			time = Calendar.getInstance().getTimeInMillis();
 			handleBombs();
