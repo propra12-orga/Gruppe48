@@ -3,10 +3,8 @@ package Network;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 import Field.Field;
 import Objects.Player;
@@ -14,9 +12,8 @@ import Objects.Player;
 public class Client extends Thread {
 	Socket socket;
 	NetworkInputStream input;
-	PrintWriter output;
-	ObjectOutputStream objectOutput;
-	ObjectInputStream objectInput;
+
+	ObjectOutputStream output;
 	String ip;
 	int port;
 	int clientNumber;
@@ -35,15 +32,19 @@ public class Client extends Thread {
 	public void run() {
 		try {
 			socket = new Socket(ip, port);
-			output = new PrintWriter(socket.getOutputStream());
-			input = new NetworkInputStream(new Scanner(socket.getInputStream()));
+			output = new ObjectOutputStream(socket.getOutputStream());
+			output.writeInt(1);
+			output.flush();
+			input = new NetworkInputStream(new ObjectInputStream(
+					socket.getInputStream()));
 			input.start();
-			objectOutput = new ObjectOutputStream(socket.getOutputStream());
-			objectOutput.flush();
-			objectInput = new ObjectInputStream(socket.getInputStream());
+			input.getNextInt();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		while (true) {
@@ -59,13 +60,13 @@ public class Client extends Thread {
 						clientNumber = Integer.parseInt(input.getNextEvent());
 					}
 					if (event.equals("map")) {
-						localField = (Field) objectInput.readObject();
+						localField = (Field) input.getNextObject();
 					}
 					if (event.equals("player")) {
-						localPlayer = (Player) objectInput.readObject();
+						localPlayer = (Player) input.getNextObject();
 					}
 					if (event.equals("initialized")) {
-						output.println("ok");
+						output.writeUTF("ok");
 						output.flush();
 					}
 					newEvent = true;
@@ -91,12 +92,12 @@ public class Client extends Thread {
 
 		System.out.println("taste gedrückt");
 		try {
-			output.println("move");
+			output.writeUTF("move");
 			output.flush();
-			objectOutput.writeObject(localPlayer);
-			objectOutput.writeInt(x);
-			objectOutput.writeInt(y);
-			objectOutput.flush();
+			output.writeObject(localPlayer);
+			output.writeInt(x);
+			output.writeInt(y);
+			output.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

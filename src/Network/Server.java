@@ -3,12 +3,10 @@ package Network;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Calendar;
-import java.util.Scanner;
 
 import Engine.Game;
 import Field.Field;
@@ -22,13 +20,8 @@ public class Server extends Thread {
 	NetworkInputStream input1;
 	NetworkInputStream input2;
 	NetworkInputStream input;
-	PrintWriter output1;
-	PrintWriter output2;
-	ObjectOutputStream objectOutput1;
-	ObjectOutputStream objectOutput2;
-	ObjectInputStream objectInput;
-	ObjectInputStream objectInput1;
-	ObjectInputStream objectInput2;
+	ObjectOutputStream output1;
+	ObjectOutputStream output2;
 	Calendar calendar;
 	String event;
 	Player player;
@@ -55,90 +48,91 @@ public class Server extends Thread {
 	public void run() {
 		try {
 			server = new ServerSocket(30000);
-		} catch (IOException e) {
-			System.out.println(e);
-		}
-		timeout = calendar.getInstance().getTimeInMillis();
-		while (time < timeout + 60000) {
 
-			try {
-				client1 = server.accept();
-				output1 = new PrintWriter(client1.getOutputStream());
-				input1 = new NetworkInputStream(new Scanner(
-						client1.getInputStream()));
-				input1.start();
-				objectOutput1 = new ObjectOutputStream(
-						client1.getOutputStream());
-				objectOutput1.flush();
-				objectInput1 = new ObjectInputStream(client1.getInputStream());
-			} catch (IOException e) {
-				System.out.println(e);
-			}
-			if (client1 != null)
-				break;
-			time = calendar.getInstance().getTimeInMillis();
-		}
-		if (client1 == null) {
-			System.out.println("null");
-			return;
-		}
-		System.out.println("sending message");
-		output1.println("waiting");
-		output1.flush();
-		System.out.println("message sent");
-		timeout = calendar.getInstance().getTimeInMillis();
+			timeout = calendar.getInstance().getTimeInMillis();
+			while (time < timeout + 60000) {
 
-		while (time < timeout + 60000) {
-			try {
-				client2 = server.accept();
-				output2 = new PrintWriter(client2.getOutputStream());
-				input2 = new NetworkInputStream(new Scanner(
-						client2.getInputStream()));
-				input2.start();
-				objectOutput2 = new ObjectOutputStream(
-						client2.getOutputStream());
-				objectOutput2.flush();
-				objectInput2 = new ObjectInputStream(client2.getInputStream());
-			} catch (IOException e) {
-				System.out.println(e);
+				try {
+					client1 = server.accept();
+					output1 = new ObjectOutputStream(client1.getOutputStream());
+					output1.writeInt(1);
+					output1.flush();
+					input1 = new NetworkInputStream(new ObjectInputStream(
+							client1.getInputStream()));
+					input1.start();
+					input1.getNextInt();
+				} catch (IOException e) {
+					System.out.println(e);
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (client1 != null)
+					break;
+				time = calendar.getInstance().getTimeInMillis();
 			}
-			if (client2 != null)
-				break;
-			time = calendar.getInstance().getTimeInMillis();
-		}
-		if (client2 == null) {
-			try {
-				client1.close();
-			} catch (IOException e) {
-				System.out.println(e);
+			if (client1 == null) {
+				System.out.println("null");
+				return;
 			}
-			return;
-		}
-		output1.println("ready");
-		output2.println("ready");
-		output1.println("1");
-		output2.println("2");
-		output1.flush();
-		output2.flush();
-		try {
-			output1.println("map");
-			output2.println("map");
+			System.out.println("sending message");
+			output1.writeUTF("waiting");
+			output1.flush();
+			System.out.println("message sent");
+			timeout = calendar.getInstance().getTimeInMillis();
+
+			while (time < timeout + 60000) {
+				try {
+					client2 = server.accept();
+					output2 = new ObjectOutputStream(client2.getOutputStream());
+					output2.writeInt(2);
+					output2.flush();
+					input2 = new NetworkInputStream(new ObjectInputStream(
+							client2.getInputStream()));
+					input2.start();
+					input2.getNextInt();
+				} catch (IOException e) {
+					System.out.println(e);
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (client2 != null)
+					break;
+				time = calendar.getInstance().getTimeInMillis();
+			}
+			if (client2 == null) {
+				try {
+					client1.close();
+				} catch (IOException e) {
+					System.out.println(e);
+				}
+				return;
+			}
+			output1.writeUTF("ready");
+			output2.writeUTF("ready");
+			output1.writeUTF("1");
+			output2.writeUTF("2");
 			output1.flush();
 			output2.flush();
-			objectOutput1.writeObject(gameField);
-			objectOutput2.writeObject(gameField);
-			objectOutput1.flush();
-			objectOutput2.flush();
-			output1.println("player");
-			output2.println("player");
+			output1.writeUTF("map");
+			output2.writeUTF("map");
 			output1.flush();
 			output2.flush();
-			objectOutput1.writeObject(player1);
-			objectOutput2.writeObject(player2);
-			objectOutput1.flush();
-			objectOutput2.flush();
-			output1.println("initialized");
-			output2.println("initialized");
+			output1.writeObject(gameField);
+			output2.writeObject(gameField);
+			output1.flush();
+			output2.flush();
+			output1.writeUTF("player");
+			output2.writeUTF("player");
+			output1.flush();
+			output2.flush();
+			output1.writeObject(player1);
+			output2.writeObject(player2);
+			output1.flush();
+			output2.flush();
+			output1.writeUTF("initialized");
+			output2.writeUTF("initialized");
 			output1.flush();
 			output2.flush();
 			while (!input1.nextEventAvailible()) {
@@ -156,9 +150,8 @@ public class Server extends Thread {
 		while (true) {
 			try {
 				System.out.println("run");
-				// if (((input1.nextEventAvailible()) || (input2
-				// .nextEventAvailible()))) {
-				if (input1.nextEventAvailible()) {
+				if (((input1.nextEventAvailible()) || (input2
+						.nextEventAvailible()))) {
 					System.out.println("availble");
 					if (input1.nextEventAvailible()) {
 						input = input1;
@@ -168,10 +161,10 @@ public class Server extends Thread {
 						System.out.println(2);
 					}
 					if (input1.nextEventAvailible()) {
-						objectInput = objectInput1;
+						input = input1;
 						System.out.println(1);
 					} else {
-						objectInput = objectInput2;
+						input = input2;
 						System.out.println(2);
 					}
 					if (input != null) {
@@ -180,68 +173,68 @@ public class Server extends Thread {
 						if (event.equals("move")) {
 							System.out.println("moving");
 							try {
-								player = (Player) objectInput1.readObject();
+								player = (Player) input1.getNextObject();
 							} catch (ClassNotFoundException e) {
 								e.printStackTrace();
 							}
 							System.out.println("player accepted");
-							moveArray[0] = objectInput.readInt();
-							moveArray[1] = objectInput.readInt();
+							moveArray[0] = input.getNextInt();
+							moveArray[1] = input.getNextInt();
 							System.out.println("handling movement");
 							System.out.println(player);
 							System.out.println(moveArray[0]);
 							System.out.println(moveArray[1]);
 							handleMovement(player, moveArray);
 							System.out.println("handled movement");
-							output1.println("map");
-							output2.println("map");
+							output1.writeUTF("map");
+							output2.writeUTF("map");
 							output1.flush();
 							output2.flush();
 							System.out.println("wrote map");
-							objectOutput1.writeObject(gameField);
-							objectOutput2.writeObject(gameField);
-							objectOutput1.flush();
-							objectOutput2.flush();
+							output1.writeObject(gameField);
+							output2.writeObject(gameField);
+							output1.flush();
+							output2.flush();
 							System.out.println("wrote object");
 							if (input == input1) {
-								output1.println("player");
+								output1.writeUTF("player");
 								output1.flush();
-								objectOutput1.writeObject(player);
-								objectOutput1.flush();
+								output1.writeObject(player);
+								output1.flush();
 							} else {
-								output2.println("player");
+								output2.writeUTF("player");
 								output2.flush();
-								objectOutput2.writeObject(player);
-								objectOutput2.flush();
+								output2.writeObject(player);
+								output2.flush();
 							}
 
 						} else {
 							if (event.equals("win")) {
-								output1.println("win");
-								output2.println("win");
+								output1.writeUTF("win");
+								output2.writeUTF("win");
 								if (input == input1) {
-									output1.println("1");
-									output2.println("1");
+									output1.writeUTF("1");
+									output2.writeUTF("1");
 								} else {
-									output1.println("2");
-									output2.println("2");
+									output1.writeUTF("2");
+									output2.writeUTF("2");
 								}
 								output1.flush();
 								output2.flush();
 							} else {
 								if (event.equals("stop")) {
-									output1.println("stop");
-									output2.println("stop");
+									output1.writeUTF("stop");
+									output2.writeUTF("stop");
 									output1.flush();
 									output2.flush();
 								} else {
 									if (event.equals("player")) {
 										if (input == input1) {
-											player1 = (Player) objectInput
-													.readObject();
+											player1 = (Player) input
+													.getNextObject();
 										} else {
-											player2 = (Player) objectInput
-													.readObject();
+											player2 = (Player) input
+													.getNextObject();
 										}
 									}
 								}
@@ -251,14 +244,18 @@ public class Server extends Thread {
 
 				}
 			} catch (IOException e) {
-				input1.drop();
-				input2.drop();
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 			System.out.println("xyz");
-			// Thread.sleep(20);
-			objectInput = null;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			input = null;
 			input = null;
 
 		}
