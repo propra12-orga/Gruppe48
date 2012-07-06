@@ -28,6 +28,10 @@ import Engine.Game;
 public class Options extends JFrame implements WindowListener, ActionListener {
 	private static final long serialVersionUID = 1L;
 	private static Game gameOption;
+	private final JLabel mapLabel = new JLabel();
+	private final JLabel HorizontalLabel = new JLabel();
+	private final JLabel VerticalLabel = new JLabel();
+
 	/**
 	 * Variable fuer die geaenderte Groeße der quadratischen Karte
 	 */
@@ -35,7 +39,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	/**
 	 * Variable fuer die geaenderte Dichte der zerstoerbaren Mauern
 	 */
-	private double changedDensity;
+	private static double changedDensity;
 	/**
 	 * Variable fuer die geaenderte Hoehe der rechteckigen Karte
 	 */
@@ -68,6 +72,15 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	int maxBoardWidht = (int) screenWidht;
 	int maxBoardHeight = (int) screenHeight;
 	private Game maingame;
+	static int density = (int) getDensity();
+
+	public static int getDens() {
+		return density;
+	}
+
+	public static double getDensity() {
+		return changedDensity;
+	}
 
 	public static boolean getMapModus() {
 		return mapModus;
@@ -103,7 +116,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 		changedDensity = gameOption.getStartDensity();
 		changedVerticalMap = gameOption.getGameMapWidht();
 		changedHorizontalMap = gameOption.getGameMapHeight();
-		fillModus = gameOption.getFillModus();
+		fillModus = Game.getFillModus();
 		changedRandomAmount = gameOption.getRAmount();
 		changedProbability = gameOption.getProbability();
 
@@ -174,6 +187,10 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			final JSlider probabilitySlider = new JSlider(0, 100, 50);
 			JSlider densitySlider = new JSlider(0, 100, 70);
 			final JSlider mapSlider = new JSlider(10, maxBoardHeight, 15);
+			updateMapLabel();
+			mapLabel.setVisible(true);
+			VerticalLabel.setVisible(false);
+			HorizontalLabel.setVisible(false);
 			/**
 			 * Panel fuer den Slider der Dichte
 			 */
@@ -184,6 +201,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			density = BorderFactory.createTitledBorder("Density of Walls");
 			density.setTitleColor(Color.blue);
 			densityArea.setBorder(density);
+
 			/**
 			 * Panel fuer den Slider der Groeße quadratische Karte
 			 */
@@ -195,6 +213,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					.createTitledBorder("Choose the Size of a Square-Map");
 			squareMapArea.setBorder(square);
 			square.setTitleColor(Color.blue);
+			squareMapArea.add(mapLabel);
 			/**
 			 * Panel fuer die RadioButtons zur Auswahl quadratischer oder
 			 * rechteckiger Karte
@@ -209,9 +228,12 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			final JSlider horizontalSlider = new JSlider(5, maxBoardWidht - 1,
 					20);
 			mapWidht = new JPanel();
-			mapWidht.setBounds(60, 435, 200, 47);
+			mapWidht.setBounds(40, 435, 280, 47);
 			mapWidht.add(horizontalSlider);
+			mapWidht.add(HorizontalLabel);
 			mapWidht.setVisible(true);
+			updateHorizontalMapLabel();
+			// mapWidht.setBackground(Color.red);
 			/**
 			 * Panel fuer den Slider Höhe rechteckige Karte
 			 */
@@ -219,8 +241,11 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					maxBoardHeight - 2, 15);
 			verticalSlider.setEnabled(true);
 			mapHeight = new JPanel();
-			mapHeight.setBounds(350, 240, 47, 205);
+			mapHeight.setBounds(350, 240, 47, 245);
 			mapHeight.add(verticalSlider);
+			mapHeight.add(VerticalLabel);
+			updateVerticalMapLabel();
+			// mapHeight.setBackground(Color.red);
 
 			/**
 			 * Panel fuer die Buttons OK, SAVE, ABBRECHEN
@@ -405,7 +430,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					maingame.restart();
 
 					savedOptions = false;
-					// updateVerticalMapLabel();
+
+					updateVerticalMapLabel();
 					// repaint();
 				}
 			});
@@ -422,6 +448,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					savedOptions = false;
 					gameOption.setGameMapWidht(changedHorizontalMap);
 					maingame.restart();
+					updateHorizontalMapLabel();
 				}
 			});
 			mapSlider.addChangeListener(new ChangeListener() {
@@ -436,6 +463,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					savedOptions = false;
 					gameOption.setGameMapOptions(changedMap);
 					maingame.restart();
+					updateMapLabel();
 				}
 			});
 			densitySlider.addChangeListener(new ChangeListener() {
@@ -450,7 +478,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					savedOptions = false;
 					gameOption.setGameDensityOptions(changedDensity);
 					maingame.restart();
-					// updateDensityLabel();
+
 				}
 			});
 			probabilitySlider.addChangeListener(new ChangeListener() {
@@ -501,6 +529,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					grayedPic.setVisible(true);
 					square.setTitleColor(Color.BLUE);
 					rectangle.setTitleColor(Color.lightGray);
+					VerticalLabel.setVisible(false);
+					HorizontalLabel.setVisible(false);
+					mapLabel.setVisible(true);
 				}
 			});
 			rectangleButton.addActionListener(new ActionListener() {
@@ -520,6 +551,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					mapPic.setVisible(true);
 					square.setTitleColor(Color.lightGray);
 					rectangle.setTitleColor(Color.BLUE);
+					mapLabel.setVisible(false);
+					VerticalLabel.setVisible(true);
+					HorizontalLabel.setVisible(true);
 
 				}
 			});
@@ -594,6 +628,25 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			gameOption.setRAmount(changedRandomAmount);
 			savedOptions = true;
 		}
+	}
+
+	private void updateMapLabel() {
+		mapLabel.setText(new Integer(changedMap).toString());
+		mapLabel.repaint();
+	}
+
+	public int getH() {
+		return changedHorizontalMap;
+	}
+
+	private void updateHorizontalMapLabel() {
+		HorizontalLabel.setText(new Integer(changedHorizontalMap).toString());
+		HorizontalLabel.repaint();
+	}
+
+	private void updateVerticalMapLabel() {
+		VerticalLabel.setText(new Integer(changedVerticalMap).toString());
+		VerticalLabel.repaint();
 	}
 
 	/**
