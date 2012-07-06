@@ -78,7 +78,7 @@ public class Game implements Runnable {
 	/**
 	 * Breite der Map, falls eine rechteckige Map erzeugt wird
 	 */
-	public static int rectangleMapHight = 15;
+	public static int rectangleMapHeight = 15;
 	/**
 	 * Modus nach dem die Map mit Bloecken gefuellt werden soll
 	 */
@@ -86,6 +86,7 @@ public class Game implements Runnable {
 	/**
 	 * Startwarscheinlichkeit fuer das erstellen von Bloecken in Modus 1
 	 */
+	public static int fill = getFillModus();
 	public static int startProbability = 50;
 	/**
 	 * Startwarscheinlichkeit fuer das erstellen von Bloecken in Modus 2
@@ -250,11 +251,11 @@ public class Game implements Runnable {
 	/**
 	 * Setzt die Hoehe der Map auf den angegebenen Wert
 	 * 
-	 * @param changedHightMapSize
+	 * @param changedHeightMapSize
 	 *            neue Hoehe
 	 */
-	public void setGameMapHight(int changedHightMapSize) {
-		rectangleMapHight = changedHightMapSize;
+	public void setGameMapHeight(int changedHeightMapSize) {
+		rectangleMapHeight = changedHeightMapSize;
 	}
 
 	/**
@@ -262,8 +263,8 @@ public class Game implements Runnable {
 	 * 
 	 * @return Anfangshoehe der rechteckigen Karte
 	 */
-	public int getGameMapHight() {
-		return rectangleMapHight;
+	public int getGameMapHeight() {
+		return rectangleMapHeight;
 	}
 
 	/**
@@ -282,7 +283,7 @@ public class Game implements Runnable {
 	 * 
 	 * @return aktueller Wert des Fuellmodi
 	 */
-	public int getFillModus() {
+	public static int getFillModus() {
 		return fillModus;
 	}
 
@@ -634,17 +635,17 @@ public class Game implements Runnable {
 									// Neustart auf der selben Map gespeichert.
 		testGenerator.setRandomAmount(startRandomAmount);
 		testGenerator.setRandomChance(startProbability);
-		testGenerator.setModus(fillModus);
+		testGenerator.setModus(fill);
 		System.out.println("Modus:" + fillModus + "     RandomAmount:"
 				+ startRandomAmount + "     RandomChance:" + startProbability);
 
-		if (mapModus == true) {
+		if (Options.getMapModus() == true) {
 
 			generatedField.insertMap(testGenerator.createSquareMap(
 					startMapSize, startDensity));
 		} else {
 			generatedField.insertMap(testGenerator.createRectangleMap(
-					rectangleMapWidht, rectangleMapHight, startDensity));
+					rectangleMapWidht, rectangleMapHeight, startDensity));
 		}
 		cacheField.insertMap(generatedField.getMap());
 		return generatedField;

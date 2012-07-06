@@ -53,7 +53,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	/**
 	 * Bestimmt den Modus der gespielt werden soll 1= Modus0, 2=Modus1, 3=Modus2
 	 */
-	public int fillModus;
+	public static int fillModus;
 	/**
 	 * Variable fuer die geaenderte Anzahl unzerstoerbarer Bloecke Modus2
 	 */
@@ -65,8 +65,17 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 
 	double screenWidht = getToolkit().getScreenSize().getWidth() / 32;
 	double screenHeight = getToolkit().getScreenSize().getHeight() / 32;
-	int W = (int) screenWidht;
-	int H = (int) screenHeight;
+	int maxBoardWidht = (int) screenWidht;
+	int maxBoardHeight = (int) screenHeight;
+	private Game maingame;
+
+	public static boolean getMapModus() {
+		return mapModus;
+	}
+
+	public static int getFillModus() {
+		return fillModus;
+	}
 
 	/**
 	 * Erstellt ein Objekt der Klasse Options und übergibt an Dieses die Game
@@ -88,12 +97,12 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 		setResizable(false);
 		addWindowListener(this);
 		add(new MiddlePanel(0, 0, 400, 150));
-
+		maingame = game;
 		Options.gameOption = game;
 		changedMap = gameOption.getStartMapSize();
 		changedDensity = gameOption.getStartDensity();
 		changedVerticalMap = gameOption.getGameMapWidht();
-		changedHorizontalMap = gameOption.getGameMapHight();
+		changedHorizontalMap = gameOption.getGameMapHeight();
 		fillModus = gameOption.getFillModus();
 		changedRandomAmount = gameOption.getRAmount();
 		changedProbability = gameOption.getProbability();
@@ -114,7 +123,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 		private JPanel probabilityArea;
 
 		private JPanel mapWidht;
-		private JPanel mapHight;
+		private JPanel mapHeight;
 		private JPanel buttons;
 		private JPanel mapPic;
 		private JLabel lblBild;
@@ -151,8 +160,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 		 */
 		private void initComp() {
 
-			System.out.println(H);
-
 			final JRadioButton squareButton = new JRadioButton(
 					"Create Squaremap", true);
 			final JRadioButton rectangleButton = new JRadioButton(
@@ -166,7 +173,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			final JSlider randomAmountSlider = new JSlider(0, 100, 5);
 			final JSlider probabilitySlider = new JSlider(0, 100, 50);
 			JSlider densitySlider = new JSlider(0, 100, 70);
-			final JSlider mapSlider = new JSlider(10, H, 15);
+			final JSlider mapSlider = new JSlider(10, maxBoardHeight, 15);
 			/**
 			 * Panel fuer den Slider der Dichte
 			 */
@@ -199,7 +206,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			/**
 			 * Panel fuer den Slider Breite rechteckige Karte
 			 */
-			final JSlider horizontalSlider = new JSlider(5, W - 1, 20);
+			final JSlider horizontalSlider = new JSlider(5, maxBoardWidht - 1,
+					20);
 			mapWidht = new JPanel();
 			mapWidht.setBounds(60, 435, 200, 47);
 			mapWidht.add(horizontalSlider);
@@ -208,11 +216,11 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			 * Panel fuer den Slider Höhe rechteckige Karte
 			 */
 			final JSlider verticalSlider = new JSlider(JSlider.VERTICAL, 5,
-					H - 2, 15);
+					maxBoardHeight - 2, 15);
 			verticalSlider.setEnabled(true);
-			mapHight = new JPanel();
-			mapHight.setBounds(350, 240, 47, 205);
-			mapHight.add(verticalSlider);
+			mapHeight = new JPanel();
+			mapHeight.setBounds(350, 240, 47, 205);
+			mapHeight.add(verticalSlider);
 
 			/**
 			 * Panel fuer die Buttons OK, SAVE, ABBRECHEN
@@ -276,7 +284,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			randomAmountArea.setBounds(430, 440, 400, 80);
 			randomAmountArea.setToolTipText("densityarea");
 			randomAmountArea.add(randomAmountSlider);
-			// densityArea.setBackground(Color.CYAN);
+			densityArea.setBackground(Color.CYAN);
 			final TitledBorder amount;
 			amount = BorderFactory
 					.createTitledBorder("Amount of Blocks in Modus 2");
@@ -303,7 +311,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			add(squareMapArea);
 			add(radioButtonMapModus);
 			add(mapWidht);
-			add(mapHight);
+			add(mapHeight);
 			add(buttons);
 			add(mapPic);
 			add(borderForRectangle);
@@ -381,6 +389,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				public void actionPerformed(ActionEvent e) {
 					acceptOptions();
 					dispose();
+					maingame.restart();
 				}
 			});
 			verticalSlider.addChangeListener(new ChangeListener() {
@@ -392,6 +401,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					changedVerticalMap = ((JSlider) e.getSource()).getValue();
 					System.out.println("Neuer Wert Spielfeldhöhe: "
 							+ ((JSlider) e.getSource()).getValue());
+					gameOption.setGameMapHeight(changedVerticalMap);
+					maingame.restart();
 
 					savedOptions = false;
 					// updateVerticalMapLabel();
@@ -409,6 +420,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					System.out.println("Neuer Wert Spielfeldbreite: "
 							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
+					gameOption.setGameMapWidht(changedHorizontalMap);
+					maingame.restart();
 				}
 			});
 			mapSlider.addChangeListener(new ChangeListener() {
@@ -421,6 +434,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					System.out.println("Neuer Wert Spielfeldgröße: "
 							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
+					gameOption.setGameMapOptions(changedMap);
+					maingame.restart();
 				}
 			});
 			densitySlider.addChangeListener(new ChangeListener() {
@@ -433,6 +448,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					System.out.println("Neuer Wert Blockdichte: "
 							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
+					gameOption.setGameDensityOptions(changedDensity);
+					maingame.restart();
 					// updateDensityLabel();
 				}
 			});
@@ -446,6 +463,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					System.out.println("Wahrscheinlichkeit Modus1: "
 							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
+					gameOption.setProbability(changedProbability);
+					maingame.restart();
 					// updateDensityLabel();
 				}
 			});
@@ -459,6 +478,9 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					System.out.println("Amount Modus 2:: "
 							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
+					gameOption.setRAmount(changedRandomAmount);
+
+					maingame.restart();
 				}
 			});
 			squareButton.addActionListener(new ActionListener() {
@@ -467,8 +489,10 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				 * quadratische Map erstellt
 				 */
 				public void actionPerformed(ActionEvent e) {
+					// maingame.restart();
 					mapModus = true;
 					rectangleButton.setSelected(false);
+					squareButton.setSelected(true);
 					System.out.println(mapModus + ": Square");
 
 					verticalSlider.setEnabled(false);
@@ -487,6 +511,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				public void actionPerformed(ActionEvent e) {
 					mapModus = false;
 					squareButton.setSelected(false);
+					rectangleButton.setSelected(true);
 					System.out.println(mapModus + ": Rectangle");
 					verticalSlider.setEnabled(true);
 					horizontalSlider.setEnabled(true);
@@ -495,6 +520,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					mapPic.setVisible(true);
 					square.setTitleColor(Color.lightGray);
 					rectangle.setTitleColor(Color.BLUE);
+
 				}
 			});
 			modusZero.addActionListener(new ActionListener() {
@@ -561,7 +587,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			gameOption.setGameMapOptions(changedMap);
 			gameOption.setGameDensityOptions(changedDensity);
 			gameOption.setMapModus(mapModus);
-			gameOption.setGameMapHight(changedVerticalMap);
+			gameOption.setGameMapHeight(changedVerticalMap);
 			gameOption.setGameMapWidht(changedHorizontalMap);
 			gameOption.setFillModus(fillModus);
 			gameOption.setProbability(changedProbability);
