@@ -31,6 +31,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	private final JLabel mapLabel = new JLabel();
 	private final JLabel HorizontalLabel = new JLabel();
 	private final JLabel VerticalLabel = new JLabel();
+	private final JLabel ProbabilityLabel = new JLabel();
+	private final JLabel AmountLabel = new JLabel();
 
 	/**
 	 * Variable fuer die geaenderte Groeﬂe der quadratischen Karte
@@ -307,15 +309,15 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			 */
 			randomAmountArea = new JPanel();
 			randomAmountArea.setBounds(430, 440, 400, 80);
-			randomAmountArea.setToolTipText("densityarea");
 			randomAmountArea.add(randomAmountSlider);
-			densityArea.setBackground(Color.CYAN);
 			final TitledBorder amount;
 			amount = BorderFactory
 					.createTitledBorder("Amount of Blocks in Modus 2");
 			amount.setTitleColor(Color.lightGray);
 			randomAmountArea.setBorder(amount);
 			randomAmountSlider.setEnabled(false);
+			randomAmountArea.add(AmountLabel);
+			updateAmountLabel();
 			/**
 			 * Panel fuer den Slider Einstellungen Modus2
 			 */
@@ -328,6 +330,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			probability.setTitleColor(Color.lightGray);
 			probabilityArea.setBorder(probability);
 			probabilitySlider.setEnabled(false);
+			probabilityArea.add(ProbabilityLabel);
+			updateProbabilityLabel();
 			/**
 			 * Fuegt alle Panel dem MiddelPanel hinzu
 			 */
@@ -493,6 +497,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					savedOptions = false;
 					gameOption.setProbability(changedProbability);
 					maingame.restart();
+					updateProbabilityLabel();
 					// updateDensityLabel();
 				}
 			});
@@ -507,8 +512,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
 					gameOption.setRAmount(changedRandomAmount);
-
 					maingame.restart();
+					updateAmountLabel();
 				}
 			});
 			squareButton.addActionListener(new ActionListener() {
@@ -635,10 +640,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 		mapLabel.repaint();
 	}
 
-	public int getH() {
-		return changedHorizontalMap;
-	}
-
 	private void updateHorizontalMapLabel() {
 		HorizontalLabel.setText(new Integer(changedHorizontalMap).toString());
 		HorizontalLabel.repaint();
@@ -647,6 +648,16 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	private void updateVerticalMapLabel() {
 		VerticalLabel.setText(new Integer(changedVerticalMap).toString());
 		VerticalLabel.repaint();
+	}
+
+	private void updateProbabilityLabel() {
+		ProbabilityLabel.setText(new Integer(changedProbability).toString());
+		ProbabilityLabel.repaint();
+	}
+
+	private void updateAmountLabel() {
+		AmountLabel.setText(new Integer(changedRandomAmount).toString());
+		AmountLabel.repaint();
 	}
 
 	/**
