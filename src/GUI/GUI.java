@@ -80,6 +80,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(480, 480);
 
+		final Dimension d = this.getToolkit().getScreenSize();
+		this.setLocation((int) ((d.getWidth() - this.getWidth()) / 2),
+				(int) ((d.getHeight() - this.getHeight()) / 2));
+
 		/**
 		 * Menueleiste mit den Elementen:
 		 * 
@@ -151,9 +155,6 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	public void insertField(Field field) {
 		gameField = field;
 		panel.insertField(field);
-		final Dimension d = this.getToolkit().getScreenSize();
-		this.setLocation((int) ((d.getWidth() - this.getWidth()) / 2),
-				(int) ((d.getHeight() - this.getHeight()) / 2));
 
 	}
 

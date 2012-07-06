@@ -63,6 +63,11 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	 */
 	public int changedProbability;
 
+	double screenWidht = getToolkit().getScreenSize().getWidth() / 32;
+	double screenHeight = getToolkit().getScreenSize().getHeight() / 32;
+	int W = (int) screenWidht;
+	int H = (int) screenHeight;
+
 	/**
 	 * Erstellt ein Objekt der Klasse Options und übergibt an Dieses die Game
 	 * Klasse an die es angehaengt werden soll. Zusaetzlich wird ein Frame
@@ -146,6 +151,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 		 */
 		private void initComp() {
 
+			System.out.println(H);
+
 			final JRadioButton squareButton = new JRadioButton(
 					"Create Squaremap", true);
 			final JRadioButton rectangleButton = new JRadioButton(
@@ -159,7 +166,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			final JSlider randomAmountSlider = new JSlider(0, 100, 5);
 			final JSlider probabilitySlider = new JSlider(0, 100, 50);
 			JSlider densitySlider = new JSlider(0, 100, 70);
-			final JSlider mapSlider = new JSlider(10, 25, 15);
+			final JSlider mapSlider = new JSlider(10, H, 15);
 			/**
 			 * Panel fuer den Slider der Dichte
 			 */
@@ -192,7 +199,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			/**
 			 * Panel fuer den Slider Breite rechteckige Karte
 			 */
-			final JSlider horizontalSlider = new JSlider(5, 50, 20);
+			final JSlider horizontalSlider = new JSlider(5, W - 1, 20);
 			mapWidht = new JPanel();
 			mapWidht.setBounds(60, 435, 200, 47);
 			mapWidht.add(horizontalSlider);
@@ -200,8 +207,8 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			/**
 			 * Panel fuer den Slider Höhe rechteckige Karte
 			 */
-			final JSlider verticalSlider = new JSlider(JSlider.VERTICAL, 5, 25,
-					15);
+			final JSlider verticalSlider = new JSlider(JSlider.VERTICAL, 5,
+					H - 2, 15);
 			verticalSlider.setEnabled(true);
 			mapHight = new JPanel();
 			mapHight.setBounds(350, 240, 47, 205);
