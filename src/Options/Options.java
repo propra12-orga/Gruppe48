@@ -47,11 +47,11 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	/**
 	 * Variable fuer die geaenderte Hoehe der rechteckigen Karte
 	 */
-	private int changedVerticalMap = 20;
+	private static int changedVerticalMap = 20;
 	/**
 	 * Variable fuer die geaenderte Breite der rechteckigen Karte
 	 */
-	private int changedHorizontalMap = 20;
+	private static int changedHorizontalMap = 20;
 	private boolean savedOptions = true;
 	/**
 	 * Ist mapModus = true, so wird eine quadratische Map erstellt, sonst wird
@@ -65,11 +65,11 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	/**
 	 * Variable fuer die geaenderte Anzahl unzerstoerbarer Bloecke Modus2
 	 */
-	public int changedRandomAmount = 5;
+	public static int changedRandomAmount = 5;
 	/**
 	 * Variable fuer die geaenderte Wahrscheinlichkeit Modus1
 	 */
-	public int changedProbability = 50;
+	public static int changedProbability = 50;
 
 	double screenWidht = getToolkit().getScreenSize().getWidth() / 32;
 	double screenHeight = getToolkit().getScreenSize().getHeight() / 32;
@@ -93,6 +93,22 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 
 	public static int getFillModus() {
 		return fillModus;
+	}
+
+	public static int getVerticalMap() {
+		return changedVerticalMap;
+	}
+
+	public static int getHorizontalMap() {
+		return changedHorizontalMap;
+	}
+
+	public static int getRandomAmount() {
+		return changedRandomAmount;
+	}
+
+	public static int getProbability() {
+		return changedProbability;
 	}
 
 	/**
@@ -188,10 +204,13 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			final JButton saveBt = new JButton("Save");
 			JButton okBt = new JButton("OK");
 			JButton cancelBt = new JButton("Cancel");
-			final JSlider randomAmountSlider = new JSlider(0, 100, 5);
-			final JSlider probabilitySlider = new JSlider(0, 100, 50);
-			JSlider densitySlider = new JSlider(0, 100, 70);
-			final JSlider mapSlider = new JSlider(10, maxBoardHeight, 15);
+			final JSlider randomAmountSlider = new JSlider(0, 100,
+					getRandomAmount());
+			final JSlider probabilitySlider = new JSlider(0, 100,
+					getProbability());
+			JSlider densitySlider = new JSlider(0, 100, getDens());
+			final JSlider mapSlider = new JSlider(10, maxBoardHeight,
+					changedMap);
 			updateMapLabel();
 			setSliderText();
 			updateVerticalMapLabel();
@@ -236,7 +255,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			 * Panel fuer den Slider Breite rechteckige Karte
 			 */
 			final JSlider horizontalSlider = new JSlider(5, maxBoardWidht - 1,
-					20);
+					getHorizontalMap());
 			mapWidht = new JPanel();
 			mapWidht.setBounds(40, 435, 280, 47);
 			mapWidht.add(horizontalSlider);
@@ -248,7 +267,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			 * Panel fuer den Slider Höhe rechteckige Karte
 			 */
 			final JSlider verticalSlider = new JSlider(JSlider.VERTICAL, 5,
-					maxBoardHeight - 2, 20);
+					maxBoardHeight - 3, getVerticalMap());
 			verticalSlider.setEnabled(true);
 			mapHeight = new JPanel();
 			mapHeight.setBounds(350, 240, 47, 245);
@@ -428,7 +447,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				public void actionPerformed(ActionEvent e) {
 					acceptOptions();
 					dispose();
-					maingame.restart();
+
 				}
 			});
 			verticalSlider.addChangeListener(new ChangeListener() {

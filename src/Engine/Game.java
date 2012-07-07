@@ -78,7 +78,7 @@ public class Game implements Runnable {
 	/**
 	 * Breite der Map, falls eine rechteckige Map erzeugt wird
 	 */
-	public static int rectangleMapHeight = 15;
+	public static int rectangleMapHeight = 20;
 	/**
 	 * Modus nach dem die Map mit Bloecken gefuellt werden soll
 	 */
@@ -849,7 +849,7 @@ public class Game implements Runnable {
 				for (int j = 1; j < bombList.get(i).getRadius(); j++) {
 					if (gameField.getField(bombList.get(i).getPosition()[1],
 							bombList.get(i).getPosition()[0] - j).getPlayer() != null) {
-						// Überprueft Felder rechts der Bombe
+						// Überprueft Felder oberhalb der Bombe
 						gameState = GameStates.GAMEOVER;
 						iDefeatedPlayer = gameField
 								.getField(bombList.get(i).getPosition()[1],
@@ -869,6 +869,7 @@ public class Game implements Runnable {
 								i = 0;
 							}
 						}
+
 					}
 					try {
 						if (gameField.getField(
@@ -899,7 +900,9 @@ public class Game implements Runnable {
 										bombList.get(i).getPosition()[0] - j,
 										iItemChance);
 							}
+
 							break;
+
 						}
 					} catch (Exception e) {
 					}
