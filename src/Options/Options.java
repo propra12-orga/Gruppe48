@@ -668,7 +668,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 		}
 	}
 
-	Font font = new Font("Verdana", Font.BOLD, 18);
+	Font font = new Font("Verdana", Font.ITALIC, 18);
 
 	private void setSliderText() {
 
@@ -715,11 +715,15 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 	private void updateProbabilityLabel() {
 		ProbabilityLabel.setText(new Integer(changedProbability).toString());
 		ProbabilityLabel.repaint();
+		ProbabilityLabel.setForeground(Color.blue);
+		ProbabilityLabel.setFont(font);
 	}
 
 	private void updateAmountLabel() {
 		AmountLabel.setText(new Integer(changedRandomAmount).toString());
 		AmountLabel.repaint();
+		AmountLabel.setForeground(Color.blue);
+		AmountLabel.setFont(font);
 	}
 
 	/**
