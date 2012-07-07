@@ -86,7 +86,7 @@ public class Server extends Thread {
 					input1.start();
 					input1.getNextInt();
 				} catch (IOException e) {
-					System.out.println(e);
+
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -96,7 +96,6 @@ public class Server extends Thread {
 				time = calendar.getInstance().getTimeInMillis();
 			}
 			if (client1 == null) {
-				System.out.println("null");
 				return;
 			}
 			output1.writeUTF("waiting");
@@ -114,9 +113,8 @@ public class Server extends Thread {
 					input2.start();
 					input2.getNextInt();
 				} catch (IOException e) {
-					System.out.println(e);
+
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if (client2 != null)
@@ -127,7 +125,7 @@ public class Server extends Thread {
 				try {
 					client1.close();
 				} catch (IOException e) {
-					System.out.println(e);
+
 				}
 				return;
 			}
@@ -171,21 +169,16 @@ public class Server extends Thread {
 		while (true) {
 			try {
 				time = calendar.getInstance().getTimeInMillis();
-				System.out.println("run");
 				if (((input1.nextEventAvailible()) || (input2
 						.nextEventAvailible()))) {
 					if (input1.nextEventAvailible()) {
 						input = input1;
-						System.out.println(1);
 					} else {
 						input = input2;
-						System.out.println(2);
 					}
 					if (input != null) {
 						event = input.getNextEvent();
-						System.out.println(event);
 						if (event.equals("move")) {
-							System.out.println("moving");
 							try {
 								player = (Player) input.getNextObject();
 							} catch (ClassNotFoundException e) {
@@ -198,11 +191,6 @@ public class Server extends Thread {
 							output2.writeUTF("map");
 							output1.flush();
 							output2.flush();
-							System.out.println("Server 2, 1 = "
-									+ gameField.getField(1, 2).getPlayer());
-							System.out.println("Server Player = "
-									+ player.getPosition()[0] + " "
-									+ player.getPosition()[1]);
 							output1.writeObject(gameField);
 							output2.writeObject(gameField);
 							output1.flush();
@@ -265,7 +253,6 @@ public class Server extends Thread {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			input = null;

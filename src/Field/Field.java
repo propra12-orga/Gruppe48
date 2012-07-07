@@ -259,7 +259,7 @@ public class Field implements Serializable {
 					writer.newLine();
 				}
 			} catch (IOException e) {
-				System.out.println(e);
+
 				return;
 			}
 			break;
@@ -291,7 +291,7 @@ public class Field implements Serializable {
 					writer.newLine();
 				}
 			} catch (IOException e) {
-				System.out.println(e);
+
 				return;
 			}
 		}
@@ -300,7 +300,7 @@ public class Field implements Serializable {
 			writer.close();
 			output.close();
 		} catch (IOException e) {
-			System.out.println(e);
+
 			return;
 		}
 	}

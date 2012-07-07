@@ -66,7 +66,7 @@ public class BoardPanel extends JPanel {
 			imgBombItem = ImageIO.read(ImageIO.class
 					.getResource("/images/bombItem.png"));
 		} catch (IOException e) {
-			System.out.println(e);
+
 		}
 	}
 

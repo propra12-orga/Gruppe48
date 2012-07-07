@@ -416,7 +416,6 @@ public class Game implements Runnable {
 			gameState = GameStates.STOP;
 			return false;
 		} catch (ClassNotFoundException c) {
-			System.out.println("File " + savedGamePath + " is invalid");
 			c.printStackTrace();
 			bMapLoaded = false;
 			gameState = GameStates.STOP;
@@ -526,6 +525,7 @@ public class Game implements Runnable {
 		gui.resize();
 		gui.repaint();
 		gameState = GameStates.STARTED;
+		Sound.LOOP.loop();
 		bAutoRestart = false;
 		return true;
 	}
@@ -546,10 +546,12 @@ public class Game implements Runnable {
 							// Siegesmeldung ausgegeben und das Spiel neu
 							// gestartet
 				if (iPlayerCount > 1) {
+					Sound.YOUWIN.play();
 					gui.showError("Spieler " + iWinningPlayer
 							+ " hat gewonnen!");
 				} else
-					gui.showError("Gewonnen!");
+					Sound.YOUWIN.play();
+				gui.showError("Gewonnen!");
 				doRestart = true;
 				bAutoRestart = true;
 				break;
@@ -567,7 +569,6 @@ public class Game implements Runnable {
 			case STOP: // Das Spiel wird angehalten
 				break;
 			default:
-				System.out.println("default");
 				break;
 			}
 		}
@@ -617,7 +618,6 @@ public class Game implements Runnable {
 			try {
 				Thread.sleep(gameSpeed);
 			} catch (Exception ex) {
-				System.out.println(ex);
 			}
 		}
 	}
@@ -636,8 +636,6 @@ public class Game implements Runnable {
 		testGenerator.setRandomAmount(startRandomAmount);
 		testGenerator.setRandomChance(startProbability);
 		testGenerator.setModus(getFillModus());
-		System.out.println("Modus:" + fillModus + "     RandomAmount:"
-				+ startRandomAmount + "     RandomChance:" + startProbability);
 
 		if (Options.getMapModus() == true) {
 
@@ -1140,10 +1138,12 @@ public class Game implements Runnable {
 							player.getPosition()[0] - 1).isExit() == true) {
 						iWinningPlayer = 1;
 						gameState = GameStates.VICTORY;
+
 					}
 					if (gameField.getField(player.getPosition()[1],
 							player.getPosition()[0] - 1).isFireItem() == true) {
 						player.setBombRadius();
+
 						gameField.getField(player.getPosition()[1],
 								player.getPosition()[0] - 1).removeFireItem();
 					}
@@ -1274,8 +1274,6 @@ public class Game implements Runnable {
 					Bomb.setCurrentPlacedBomb();
 				}
 				Bomb.setBombStatus();
-
-				System.out.println(Bomb.getCurrentPlacedP2());
 
 				break;
 			case 'q':
@@ -1443,8 +1441,6 @@ public class Game implements Runnable {
 				}
 				Bomb.setBombStatus();
 
-				System.out.println(Bomb.getCurrentPlacedP2());
-
 				break;
 			case 'q':
 				player.setBombRadius();
@@ -1604,8 +1600,6 @@ public class Game implements Runnable {
 					Bomb.setCurrentPlacedBombP2();
 				}
 				Bomb.setBombStatusP2();
-
-				System.out.println(Bomb.getCurrentPlacedP2());
 
 				break;
 			case 'o':

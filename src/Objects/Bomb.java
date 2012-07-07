@@ -133,14 +133,9 @@ public class Bomb implements Serializable {
 	public static void setBombStatus() {
 		if (getCurrentPlaced() <= bombMax) {
 			bombStatus = false;
-			System.out.println("getM() if: " + getCurrentPlaced());
-			System.out.println("bombstatus if:" + bombStatus);
-			System.out.println("bombMax if:" + bombMax);
 
 		} else {
 			bombStatus = true;
-			System.out.println("bombstatus else:" + bombStatus);
-			System.out.println("bombMax else:" + bombMax);
 
 		}
 	}
@@ -153,14 +148,9 @@ public class Bomb implements Serializable {
 	public static void setBombStatusP2() {
 		if (getCurrentPlacedP2() <= bombMaxP2) {
 			bombStatusP2 = false;
-			System.out.println("getM() if: " + getCurrentPlaced());
-			System.out.println("bombstatusP2 if:" + bombStatusP2);
-			System.out.println("bombMaxP2 if:" + bombMaxP2);
 
 		} else {
 			bombStatusP2 = true;
-			System.out.println("bombstatusP2 else:" + bombStatusP2);
-			System.out.println("bombMaxP2 else:" + bombMaxP2);
 
 		}
 	}

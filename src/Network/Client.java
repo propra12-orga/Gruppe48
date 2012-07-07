@@ -64,7 +64,6 @@ public class Client extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		while (true) {
@@ -79,17 +78,12 @@ public class Client extends Thread {
 					}
 					if (event.equals("map")) {
 						localField = (Field) input.getNextObject();
-						System.out.println("map update");
-						System.out.println("Client 2, 1 = "
-								+ localField.getField(1, 2).getContent());
+
 						newEvent = true;
 					}
 					if (event.equals("player")) {
 						localPlayer = (Player) input.getNextObject();
 
-						System.out.println("Client Player = "
-								+ localPlayer.getPosition()[0] + " "
-								+ localPlayer.getPosition()[1]);
 					}
 					if (event.equals("initialized")) {
 						output.writeUTF("ok");

@@ -219,7 +219,7 @@ public class FieldGenerator {
 			reader.close();
 			inputFile.close();
 		} catch (IOException e) {
-			System.out.println(e);
+
 		}
 		Map = null;
 		try {
@@ -265,21 +265,12 @@ public class FieldGenerator {
 			// testet ob das Spielfeld quadratisch ist
 			JOptionPane.showMessageDialog(null, "Field is not quadratic!",
 					"ERROR", 2);
-			System.out.println("Geforderte Spielfeldbreite:" + spielfeldBreite);
-			System.out.println("Spielfeldhoehe:" + spielfeldHoehe);
-			System.out.println("Anzahl der Zeilen:" + zeilenAnzahl);
 			return null;
 		}
 		if (iCounter != spielfeldBreite | iCounter2 != spielfeldBreite) {
 			// teste ob das Spielfeld symmetrisch ist
 			JOptionPane.showMessageDialog(null, "Field is not symmetric!",
 					"ERROR", 2);
-			System.out.println("Geforderte Spielfeldbreite:" + spielfeldBreite);
-			if (iCounter != spielfeldBreite) {
-				System.out.println("Spielfeldbreite: " + iCounter);
-			} else {
-				System.out.println("Spielfeldbreite: " + iCounter2);
-			}
 			return null;
 		}
 		for (int i = 0; i < mapList.get(0).length(); i++) {

@@ -457,8 +457,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				 */
 				public void stateChanged(ChangeEvent e) {
 					changedVerticalMap = ((JSlider) e.getSource()).getValue();
-					System.out.println("Neuer Wert Spielfeldhöhe: "
-							+ ((JSlider) e.getSource()).getValue());
 					gameOption.setGameMapHeight(changedVerticalMap);
 					maingame.restart();
 
@@ -476,8 +474,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				public void stateChanged(ChangeEvent e) {
 					changedHorizontalMap = ((JSlider) e.getSource()).getValue();
 
-					System.out.println("Neuer Wert Spielfeldbreite: "
-							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
 					gameOption.setGameMapWidht(changedHorizontalMap);
 					maingame.restart();
@@ -491,8 +487,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				 */
 				public void stateChanged(ChangeEvent e) {
 					changedMap = ((JSlider) e.getSource()).getValue();
-					System.out.println("Neuer Wert Spielfeldgröße: "
-							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
 					gameOption.setGameMapOptions(changedMap);
 					maingame.restart();
@@ -506,8 +500,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				 */
 				public void stateChanged(ChangeEvent e) {
 					changedDensity = ((JSlider) e.getSource()).getValue();
-					System.out.println("Neuer Wert Blockdichte: "
-							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
 					gameOption.setGameDensityOptions(changedDensity);
 					maingame.restart();
@@ -523,8 +515,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				 */
 				public void stateChanged(ChangeEvent e) {
 					changedProbability = ((JSlider) e.getSource()).getValue();
-					System.out.println("Wahrscheinlichkeit Modus1: "
-							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
 					gameOption.setProbability(changedProbability);
 					maingame.restart();
@@ -539,8 +529,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				 */
 				public void stateChanged(ChangeEvent e) {
 					changedRandomAmount = ((JSlider) e.getSource()).getValue();
-					System.out.println("Amount Modus 2:: "
-							+ ((JSlider) e.getSource()).getValue());
 					savedOptions = false;
 					gameOption.setRAmount(changedRandomAmount);
 					maingame.restart();
@@ -558,7 +546,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					mapModus = true;
 					rectangleButton.setSelected(false);
 					squareButton.setSelected(true);
-					System.out.println(mapModus + ": Square");
 
 					verticalSlider.setEnabled(false);
 					horizontalSlider.setEnabled(false);
@@ -580,7 +567,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 					mapModus = false;
 					squareButton.setSelected(false);
 					rectangleButton.setSelected(true);
-					System.out.println(mapModus + ": Rectangle");
 					verticalSlider.setEnabled(true);
 					horizontalSlider.setEnabled(true);
 					mapSlider.setEnabled(false);
@@ -600,7 +586,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				public void actionPerformed(ActionEvent e) {
 					fillModus = 0;
 					gameOption.setFillModus(0);
-					System.out.println("fillModus:" + fillModus);
 					modusOne.setSelected(false);
 					modusTwo.setSelected(false);
 					modusZero.setSelected(true);
@@ -619,7 +604,7 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				public void actionPerformed(ActionEvent e) {
 					fillModus = 1;
 					gameOption.setFillModus(1);
-					System.out.println("fillModus:" + fillModus);
+
 					modusZero.setSelected(false);
 					modusTwo.setSelected(false);
 					modusOne.setSelected(true);
@@ -639,7 +624,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 				public void actionPerformed(ActionEvent e) {
 					fillModus = 2;
 					gameOption.setFillModus(2);
-					System.out.println("fillModus:" + fillModus);
 					modusZero.setSelected(false);
 					modusOne.setSelected(false);
 					modusTwo.setSelected(true);

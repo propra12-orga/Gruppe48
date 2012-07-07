@@ -17,8 +17,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  */
 public enum Sound {
 
-	BOMB("sounds/bomb.wav"), GAME_OVER("sounds/gameover.wav"), STARTSOUND(
-			"sounds/bomb.wav");
+	BOMB("sounds/bomb.wav"), GAME_OVER("sounds/gameover.wav"), WELCOME(
+			"sounds/welcome.wav"), YOUWIN("sounds/youwin.wav"), LOOP(
+			"sounds/loop1.wav"), ITEM("sounds/item.wav");
 	/**
 	 * 
 	 * Gibt die verfuegbaren Lautstaerken an
@@ -61,6 +62,13 @@ public enum Sound {
 				clip.stop();
 			clip.setFramePosition(0);
 			clip.start();
+
+		}
+	}
+
+	public void loop() {
+		if (volume != Volume.MUTE) {
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
 
 		}
 	}

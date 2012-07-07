@@ -2,6 +2,7 @@ package Field;
 
 import java.io.Serializable;
 
+import Engine.Sound;
 import Objects.Bomb;
 import Objects.Player;
 
@@ -76,10 +77,12 @@ public class FieldContent implements Serializable {
 	}
 
 	public void removeFireItem() {
+		Sound.ITEM.play();
 		bFireItem = false;
 	}
 
 	public void removeBombItem() {
+		Sound.ITEM.play();
 		bBombItem = false;
 	}
 
