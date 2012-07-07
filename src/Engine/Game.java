@@ -635,7 +635,7 @@ public class Game implements Runnable {
 									// Neustart auf der selben Map gespeichert.
 		testGenerator.setRandomAmount(startRandomAmount);
 		testGenerator.setRandomChance(startProbability);
-		testGenerator.setModus(fill);
+		testGenerator.setModus(getFillModus());
 		System.out.println("Modus:" + fillModus + "     RandomAmount:"
 				+ startRandomAmount + "     RandomChance:" + startProbability);
 
