@@ -21,6 +21,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.filechooser.FileFilter;
 
 import Engine.Game;
+import Engine.Sound;
 import Field.Field;
 import Field.FieldGenerator;
 import Field.MapCreator;
@@ -280,6 +281,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		mainGame.key = e.getKeyChar();
 	}
 
+	/**
+	 * 
+	 * Speichern von Spielständen
+	 */
 	public boolean saveGame() {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileFilter(new FileFilter() {
@@ -294,7 +299,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 				return "Bomberman Game";
 			}
 		});
-		int iOpened = fileChooser.showOpenDialog(null);
+		int iOpened = fileChooser.showSaveDialog(null);
 		if (iOpened == JFileChooser.APPROVE_OPTION) { // Legt fest, was
 														// passiert, nachdem der
 														// "Öffnen"-Button
@@ -307,6 +312,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		}
 	}
 
+	/**
+	 * 
+	 * Laden von Spielständen
+	 */
 	public boolean openGame() {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileFilter(new FileFilter() {
@@ -379,6 +388,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		int result = JOptionPane.showConfirmDialog(null, "Sure?", "Quit?",
 				JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION) {
+			Sound.LOOP.loopStop();
 			Runtime.getRuntime().exit(0);
 		}
 

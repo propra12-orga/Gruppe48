@@ -35,7 +35,12 @@ public enum Sound {
 	public static Volume volume = Volume.LOW;
 	private Clip clip;
 
-	// Sound Konstruktor
+	/**
+	 * Konstruktor der Klasse Sound
+	 * 
+	 * @param soundFileName
+	 *            Pfad des Sounds
+	 */
 	Sound(String soundFileName) {
 		try {
 			URL url = this.getClass().getClassLoader()
@@ -66,6 +71,9 @@ public enum Sound {
 		}
 	}
 
+	/**
+	 * Spielt endlos einen Sound
+	 */
 	public void loop() {
 		if (volume != Volume.MUTE) {
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -73,6 +81,17 @@ public enum Sound {
 		}
 	}
 
+	/**
+	 * Stoppt einen Sound
+	 */
+	public void loopStop() {
+		if (clip.isRunning())
+			clip.stop();
+	}
+
+	/**
+	 * Pre-laden Sound-Dateien
+	 */
 	static void init() {
 		values();
 	}

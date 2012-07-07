@@ -7,6 +7,12 @@ import Field.FieldContent;
 import Objects.Bomb;
 import Objects.Player;
 
+/**
+ * Klasse zum Speichern von Spielständen
+ * 
+ * @author Leonid Panich
+ * 
+ */
 public class GameState implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public FieldContent[][] map;
@@ -15,6 +21,20 @@ public class GameState implements Serializable {
 	public Player player;
 	public Player player2;
 
+	/**
+	 * Konstruktor der Klasse GameState
+	 * 
+	 * @param map
+	 *            Spielfeld
+	 * @param explosionList
+	 *            List der Explosionen
+	 * @param bombList
+	 *            List der Bombe
+	 * @param p1
+	 *            Player1
+	 * @param p2
+	 *            Player2
+	 */
 	public GameState(FieldContent[][] map, List<long[]> explosionList,
 			List<Bomb> bombList, Player p1, Player p2) {
 		this.map = map;
