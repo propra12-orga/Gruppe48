@@ -77,8 +77,14 @@ public class Client extends Thread {
 						clientNumber = Integer.parseInt(input.getNextEvent());
 					}
 					if (event.equals("map")) {
+						// Field testField = new Field();
+						// testField = (Field) input.getNextObject();
+						// System.out
+						// .println(testField.getField(1, 1).getPlayer());
+						// localField = testField;
+						// localField = null;
 						localField = (Field) input.getNextObject();
-
+						// System.out.println(input.getNextObject());
 						newEvent = true;
 					}
 					if (event.equals("player")) {
@@ -88,6 +94,7 @@ public class Client extends Thread {
 					if (event.equals("initialized")) {
 						output.writeUTF("ok");
 						output.flush();
+						output.reset();
 					}
 
 				}
@@ -146,6 +153,7 @@ public class Client extends Thread {
 			output.writeInt(x);
 			output.writeInt(y);
 			output.flush();
+			output.reset();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

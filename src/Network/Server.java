@@ -137,8 +137,9 @@ public class Server extends Thread {
 			output2.flush();
 			output1.writeUTF("map");
 			output2.writeUTF("map");
-			output1.flush();
-			output2.flush();
+			// output1.flush();
+			// output2.flush();
+			// gameField.getMap()[1][1].removePlayer();
 			output1.writeObject(gameField);
 			output2.writeObject(gameField);
 			output1.flush();
@@ -155,6 +156,8 @@ public class Server extends Thread {
 			output2.writeUTF("initialized");
 			output1.flush();
 			output2.flush();
+			output1.reset();
+			output2.reset();
 			while (!input1.nextEventAvailible()) {
 
 			}
@@ -189,22 +192,22 @@ public class Server extends Thread {
 							handleMovement(player, moveArray);
 							output1.writeUTF("map");
 							output2.writeUTF("map");
-							output1.flush();
-							output2.flush();
 							output1.writeObject(gameField);
 							output2.writeObject(gameField);
 							output1.flush();
 							output2.flush();
+							output1.reset();
+							output2.reset();
 							if (input == input1) {
 								output1.writeUTF("player");
-								output1.flush();
 								output1.writeObject(player);
 								output1.flush();
+								output1.reset();
 							} else {
 								output2.writeUTF("player");
-								output2.flush();
 								output2.writeObject(player);
 								output2.flush();
+								output2.reset();
 							}
 
 						} else {
@@ -220,12 +223,16 @@ public class Server extends Thread {
 								}
 								output1.flush();
 								output2.flush();
+								output1.reset();
+								output2.reset();
 							} else {
 								if (event.equals("stop")) {
 									output1.writeUTF("stop");
 									output2.writeUTF("stop");
 									output1.flush();
 									output2.flush();
+									output1.reset();
+									output2.reset();
 								} else {
 									if (event.equals("player")) {
 										if (input == input1) {
