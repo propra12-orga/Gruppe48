@@ -669,6 +669,8 @@ public class Game implements Runnable {
 	 */
 	public static Field createNewField(String sMap) {
 		int iMaxPlayersLoaded = 0;
+		int playerPositionx = 0;
+		int playerPositiony = 0;
 		boolean freeSpace = false;
 		FieldGenerator testGenerator = new FieldGenerator();
 		Field generatedField = new Field();
@@ -688,20 +690,58 @@ public class Game implements Runnable {
 			for (int i = 0; i < fileTester.getMap().length; i++) {
 				for (int j = 0; j < fileTester.getMap()[0].length; j++) {
 					if (iMaxPlayersLoaded == 1) {
-						if (fileTester.getMap()[1][2].getContent() == 1
-								&& fileTester.getMap()[2][1].getContent() == 1) {
-							freeSpace = true;
+						if (fileTester.getMap()[i][j].getContent() == 5) {
+							playerPositionx = i;
+							playerPositiony = j;
+							if ((fileTester.getMap()[playerPositionx + 1][playerPositiony]
+									.getContent() == 1 && fileTester.getMap()[playerPositionx][playerPositiony + 1]
+									.getContent() == 1)
+									|| (fileTester.getMap()[playerPositionx + 1][playerPositiony]
+											.getContent() == 1 && fileTester
+											.getMap()[playerPositionx][playerPositiony - 1]
+											.getContent() == 1)
+									|| (fileTester.getMap()[playerPositionx - 1][playerPositiony]
+											.getContent() == 1 && fileTester
+											.getMap()[playerPositionx][playerPositiony + 1]
+											.getContent() == 1)
+									|| (fileTester.getMap()[playerPositionx - 1][playerPositiony]
+											.getContent() == 1 && fileTester
+											.getMap()[playerPositionx][playerPositiony - 1]
+											.getContent() == 1)) {
+								freeSpace = true;
+							}
 						}
 					} else if (iMaxPlayersLoaded == 2) {
-						if (fileTester.getMap()[1][2].getContent() == 1
-								&& fileTester.getMap()[2][1].getContent() == 1
-								&& fileTester.getMap()[fileTester.getMap().length - 2][fileTester
-										.getMap().length - 3].getContent() == 1
-								&& fileTester.getMap()[fileTester.getMap().length - 3][fileTester
-										.getMap().length - 2].getContent() == 1) {
-							freeSpace = true;
+						if (fileTester.getMap()[i][j].getContent() == 5) {
+							playerPositionx = i;
+							playerPositiony = j;
+							if ((fileTester.getMap()[playerPositionx + 1][playerPositiony]
+									.getContent() == 1 && fileTester.getMap()[playerPositionx][playerPositiony + 1]
+									.getContent() == 1)
+									|| (fileTester.getMap()[playerPositionx + 1][playerPositiony]
+											.getContent() == 1 && fileTester
+											.getMap()[playerPositionx][playerPositiony - 1]
+											.getContent() == 1)
+									|| (fileTester.getMap()[playerPositionx - 1][playerPositiony]
+											.getContent() == 1 && fileTester
+											.getMap()[playerPositionx][playerPositiony + 1]
+											.getContent() == 1)
+									|| (fileTester.getMap()[playerPositionx - 1][playerPositiony]
+											.getContent() == 1 && fileTester
+											.getMap()[playerPositionx][playerPositiony - 1]
+											.getContent() == 1)) {
+								freeSpace = true;
+							} else {
+								freeSpace = false;
+								gui.showError("Diese Map ist unspielbar, da die Spieler keine Bomben legen koennen "
+										+ "ohne dabei zu sterben!");
+								setMapLoaded(false);
+								return null;
+							}
 						}
+
 					}
+
 				}
 			}
 			if (iMaxPlayersLoaded > 0) { // Gibt es keine Startplätze fuer

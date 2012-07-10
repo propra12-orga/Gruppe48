@@ -208,6 +208,13 @@ public class FieldGenerator {
 		}
 		reader = new BufferedReader(inputFile);
 		try {
+			reader.mark(1);
+			if (reader.read() != '*') {
+				JOptionPane.showMessageDialog(null,
+						"Chosen file is no Bomberman Map!", "ERROR", 2);
+				return null;
+			}
+			reader.reset();
 			while (reader.ready()) {
 				mapList.add(reader.readLine()); // liest jede zeile einzeln ein
 				zeilenAnzahl++;
@@ -243,15 +250,25 @@ public class FieldGenerator {
 				if (mapList.get(0).charAt(i) == 42) {
 					spielfeldBreite++;
 				} else {
+					JOptionPane
+							.showMessageDialog(
+									null,
+									"Error at first row, only indestructible Walls allowed!",
+									"ERROR", 2);
 					return null;
 				}
 			}
-			for (int i = 0; i < spielfeldBreite; i++) {
+			for (int i = 0; i < mapList.get(0).length(); i++) {
 				// Spielfeldhoehe wird ermittelt anhand der Anzahl der Waende
 				// an den ersten Positionen der Spalten
 				if (mapList.get(i).charAt(0) == 42) {
 					spielfeldHoehe++;
 				} else {
+					JOptionPane
+							.showMessageDialog(
+									null,
+									"Error at first column, only indestructible Walls allowed!",
+									"ERROR", 2);
 					return null;
 				}
 			}
