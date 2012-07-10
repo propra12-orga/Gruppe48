@@ -924,12 +924,38 @@ public class Game implements Runnable {
 								bombList.get(i).getPosition()[1],
 								bombList.get(i).getPosition()[0] - j)
 								.isFireItem()) {
+							exList.add(new int[2]);
+							exList.get(exList.size() - 1)[0] = bombList.get(i)
+									.getPosition()[1];
+							exList.get(exList.size() - 1)[1] = bombList.get(i)
+									.getPosition()[0] - j;
+							gameField.getField(
+									bombList.get(i).getPosition()[1],
+									bombList.get(i).getPosition()[0] - j)
+									.setContent(1);
+							gameField.getField(
+									bombList.get(i).getPosition()[1],
+									bombList.get(i).getPosition()[0] - j)
+									.removeFireItem();
 							break;
 						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1],
 								bombList.get(i).getPosition()[0] - j)
 								.isBombItem()) {
+							exList.add(new int[2]);
+							exList.get(exList.size() - 1)[0] = bombList.get(i)
+									.getPosition()[1];
+							exList.get(exList.size() - 1)[1] = bombList.get(i)
+									.getPosition()[0] - j;
+							gameField.getField(
+									bombList.get(i).getPosition()[1],
+									bombList.get(i).getPosition()[0] - j)
+									.setContent(1);
+							gameField.getField(
+									bombList.get(i).getPosition()[1],
+									bombList.get(i).getPosition()[0] - j)
+									.removeBombItem();
 							break;
 						}
 						if (gameField.getField(
@@ -994,12 +1020,38 @@ public class Game implements Runnable {
 								bombList.get(i).getPosition()[1],
 								bombList.get(i).getPosition()[0] + j)
 								.isFireItem()) {
+							exList.add(new int[2]);
+							exList.get(exList.size() - 1)[0] = bombList.get(i)
+									.getPosition()[1];
+							exList.get(exList.size() - 1)[1] = bombList.get(i)
+									.getPosition()[0] + j;
+							gameField.getField(
+									bombList.get(i).getPosition()[1],
+									bombList.get(i).getPosition()[0] + j)
+									.setContent(1);
+							gameField.getField(
+									bombList.get(i).getPosition()[1],
+									bombList.get(i).getPosition()[0] + j)
+									.removeFireItem();
 							break;
 						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1],
 								bombList.get(i).getPosition()[0] + j)
 								.isBombItem()) {
+							exList.add(new int[2]);
+							exList.get(exList.size() - 1)[0] = bombList.get(i)
+									.getPosition()[1];
+							exList.get(exList.size() - 1)[1] = bombList.get(i)
+									.getPosition()[0] + j;
+							gameField.getField(
+									bombList.get(i).getPosition()[1],
+									bombList.get(i).getPosition()[0] + j)
+									.setContent(1);
+							gameField.getField(
+									bombList.get(i).getPosition()[1],
+									bombList.get(i).getPosition()[0] + j)
+									.removeBombItem();
 							break;
 						}
 						if (gameField.getField(
@@ -1066,11 +1118,37 @@ public class Game implements Runnable {
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1] - j,
 								bombList.get(i).getPosition()[0]).isFireItem()) {
+							exList.add(new int[2]);
+							exList.get(exList.size() - 1)[0] = bombList.get(i)
+									.getPosition()[1] - j;
+							exList.get(exList.size() - 1)[1] = bombList.get(i)
+									.getPosition()[0];
+							gameField.getField(
+									bombList.get(i).getPosition()[1] - j,
+									bombList.get(i).getPosition()[0])
+									.setContent(1);
+							gameField.getField(
+									bombList.get(i).getPosition()[1] - j,
+									bombList.get(i).getPosition()[0])
+									.removeFireItem();
 							break;
 						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1] - j,
 								bombList.get(i).getPosition()[0]).isBombItem()) {
+							exList.add(new int[2]);
+							exList.get(exList.size() - 1)[0] = bombList.get(i)
+									.getPosition()[1] - j;
+							exList.get(exList.size() - 1)[1] = bombList.get(i)
+									.getPosition()[0];
+							gameField.getField(
+									bombList.get(i).getPosition()[1] - j,
+									bombList.get(i).getPosition()[0])
+									.setContent(1);
+							gameField.getField(
+									bombList.get(i).getPosition()[1] - j,
+									bombList.get(i).getPosition()[0])
+									.removeBombItem();
 							break;
 						}
 						if (gameField.getField(
@@ -1140,11 +1218,37 @@ public class Game implements Runnable {
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1] + j,
 								bombList.get(i).getPosition()[0]).isFireItem()) {
+							exList.add(new int[2]);
+							exList.get(exList.size() - 1)[0] = bombList.get(i)
+									.getPosition()[1] + j;
+							exList.get(exList.size() - 1)[1] = bombList.get(i)
+									.getPosition()[0];
+							gameField.getField(
+									bombList.get(i).getPosition()[1] + j,
+									bombList.get(i).getPosition()[0])
+									.setContent(1);
+							gameField.getField(
+									bombList.get(i).getPosition()[1] + j,
+									bombList.get(i).getPosition()[0])
+									.removeFireItem();
 							break;
 						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1] + j,
 								bombList.get(i).getPosition()[0]).isBombItem()) {
+							exList.add(new int[2]);
+							exList.get(exList.size() - 1)[0] = bombList.get(i)
+									.getPosition()[1] + j;
+							exList.get(exList.size() - 1)[1] = bombList.get(i)
+									.getPosition()[0];
+							gameField.getField(
+									bombList.get(i).getPosition()[1] + j,
+									bombList.get(i).getPosition()[0])
+									.setContent(1);
+							gameField.getField(
+									bombList.get(i).getPosition()[1] + j,
+									bombList.get(i).getPosition()[0])
+									.removeBombItem();
 							break;
 						}
 						if (gameField.getField(
