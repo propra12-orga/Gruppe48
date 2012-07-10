@@ -193,7 +193,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 		 * Die Komponenten fuer das MiddlePanel werden erzeugt
 		 */
 		private void initComp() {
-
 			final JRadioButton squareButton = new JRadioButton(
 					"Create Squaremap", true);
 			final JRadioButton rectangleButton = new JRadioButton(
@@ -201,7 +200,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			final JRadioButton modusZero = new JRadioButton("default:", true);
 			final JRadioButton modusOne = new JRadioButton("Modus 1:", false);
 			final JRadioButton modusTwo = new JRadioButton("Modus 2:", false);
-			final JButton saveBt = new JButton("Save");
 			JButton okBt = new JButton("OK");
 			JButton cancelBt = new JButton("Cancel");
 			final JSlider randomAmountSlider = new JSlider(0, 100,
@@ -277,12 +275,11 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			// mapHeight.setBackground(Color.red);
 
 			/**
-			 * Panel fuer die Buttons OK, SAVE, ABBRECHEN
+			 * Panel fuer die Buttons OK, Cancel
 			 */
-			buttons = new JPanel(new GridLayout(0, 3));
+			buttons = new JPanel(new GridLayout(0, 2));
 			buttons.setBounds(221, 640, 400, 45);
 			buttons.add(okBt);
-			buttons.add(saveBt);
 			buttons.add(cancelBt);
 			buttons.setBorder(new BevelBorder(BevelBorder.RAISED));
 			/**
@@ -419,17 +416,6 @@ public class Options extends JFrame implements WindowListener, ActionListener {
 			probabilitySlider.setMajorTickSpacing(25);
 			probabilitySlider.setPaintTicks(true);
 			probabilitySlider.setPaintLabels(true);
-
-			saveBt.addActionListener(new ActionListener() {
-				@Override
-				/**
-				 * Beim Klick auf den Save Button werden die Optionen gespeichert
-				 */
-				public void actionPerformed(ActionEvent e) {
-					acceptOptions();
-					maingame.restart();
-				}
-			});
 			cancelBt.addActionListener(new ActionListener() {
 				@Override
 				/**

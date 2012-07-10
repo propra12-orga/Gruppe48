@@ -131,17 +131,25 @@ public class MapCreator extends JFrame implements WindowListener,
 		/**
 		 * Hier werden alle Elemente des CreationPanels definiert, d.h. die Map
 		 * bestehend aus vielen Buttons, die drei Buttons(save,help,cancel) am
-		 * unteren Ende des Panels sowie die 6 verschiedenen Buttons die
+		 * unteren Ende des Panels sowie die 7 verschiedenen Buttons die
 		 * bestimmen welches Element auf die Karte gezeichnet wird
 		 */
 		private void init() {
 			JPanel grid = new JPanel();
 			int mapSize = GUI.GUI.zahl;
 			grid.setLayout(new GridLayout(mapSize, mapSize));
+			/**
+			 * Fuellt die erste Reihe mit unzerstoerbaren Waenden
+			 */
 			for (int i = 0; i < mapSize; i++) {
 				grid.add(new JButton(wall));
 				array[0][i] = WALL;
 			}
+			/**
+			 * Fuellt die erste und letzte Spalte mit unzerstoerbaren Waenden
+			 * und die restlichen Spalten mit freien Plaetzen und fuegt diesen
+			 * einen FocusListener hinzu, so dass sie angeklickt werden koennen
+			 */
 			for (int i = 1; i < mapSize - 1; i++) {
 				array[i][0] = WALL;
 				grid.add(new JButton(wall));
@@ -168,12 +176,17 @@ public class MapCreator extends JFrame implements WindowListener,
 				array[i][mapSize - 1] = WALL;
 				grid.add(new JButton(wall));
 			}
+			/**
+			 * Fuellt die letzte Reihe mit unzerstoerbaren Waenden
+			 */
 			for (int i = 0; i < mapSize; i++) {
 				grid.add(new JButton(wall));
 				array[mapSize - 1][i] = WALL;
 			}
 			grid.setBounds(10, 10, setArraySize(mapSize), setArraySize(mapSize));
-			// Die Buttons am unteren Ende des Panels
+			/**
+			 * Die Buttons am unteren Ende des Panels
+			 */
 			buttons = new JPanel(new GridLayout(0, 3));
 			buttons.setBounds(255, 640, 300, 40);
 			buttons.add(saveButton);
@@ -182,14 +195,18 @@ public class MapCreator extends JFrame implements WindowListener,
 			buttons.setBorder(new BevelBorder(BevelBorder.RAISED));
 			JLabel text = new JLabel("Currently Selected");
 			text.setBounds(670, 5, 130, 15);
-			// Der Button der anzeigt welches Element zum zeichnen grade
-			// ausgewaehlt wurde
+			/**
+			 * Der Button der anzeigt welches Element zum zeichnen grade
+			 * ausgewaehlt wurde
+			 */
 			currentlySelected = new JButton();
 			currentlySelected.setBounds(710, 25, 32, 32);
 			currentlySelected.setIcon(selected);
 			currentlySelected.setContentAreaFilled(false);
 			currentlySelected.setFocusable(false);
-			// Der Button fuer die zerstoerbaren Bloecke
+			/**
+			 * Der Button fuer die zerstoerbaren Bloecke
+			 */
 			picStone = new JButton(stone);
 			picStone.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -206,7 +223,9 @@ public class MapCreator extends JFrame implements WindowListener,
 					TitledBorder.CENTER, TitledBorder.ABOVE_BOTTOM);
 			modusStone.setTitleColor(Color.black);
 			picStone.setBorder(modusStone);
-			// Der Button fuer die unzerstoerbaren Waende
+			/**
+			 * Der Button fuer die unzerstoerbaren Waende
+			 */
 			picWall = new JButton(wall);
 			picWall.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -223,7 +242,9 @@ public class MapCreator extends JFrame implements WindowListener,
 					TitledBorder.CENTER, TitledBorder.ABOVE_BOTTOM);
 			modusWall.setTitleColor(Color.black);
 			picWall.setBorder(modusWall);
-			// Der Button fuer den freien Platz
+			/**
+			 * Der Button fuer den freien Platz
+			 */
 			picFree = new JButton(free);
 			picFree.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -240,7 +261,9 @@ public class MapCreator extends JFrame implements WindowListener,
 					TitledBorder.CENTER, TitledBorder.ABOVE_BOTTOM);
 			modusFree.setTitleColor(Color.black);
 			picFree.setBorder(modusFree);
-			// Der Button fuer den Ausgang
+			/**
+			 * Der Button fuer den Ausgang
+			 */
 			picExit = new JButton(exit);
 			picExit.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -257,7 +280,9 @@ public class MapCreator extends JFrame implements WindowListener,
 					TitledBorder.CENTER, TitledBorder.ABOVE_BOTTOM);
 			modusExit.setTitleColor(Color.black);
 			picExit.setBorder(modusExit);
-			// Der Button fuer den versteckten Ausgang
+			/**
+			 * Der Button fuer den versteckten Ausgang
+			 */
 			picHiddenExit = new JButton(hiddenExit);
 			picHiddenExit.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -276,7 +301,9 @@ public class MapCreator extends JFrame implements WindowListener,
 					"Exit", TitledBorder.CENTER, TitledBorder.ABOVE_BOTTOM);
 			modusHiddenExit.setTitleColor(Color.black);
 			picHiddenExit.setBorder(modusHiddenExit);
-			// Der Button fuer den Spieler
+			/**
+			 * Der Button fuer den Spieler
+			 */
 			picPlayer = new JButton(player);
 			picPlayer.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -387,19 +414,29 @@ public class MapCreator extends JFrame implements WindowListener,
 					".txt", "txt");
 			chooser.setFileFilter(filter);
 			chooser.setSelectedFile(file1);
-			// Show the dialog; wait until dialog is closed
+			/**
+			 * Show the dialog, wait until dialog is closed
+			 */
 			int result = chooser.showSaveDialog(null);
-			// Determine which button was clicked to close the dialog
+			/**
+			 * Determine which button was clicked to close the dialog
+			 */
 			switch (result) {
 			case JFileChooser.CANCEL_OPTION:
-				// Cancel or the close-dialog icon was clicked
+				/**
+				 * Cancel or the close-dialog icon was clicked
+				 */
 				break;
 			case JFileChooser.ERROR_OPTION:
-				// The selection process did not complete successfully
+				/**
+				 * The selection process did not complete successfully
+				 */
 				JOptionPane.showMessageDialog(rootPane, "ERROR", "Error", 1);
 				break;
 			case JFileChooser.APPROVE_OPTION:
-				// Approve (Save) was clicked
+				/**
+				 * Approve (Save) was clicked
+				 */
 				File file = chooser.getSelectedFile();
 				if (file.exists()) {
 					int option = JOptionPane.showConfirmDialog(null,
@@ -418,43 +455,52 @@ public class MapCreator extends JFrame implements WindowListener,
 						PrintWriter printer = new PrintWriter(writer);
 						for (int i = 0; i < GUI.GUI.zahl; i++) {
 							for (int j = 0; j < GUI.GUI.zahl; j++) {
-								if (array[i][j] == 1) { // schreibt die freien
-														// Plaetze in das txt
-														// Dokument
+								if (array[i][j] == 1) {
+									/**
+									 * schreibt die freien Plaetze in das .txt
+									 * Dokument
+									 */
 									printer.print(".");
-								} else if (array[i][j] == 2) {// schreibt die
-																// aueßeren
-																// Waende in das
-																// txt Dokument
+								} else if (array[i][j] == 2) {
+									/**
+									 * schreibt die auesseren Waende in das .txt
+									 * Dokument
+									 */
 									printer.print("*");
-								} else if (array[i][j] == 3) {// schreibt den
-																// Ausgang in
-																// das txt
-																// Dokument
+								} else if (array[i][j] == 3) {
+									/**
+									 * schreibt den Ausgang in das .txt Dokument
+									 */
 									printer.print("E");
 									exitCount++;
-								} else if (array[i][j] == 4) {// schreibt den
-																// Ausgang in
-																// das txt
-																// Dokument
+								} else if (array[i][j] == 4) {
+									/**
+									 * schreibt den versteckten Ausgang in das
+									 * .txt Dokument
+									 */
 									printer.print("H");
 									exitCount++;
-								} else if (array[i][j] == 5) {// schreibt die
-																// Spielerposition
-																// in das txt
-																// Dokument
+								} else if (array[i][j] == 5) {
+									/**
+									 * schreibt die Spielerposition in das .txt
+									 * Dokument
+									 */
 									printer.print("P");
 									playerCount++;
-								} else if (array[i][j] == 6) {// schreibt die
-																// zerstoerbaren
-																// Bloecke in
-																// das txt
-																// Dokument
+								} else if (array[i][j] == 6) {
+									/**
+									 * schreibt die zerstoerbaren Bloecke in das
+									 * .txt Dokument
+									 */
 									printer.print("%");
 								}
 							}
 							printer.println();
 						}
+						/**
+						 * Ueberprueft ob es einen Ausgang und maximal 2 Spieler
+						 * gibt
+						 */
 						if (playerCount == 0 | playerCount > 2 | exitCount == 0
 								| exitCount > 1) {
 							JOptionPane
@@ -483,43 +529,52 @@ public class MapCreator extends JFrame implements WindowListener,
 					PrintWriter printer = new PrintWriter(writer);
 					for (int i = 0; i < GUI.GUI.zahl; i++) {
 						for (int j = 0; j < GUI.GUI.zahl; j++) {
-							if (array[i][j] == 1) { // schreibt die freien
-													// Plaetze in das txt
-													// Dokument
+							if (array[i][j] == 1) {
+								/**
+								 * schreibt die freien Plaetze in das .txt
+								 * Dokument
+								 */
 								printer.print(".");
-							} else if (array[i][j] == 2) {// schreibt die
-															// aueßeren
-															// Waende in das
-															// txt Dokument
+							} else if (array[i][j] == 2) {
+								/**
+								 * schreibt die auesseren Waende in das .txt
+								 * Dokument
+								 */
 								printer.print("*");
-							} else if (array[i][j] == 3) {// schreibt den
-															// Ausgang in
-															// das txt
-															// Dokument
+							} else if (array[i][j] == 3) {
+								/**
+								 * schreibt den Ausgang in das .txt Dokument
+								 */
 								printer.print("E");
 								exitCount++;
-							} else if (array[i][j] == 4) {// schreibt den
-															// Ausgang in
-															// das txt
-															// Dokument
+							} else if (array[i][j] == 4) {
+								/**
+								 * schreibt den versteckten Ausgang in das .txt
+								 * Dokument
+								 */
 								printer.print("H");
 								exitCount++;
-							} else if (array[i][j] == 5) {// schreibt die
-															// Spielerposition
-															// in das txt
-															// Dokument
+							} else if (array[i][j] == 5) {
+								/**
+								 * schreibt die Spielerposition in das .txt
+								 * Dokument
+								 */
 								printer.print("P");
 								playerCount++;
-							} else if (array[i][j] == 6) {// schreibt die
-															// zerstoerbaren
-															// Bloecke in
-															// das txt
-															// Dokument
+							} else if (array[i][j] == 6) {
+								/**
+								 * schreibt die zerstoerbaren Bloecke in das
+								 * .txt Dokument
+								 */
 								printer.print("%");
 							}
 						}
 						printer.println();
 					}
+					/**
+					 * Ueberprueft ob es einen Ausgang und maximal 2 Spieler
+					 * gibt
+					 */
 					if (playerCount == 0 | playerCount > 2 | exitCount == 0
 							| exitCount > 1) {
 						JOptionPane
@@ -574,6 +629,11 @@ public class MapCreator extends JFrame implements WindowListener,
 		}
 	}
 
+	/**
+	 * Die Methode die aufgerufen wird wenn man auf das X zum schliessen des
+	 * Fensters drueckt, es wird abgefragt ob man sicher ist, evtl. ein Nag
+	 * Screen aber notwendig im Falle des MapCreators
+	 */
 	protected void shutdown() {
 		int result = JOptionPane.showConfirmDialog(null, "Sure?", "Quit?",
 				JOptionPane.YES_NO_OPTION);
