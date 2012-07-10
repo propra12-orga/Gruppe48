@@ -237,6 +237,7 @@ public class Server extends Thread {
 										}
 									} else {
 										if (event.equals("bomb")) {
+											System.out.println("bomb");
 											setBomb(input.getNextInt());
 										} else {
 										}
@@ -252,7 +253,7 @@ public class Server extends Thread {
 				e.printStackTrace();
 			}
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -264,20 +265,47 @@ public class Server extends Thread {
 		if (playernumber == 1) {
 			player = player1;
 			if (Bomb.getBombStatus() == false) {
+				bombList.add(new Bomb(player.getPosition()[0], player
+						.getPosition()[1], time, player.getBombRadius()));
+				gameField.setBomb(bombList.get(bombList.size() - 1));
 				Bomb.setCurrentPlacedBomb();
+				try {
+					output1.writeUTF("map");
+					output2.writeUTF("map");
+					output1.writeObject(gameField);
+					output2.writeObject(gameField);
+					output1.flush();
+					output2.flush();
+					output1.reset();
+					output2.reset();
+				} catch (IOException e) {
+
+				}
 			}
 			Bomb.setBombStatus();
+
 		} else {
 			player = player2;
 			if (Bomb.getBombStatusP2() == false) {
 				Bomb.setCurrentPlacedBombP2();
+				bombList.add(new Bomb(player.getPosition()[0], player
+						.getPosition()[1], time, player.getBombRadius()));
+				gameField.setBomb(bombList.get(bombList.size() - 1));
+				try {
+					output1.writeUTF("map");
+					output2.writeUTF("map");
+					output1.writeObject(gameField);
+					output2.writeObject(gameField);
+					output1.flush();
+					output2.flush();
+					output1.reset();
+					output2.reset();
+				} catch (IOException e) {
+
+				}
 			}
 			Bomb.setBombStatusP2();
-		}
-		if (Bomb.getBombStatus() == false) {
-			bombList.add(new Bomb(player.getPosition()[0],
-					player.getPosition()[1], time, player.getBombRadius()));
-			gameField.setBomb(bombList.get(bombList.size() - 1));
+
 		}
 
 	}
@@ -300,7 +328,7 @@ public class Server extends Thread {
 					exList.get(exList.size() - 1)[1] = bombList.get(i)
 							.getPosition()[0];
 					for (int z = 0; z < 4; z++) {
-						for (int j = 0; j < bombList.get(i).getRadius(); j++) {
+						for (int j = 1; j < bombList.get(i).getRadius(); j++) {
 							switch (z) {
 							case 0:
 								x = bombList.get(i).getPosition()[1];
@@ -373,10 +401,12 @@ public class Server extends Thread {
 					exList = null;
 					gameField.removeBomb(bombList.get(i));
 					bombList.remove(i);
-					output1.writeUTF("exlist");
-					output2.writeUTF("exlist");
-					output1.writeObject(exList);
-					output2.writeObject(exList);
+					/*
+					 * output1.writeUTF("exList"); output2.writeUTF("exList");
+					 * output1.writeObject(exList); output2.writeObject(exList);
+					 * output1.flush(); output2.flush(); output1.reset();
+					 * output2.reset();
+					 */
 					output1.writeUTF("map");
 					output2.writeUTF("map");
 					output1.writeObject(gameField);

@@ -109,7 +109,11 @@ public class Client extends Thread {
 				}
 			} catch (IOException e) {
 			}
-
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
