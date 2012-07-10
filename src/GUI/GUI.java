@@ -11,6 +11,7 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -66,6 +67,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	private JMenuItem joingame;
 	private JMenuItem turnmusicon;
 	private JMenuItem turnmusicoff;
+	private JMenuItem music;
 
 	/**
 	 * Erzeugt ein neues Objekt der Klasse GUI und initialisiert den zu
@@ -123,18 +125,16 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		turnmusicon.addActionListener(this);
 		turnmusicoff = new JMenuItem("Turn Music Off");
 		turnmusicoff.addActionListener(this);
-		gameMenu.add(savegame);
-		gameMenu.add(loadgame);
-		gameMenu.addSeparator();
 		gameMenu.add(startItem);
-		gameMenu.add(openItem);
 		gameMenu.add(singleplayer);
 		gameMenu.add(multiplayer);
+		gameMenu.addSeparator();
+		gameMenu.add(savegame);
+		gameMenu.add(loadgame);
+		gameMenu.add(openItem);
+		gameMenu.addSeparator();
 		gameMenu.add(hostgame);
 		gameMenu.add(joingame);
-		gameMenu.addSeparator();
-		gameMenu.add(turnmusicon);
-		gameMenu.add(turnmusicoff);
 		gameMenu.addSeparator();
 		gameMenu.add(quitItem);
 		menubar.add(gameMenu);
@@ -146,13 +146,17 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		optionItem = new JMenuItem("GameOptions");
 		optionItem.addActionListener(this);
 		optionMenu.add(optionItem);
+		optionMenu.addSeparator();
 		this.add(menubar, BorderLayout.NORTH);
 		this.setJMenuBar(menubar);
 		this.add(panel);
 		this.addKeyListener(this);
 		singleplayer.setSelected(true);
 		this.addWindowListener(this);
-
+		music = new JCheckBoxMenuItem("Music on/off");
+		music.addActionListener(this);
+		optionMenu.add(music);
+		music.setSelected(true);
 	}
 
 	/**
@@ -224,6 +228,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 			if (openGame()) {
 
 				resize();
+			}
+		}
+		if (object.getSource() == music) {
+			if (music.isSelected() == true) {
+				Sound.LOOP.loop();
+			} else {
+				Sound.LOOP.loopStop();
 			}
 		}
 		if (object.getSource() == multiplayer) {
