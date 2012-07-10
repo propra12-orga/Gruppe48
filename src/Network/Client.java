@@ -26,7 +26,7 @@ public class Client extends Thread {
 	Field localField;
 	Player localPlayer;
 	String event;
-	boolean newEvent;
+	int eventCount;
 	String eventType;
 	ArrayList<int[]> exList;
 
@@ -44,7 +44,7 @@ public class Client extends Thread {
 		this.ip = ip;
 		this.port = port;
 		clientNumber = 0;
-		newEvent = false;
+		eventCount = 0;
 
 	}
 
@@ -83,13 +83,15 @@ public class Client extends Thread {
 						} catch (ClassNotFoundException e) {
 							e.printStackTrace();
 						}
-						newEvent = true;
+						eventCount++;
 
 					}
 					if (event.equals("initialized")) {
 						output.writeUTF("ok");
 						output.flush();
 						output.reset();
+						eventType = "initialized";
+						eventCount++;
 					}
 					if (event.equals("exList")) {
 						eventType = "exList";
@@ -98,12 +100,19 @@ public class Client extends Thread {
 						} catch (ClassNotFoundException e) {
 							e.printStackTrace();
 						}
-						newEvent = true;
+						eventCount++;
 
 					}
 					if (event.equals("removeExplosion")) {
 						eventType = "removeExplosion";
-						newEvent = true;
+						eventCount++;
+					}
+					if (event.equals("pickup")) {
+						eventType = "pickup";
+						eventCount++;
+					}
+					if (event.equals("accepted")) {
+						output.reset();
 					}
 
 				}
@@ -122,15 +131,15 @@ public class Client extends Thread {
 	 * 
 	 * @return Ist = true, falls neue Nachricht vorhanden ist, ist sonst = false
 	 */
-	public boolean getEvent() {
-		return newEvent;
+	public int getEventCount() {
+		return eventCount;
 	}
 
 	/**
 	 * Methode zum zurücksetzen der Nachrichtmarkierung
 	 */
 	public void resetEvent() {
-		newEvent = false;
+		eventCount--;
 	}
 
 	public String getEventType() {
@@ -145,7 +154,6 @@ public class Client extends Thread {
 			output.writeUTF("bomb");
 			output.writeInt(clientNumber);
 			output.flush();
-			output.reset();
 		} catch (IOException e) {
 		}
 	}
@@ -165,7 +173,6 @@ public class Client extends Thread {
 			output.writeInt(x);
 			output.writeInt(y);
 			output.flush();
-			output.reset();
 		} catch (IOException e) {
 		}
 	}

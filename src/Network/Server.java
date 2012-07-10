@@ -43,6 +43,9 @@ public class Server extends Thread {
 	List<Bomb> bombList;
 	int iItemChance = 30;
 	List<long[]> explosionList;
+	long player1moved;
+	long player2moved;
+	int gameSpeed;
 
 	/**
 	 * Erzeugt ein Objekt vom Typ Server und übergibt diesem ein Spielfeld sowie
@@ -64,8 +67,10 @@ public class Server extends Thread {
 		this.player2 = player2;
 		gameField = field;
 		moveArray = new int[2];
+		gameSpeed = 100;
 		time = calendar.getInstance().getTimeInMillis();
-
+		player1moved = time;
+		player2moved = time;
 	}
 
 	/**
@@ -199,8 +204,14 @@ public class Server extends Thread {
 							output2.reset();
 							if (input == input1) {
 								player1 = player.clonePlayer();
+								output1.writeUTF("accepted");
+								output1.flush();
+								output1.reset();
 							} else {
 								player2 = player.clonePlayer();
+								output1.writeUTF("accepted");
+								output1.flush();
+								output1.reset();
 							}
 
 						} else {
@@ -237,8 +248,16 @@ public class Server extends Thread {
 										}
 									} else {
 										if (event.equals("bomb")) {
-											System.out.println("bomb");
 											setBomb(input.getNextInt());
+											if (input == input1) {
+												output1.writeUTF("accepted");
+												output1.flush();
+												output1.reset();
+											} else {
+												output2.writeUTF("accepted");
+												output2.flush();
+												output2.reset();
+											}
 										} else {
 										}
 									}
@@ -328,7 +347,7 @@ public class Server extends Thread {
 					exList.get(exList.size() - 1)[1] = bombList.get(i)
 							.getPosition()[0];
 					for (int z = 0; z < 4; z++) {
-						for (int j = 1; j < bombList.get(i).getRadius(); j++) {
+						for (int j = 0; j < bombList.get(i).getRadius(); j++) {
 							switch (z) {
 							case 0:
 								x = bombList.get(i).getPosition()[1];
@@ -373,17 +392,13 @@ public class Server extends Thread {
 							try {
 								if (bombField.getContent() == 1) {
 									exList.add(new int[2]);
-									exList.get(exList.size() - 1)[0] = bombList
-											.get(i).getPosition()[1];
-									exList.get(exList.size() - 1)[1] = bombList
-											.get(i).getPosition()[0] - j;
+									exList.get(exList.size() - 1)[0] = x;
+									exList.get(exList.size() - 1)[1] = y;
 								} else {
 									if (bombField.getContent() == 6) {
 										exList.add(new int[2]);
-										exList.get(exList.size() - 1)[0] = bombList
-												.get(i).getPosition()[1];
-										exList.get(exList.size() - 1)[1] = bombList
-												.get(i).getPosition()[0] - j;
+										exList.get(exList.size() - 1)[0] = x;
+										exList.get(exList.size() - 1)[1] = y;
 										bombField.setContent(1);
 										createRandomItem(x, y, iItemChance);
 									}
@@ -398,15 +413,16 @@ public class Server extends Thread {
 					explosionList.add(new long[1]);
 					explosionList.get(0)[0] = Calendar.getInstance()
 							.getTimeInMillis() + 500;
-					exList = null;
 					gameField.removeBomb(bombList.get(i));
 					bombList.remove(i);
-					/*
-					 * output1.writeUTF("exList"); output2.writeUTF("exList");
-					 * output1.writeObject(exList); output2.writeObject(exList);
-					 * output1.flush(); output2.flush(); output1.reset();
-					 * output2.reset();
-					 */
+					output1.writeUTF("exList");
+					output2.writeUTF("exList");
+					output1.writeObject(exList);
+					output2.writeObject(exList);
+					output1.flush();
+					output2.flush();
+					output1.reset();
+					output2.reset();
 					output1.writeUTF("map");
 					output2.writeUTF("map");
 					output1.writeObject(gameField);
@@ -415,6 +431,7 @@ public class Server extends Thread {
 					output2.flush();
 					output1.reset();
 					output2.reset();
+					exList = null;
 				} catch (IOException e) {
 
 				}
@@ -442,7 +459,13 @@ public class Server extends Thread {
 
 	private void handleMovement(Player player, int[] direction) {
 		boolean moved = false;
-
+		if (player.getID() == 1) {
+			if (player1moved > time - gameSpeed)
+				return;
+		} else {
+			if (player2moved > time - gameSpeed)
+				return;
+		}
 		switch (gameField.getField(player.getPosition()[1] + direction[0],
 				player.getPosition()[0] + direction[1]).getContent()) {
 		case 1:
@@ -465,6 +488,16 @@ public class Server extends Thread {
 						player.getPosition()[0] + direction[1])
 						.removeFireItem();
 				moved = true;
+				try {
+					output1.writeUTF("pickup");
+					output2.writeUTF("pickup");
+					output1.flush();
+					output2.flush();
+					output1.reset();
+					output2.reset();
+				} catch (IOException e) {
+
+				}
 				break;
 			}
 			if (gameField.getField(player.getPosition()[1] + direction[0],
@@ -478,6 +511,16 @@ public class Server extends Thread {
 						player.getPosition()[0] + direction[1])
 						.removeBombItem();
 				moved = true;
+				try {
+					output1.writeUTF("pickup");
+					output2.writeUTF("pickup");
+					output1.flush();
+					output2.flush();
+					output1.reset();
+					output2.reset();
+				} catch (IOException e) {
+
+				}
 				break;
 			}
 			moved = true;
@@ -506,6 +549,11 @@ public class Server extends Thread {
 					gameField.setPlayer(player);
 				}
 				break;
+			}
+			if (player.getID() == 1) {
+				player1moved = time;
+			} else {
+				player2moved = time;
 			}
 		}
 	}

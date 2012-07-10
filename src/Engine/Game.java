@@ -52,6 +52,8 @@ public class Game implements Runnable {
 	static String sMapPath = "";
 	static int iPlayerCount = 1;
 	boolean network = false;
+	boolean networkstart = false;
+	boolean clientInitialized;
 	int iItemChance = 35;
 	int iNewPlayerCount = 1;
 	int iDefeatedPlayer = 0;
@@ -138,7 +140,7 @@ public class Game implements Runnable {
 		time = Calendar.getInstance().getTimeInMillis();
 		bombList = new ArrayList<Bomb>();
 		gameSpeed = 100;
-		// gui.insertField(gameField);
+		clientInitialized = false;
 		gameState = GameStates.STOP;
 	}
 
@@ -332,8 +334,6 @@ public class Game implements Runnable {
 	public void startServer() {
 		server = new Server(gameField, player, player2);
 		server.start();
-		network = true;
-
 	}
 
 	/**
@@ -388,11 +388,13 @@ public class Game implements Runnable {
 	 * und verbindet sich selbst mit dem Server
 	 */
 	public void hostGame() {
+		networkstart = true;
 		iNewPlayerCount = 2;
+		network = true;
 		restart();
 		startServer();
 		connect("127.0.0.1", 30000);
-		network = true;
+
 	}
 
 	/**
@@ -521,11 +523,14 @@ public class Game implements Runnable {
 		time = Calendar.getInstance().getTimeInMillis();
 		bombList = new ArrayList<Bomb>();
 		gameSpeed = 100;
-		gui.insertField(gameField);
-		gui.resize();
-		gui.repaint();
+		if (!networkstart) {
+			gui.insertField(gameField);
+			gui.resize();
+			gui.repaint();
+			Sound.LOOP.loop();
+			networkstart = false;
+		}
 		gameState = GameStates.STARTED;
-		Sound.LOOP.loop();
 		bAutoRestart = false;
 		return true;
 	}
@@ -596,27 +601,52 @@ public class Game implements Runnable {
 	 * abgearbeitet, Spieler bewegt und das Spielfeld aktualisiert
 	 */
 	public void start() {
+
 		if (network) {
+			if (client == null)
+				return;
+			if (!clientInitialized) {
+				if (client.getEventCount() == 0) {
+					return;
+				}
+				clientInitialized = true;
+			}
 			handleNetworkMovement();
-			if (client.getEvent()) {
+			while (client.getEventCount() > 0) {
+				if (client.getEventType().equals("initialized")) {
+					Sound.LOOP.loop();
+					gameField = client.getField();
+					gui.insertField(gameField);
+					gui.resize();
+					gui.repaint();
+				}
 				if (client.getEventType().equals("map")) {
 					gameField = client.getField();
 					gui.insertField(gameField);
 					gui.resize();
 					gui.repaint();
-					client.resetEvent();
 				}
 				if (client.getEventType().equals("exList")) {
-					gui.panel.addExplosions((ArrayList) client.getExList());
+					gui.panel.addExplosions(client.getExList());
 					gui.repaint();
-					client.resetEvent();
+					Sound.BOMB.play();
 				}
 				if (client.getEventType().equals("removeExplosion")) {
 					gui.panel.removeExplosions();
+					gui.panel.removeExplosions();
 					gui.repaint();
-					client.resetEvent();
+
+				}
+				if (client.getEventType().equals("pickup")) {
+					Sound.ITEM.play();
 				}
 
+				client.resetEvent();
+			}
+
+			try {
+				Thread.sleep(10);
+			} catch (Exception ex) {
 			}
 
 		} else {
