@@ -937,7 +937,6 @@ public class Game implements Runnable {
 									bombList.get(i).getPosition()[1],
 									bombList.get(i).getPosition()[0] - j)
 									.removeFireItem();
-							break;
 						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1],
@@ -956,7 +955,6 @@ public class Game implements Runnable {
 									bombList.get(i).getPosition()[1],
 									bombList.get(i).getPosition()[0] - j)
 									.removeBombItem();
-							break;
 						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1],
@@ -1033,7 +1031,6 @@ public class Game implements Runnable {
 									bombList.get(i).getPosition()[1],
 									bombList.get(i).getPosition()[0] + j)
 									.removeFireItem();
-							break;
 						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1],
@@ -1052,7 +1049,6 @@ public class Game implements Runnable {
 									bombList.get(i).getPosition()[1],
 									bombList.get(i).getPosition()[0] + j)
 									.removeBombItem();
-							break;
 						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1],
@@ -1131,7 +1127,6 @@ public class Game implements Runnable {
 									bombList.get(i).getPosition()[1] - j,
 									bombList.get(i).getPosition()[0])
 									.removeFireItem();
-							break;
 						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1] - j,
@@ -1149,7 +1144,6 @@ public class Game implements Runnable {
 									bombList.get(i).getPosition()[1] - j,
 									bombList.get(i).getPosition()[0])
 									.removeBombItem();
-							break;
 						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1] - j,
@@ -1231,7 +1225,6 @@ public class Game implements Runnable {
 									bombList.get(i).getPosition()[1] + j,
 									bombList.get(i).getPosition()[0])
 									.removeFireItem();
-							break;
 						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1] + j,
@@ -1249,7 +1242,6 @@ public class Game implements Runnable {
 									bombList.get(i).getPosition()[1] + j,
 									bombList.get(i).getPosition()[0])
 									.removeBombItem();
-							break;
 						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1] + j,
