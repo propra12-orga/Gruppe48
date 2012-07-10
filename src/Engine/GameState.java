@@ -27,9 +27,9 @@ public class GameState implements Serializable {
 	 * @param map
 	 *            Spielfeld
 	 * @param explosionList
-	 *            List der Explosionen
+	 *            Liste der Explosionen
 	 * @param bombList
-	 *            List der Bombe
+	 *            Liste der Bombe
 	 * @param p1
 	 *            Player1
 	 * @param p2

@@ -233,6 +233,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 			String size = JOptionPane.showInputDialog(
 					"Enter the desired Fieldsize(between 5 and 19):", 9);
 			try {
+				if (size.isEmpty()) {
+					return;
+				}
+			} catch (NullPointerException e) {
+				return;
+			}
+			try {
 				zahl = Integer.parseInt(size);
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(mapCreatorItem,
@@ -255,6 +262,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 				new MapCreator();
 			}
 		}
+
 	}
 
 	@Override

@@ -56,7 +56,6 @@ public class MapCreator extends JFrame implements WindowListener,
 	public MapCreator() {
 		super("Create your OWN Map");
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(800, 720);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = dim.width / 2 - (getWidth() / 2);
@@ -99,7 +98,7 @@ public class MapCreator extends JFrame implements WindowListener,
 		private ImageIcon exit = new ImageIcon(
 				ClassLoader.getSystemResource("images/exit.png"));
 		private ImageIcon hiddenExit = new ImageIcon(
-				ClassLoader.getSystemResource("images/stone.png"));
+				ClassLoader.getSystemResource("images/hiddenExit.png"));
 		private ImageIcon stone = new ImageIcon(
 				ClassLoader.getSystemResource("images/stone.png"));
 		private ImageIcon wall = new ImageIcon(
@@ -407,7 +406,6 @@ public class MapCreator extends JFrame implements WindowListener,
 							"Do you want to overwrite " + file.getName() + "?",
 							"Caution", JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE);
-
 					if (option == JOptionPane.NO_OPTION)
 						// abort
 						return;
@@ -464,6 +462,8 @@ public class MapCreator extends JFrame implements WindowListener,
 											rootPane,
 											"Check the amount of Exit(s)/Player(s), a Problem was detected!",
 											"Error", 1);
+							writer.close();
+							printer.close();
 							return;
 						}
 						writer.flush();
@@ -477,11 +477,80 @@ public class MapCreator extends JFrame implements WindowListener,
 						}
 					}
 				}
+				if (!file.exists()) {
+					FileWriter writer = null;
+					writer = new FileWriter(file.getPath(), false);
+					PrintWriter printer = new PrintWriter(writer);
+					for (int i = 0; i < GUI.GUI.zahl; i++) {
+						for (int j = 0; j < GUI.GUI.zahl; j++) {
+							if (array[i][j] == 1) { // schreibt die freien
+													// Plaetze in das txt
+													// Dokument
+								printer.print(".");
+							} else if (array[i][j] == 2) {// schreibt die
+															// aueßeren
+															// Waende in das
+															// txt Dokument
+								printer.print("*");
+							} else if (array[i][j] == 3) {// schreibt den
+															// Ausgang in
+															// das txt
+															// Dokument
+								printer.print("E");
+								exitCount++;
+							} else if (array[i][j] == 4) {// schreibt den
+															// Ausgang in
+															// das txt
+															// Dokument
+								printer.print("H");
+								exitCount++;
+							} else if (array[i][j] == 5) {// schreibt die
+															// Spielerposition
+															// in das txt
+															// Dokument
+								printer.print("P");
+								playerCount++;
+							} else if (array[i][j] == 6) {// schreibt die
+															// zerstoerbaren
+															// Bloecke in
+															// das txt
+															// Dokument
+								printer.print("%");
+							}
+						}
+						printer.println();
+					}
+					if (playerCount == 0 | playerCount > 2 | exitCount == 0
+							| exitCount > 1) {
+						JOptionPane
+								.showMessageDialog(
+										rootPane,
+										"Check the amount of Exit(s)/Player(s), a Problem was detected!",
+										"Error", 1);
+
+						printer.close();
+						writer.close();
+						file1.delete();
+						file.delete();
+						file1.deleteOnExit();
+						file.deleteOnExit();
+
+						return;
+					}
+					writer.flush();
+					writer.close();
+					printer.flush();
+					printer.close();
+					if (file.exists()) {
+						JOptionPane.showMessageDialog(rootPane,
+								"Map saved successfully", "Success", 1);
+						savedMap = true;
+					}
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
-
 		}
 	}
 
@@ -502,6 +571,16 @@ public class MapCreator extends JFrame implements WindowListener,
 			}
 		} else {
 			dispose();
+		}
+	}
+
+	protected void shutdown() {
+		int result = JOptionPane.showConfirmDialog(null, "Sure?", "Quit?",
+				JOptionPane.YES_NO_OPTION);
+		if (result == JOptionPane.YES_OPTION) {
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		} else {
+			setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		}
 	}
 
@@ -526,7 +605,7 @@ public class MapCreator extends JFrame implements WindowListener,
 	@Override
 	public void windowClosing(WindowEvent arg0) {
 		// TODO Auto-generated method stub
-
+		shutdown();
 	}
 
 	@Override
