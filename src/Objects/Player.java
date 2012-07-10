@@ -31,6 +31,13 @@ public class Player implements Serializable {
 		this.id = id;
 	}
 
+	public Player clonePlayer() {
+		Player outputPlayer = new Player(x, y, id);
+		outputPlayer.setBombRadius(bRadius);
+		outputPlayer.setBombCount(bCount);
+		return outputPlayer;
+	}
+
 	/**
 	 * Gibt die Position des Spielers zurueck
 	 * 
@@ -41,6 +48,10 @@ public class Player implements Serializable {
 		getPosition[0] = x;
 		getPosition[1] = y;
 		return getPosition;
+	}
+
+	private void setBombRadius(int radius) {
+		bRadius = radius;
 	}
 
 	/**

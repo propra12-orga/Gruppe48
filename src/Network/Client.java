@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import Field.Field;
 import Objects.Player;
@@ -26,6 +27,8 @@ public class Client extends Thread {
 	Player localPlayer;
 	String event;
 	boolean newEvent;
+	String eventType;
+	ArrayList<int[]> exList;
 
 	/**
 	 * Erzeugt ein Objekt der Klasse Client
@@ -60,11 +63,8 @@ public class Client extends Thread {
 			input.start();
 			input.getNextInt();
 		} catch (UnknownHostException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		}
 		while (true) {
 			try {
@@ -77,18 +77,13 @@ public class Client extends Thread {
 						clientNumber = Integer.parseInt(input.getNextEvent());
 					}
 					if (event.equals("map")) {
-						// Field testField = new Field();
-						// testField = (Field) input.getNextObject();
-						// System.out
-						// .println(testField.getField(1, 1).getPlayer());
-						// localField = testField;
-						// localField = null;
-						localField = (Field) input.getNextObject();
-						// System.out.println(input.getNextObject());
+						eventType = "map";
+						try {
+							localField = (Field) input.getNextObject();
+						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
+						}
 						newEvent = true;
-					}
-					if (event.equals("player")) {
-						localPlayer = (Player) input.getNextObject();
 
 					}
 					if (event.equals("initialized")) {
@@ -96,12 +91,23 @@ public class Client extends Thread {
 						output.flush();
 						output.reset();
 					}
+					if (event.equals("exList")) {
+						eventType = "exList";
+						try {
+							exList = (ArrayList) input.getNextObject();
+						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
+						}
+						newEvent = true;
+
+					}
+					if (event.equals("removeExplosion")) {
+						eventType = "removeExplosion";
+						newEvent = true;
+					}
 
 				}
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
 			} catch (IOException e) {
-				e.printStackTrace();
 			}
 
 		}
@@ -123,6 +129,10 @@ public class Client extends Thread {
 		newEvent = false;
 	}
 
+	public String getEventType() {
+		return eventType;
+	}
+
 	/**
 	 * Teilt dem Server mit, dass eine Bombe gelegt wurde
 	 */
@@ -131,9 +141,8 @@ public class Client extends Thread {
 			output.writeUTF("bomb");
 			output.writeInt(clientNumber);
 			output.flush();
-
+			output.reset();
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -148,14 +157,12 @@ public class Client extends Thread {
 	public void movePlayer(int x, int y) {
 		try {
 			output.writeUTF("move");
-			output.flush();
 			output.writeObject(localPlayer);
 			output.writeInt(x);
 			output.writeInt(y);
 			output.flush();
 			output.reset();
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -177,4 +184,7 @@ public class Client extends Thread {
 		return localField;
 	}
 
+	public ArrayList getExList() {
+		return exList;
+	}
 }

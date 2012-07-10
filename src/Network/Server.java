@@ -11,6 +11,7 @@ import java.util.List;
 
 import Engine.Game;
 import Field.Field;
+import Field.FieldContent;
 import Objects.Bomb;
 import Objects.Player;
 
@@ -40,6 +41,8 @@ public class Server extends Thread {
 	Field gameField;
 	int[] moveArray;
 	List<Bomb> bombList;
+	int iItemChance = 30;
+	List<long[]> explosionList;
 
 	/**
 	 * Erzeugt ein Objekt vom Typ Server und übergibt diesem ein Spielfeld sowie
@@ -137,19 +140,8 @@ public class Server extends Thread {
 			output2.flush();
 			output1.writeUTF("map");
 			output2.writeUTF("map");
-			// output1.flush();
-			// output2.flush();
-			// gameField.getMap()[1][1].removePlayer();
 			output1.writeObject(gameField);
 			output2.writeObject(gameField);
-			output1.flush();
-			output2.flush();
-			output1.writeUTF("player");
-			output2.writeUTF("player");
-			output1.flush();
-			output2.flush();
-			output1.writeObject(player1);
-			output2.writeObject(player2);
 			output1.flush();
 			output2.flush();
 			output1.writeUTF("initialized");
@@ -169,9 +161,11 @@ public class Server extends Thread {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		explosionList = new ArrayList<long[]>();
 		while (true) {
 			try {
 				time = calendar.getInstance().getTimeInMillis();
+				handleBombs();
 				if (((input1.nextEventAvailible()) || (input2
 						.nextEventAvailible()))) {
 					if (input1.nextEventAvailible()) {
@@ -189,6 +183,11 @@ public class Server extends Thread {
 							}
 							moveArray[0] = input.getNextInt();
 							moveArray[1] = input.getNextInt();
+							if (input == input1) {
+								player = player1;
+							} else {
+								player = player2;
+							}
 							handleMovement(player, moveArray);
 							output1.writeUTF("map");
 							output2.writeUTF("map");
@@ -199,15 +198,9 @@ public class Server extends Thread {
 							output1.reset();
 							output2.reset();
 							if (input == input1) {
-								output1.writeUTF("player");
-								output1.writeObject(player);
-								output1.flush();
-								output1.reset();
+								player1 = player.clonePlayer();
 							} else {
-								output2.writeUTF("player");
-								output2.writeObject(player);
-								output2.flush();
-								output2.reset();
+								player2 = player.clonePlayer();
 							}
 
 						} else {
@@ -245,6 +238,7 @@ public class Server extends Thread {
 									} else {
 										if (event.equals("bomb")) {
 											setBomb(input.getNextInt());
+										} else {
 										}
 									}
 								}
@@ -263,27 +257,155 @@ public class Server extends Thread {
 				e.printStackTrace();
 			}
 			input = null;
-			input = null;
-
 		}
 	}
 
 	private void setBomb(int playernumber) {
 		if (playernumber == 1) {
 			player = player1;
+			if (Bomb.getBombStatus() == false) {
+				Bomb.setCurrentPlacedBomb();
+			}
+			Bomb.setBombStatus();
 		} else {
 			player = player2;
+			if (Bomb.getBombStatusP2() == false) {
+				Bomb.setCurrentPlacedBombP2();
+			}
+			Bomb.setBombStatusP2();
 		}
-		gameField.setBomb(new Bomb(player.getPosition()[0], player
-				.getPosition()[1], time, player.getBombRadius()));
-		bombList.add(gameField.getField(player.getPosition()[0],
-				player.getPosition()[1]).getBomb());
+		if (Bomb.getBombStatus() == false) {
+			bombList.add(new Bomb(player.getPosition()[0],
+					player.getPosition()[1], time, player.getBombRadius()));
+			gameField.setBomb(bombList.get(bombList.size() - 1));
+		}
+
 	}
 
 	private void handleBombs() {
+		ArrayList<int[]> exList;
+		FieldContent bombField = new FieldContent();
+		int x = 0;
+		int y = 0;
 		for (int i = 0; i < bombList.size(); i++) {
-			if (bombList.get(i).getTimer() <= time) {
-				bombList.remove(i);
+			if (bombList.get(i).getTimer() <= time) { // Eine Liste aller Bomben
+														// deren Timer
+														// abgelaufen ist wird
+														// generiert
+				try {
+					exList = new ArrayList<int[]>();
+					exList.add(new int[2]);
+					exList.get(exList.size() - 1)[0] = bombList.get(i)
+							.getPosition()[1];
+					exList.get(exList.size() - 1)[1] = bombList.get(i)
+							.getPosition()[0];
+					for (int z = 0; z < 4; z++) {
+						for (int j = 0; j < bombList.get(i).getRadius(); j++) {
+							switch (z) {
+							case 0:
+								x = bombList.get(i).getPosition()[1];
+								y = bombList.get(i).getPosition()[0] - j;
+								break;
+							case 1:
+								x = bombList.get(i).getPosition()[1];
+								y = bombList.get(i).getPosition()[0] + j;
+								break;
+							case 2:
+								x = bombList.get(i).getPosition()[1] - j;
+								y = bombList.get(i).getPosition()[0];
+								break;
+							case 3:
+								x = bombList.get(i).getPosition()[1] + j;
+								y = bombList.get(i).getPosition()[0];
+								break;
+							}
+							bombField = gameField.getField(x, y);
+							if (bombField.getPlayer() != null) {
+								// Überprueft Felder oberhalb der Bombe
+								output1.writeUTF("gameover");
+								output2.writeUTF("gameover");
+								output1.writeInt(bombField.getPlayer().getID());
+								output2.writeInt(bombField.getPlayer().getID());
+								output1.flush();
+								output2.flush();
+								output1.reset();
+								output2.reset();
+							}
+							if (bombField.getBomb() != null) {
+								int tmp[] = new int[2];
+								for (int k = 0; k < bombList.size(); k++) {
+									if ((bombList.get(k).getPosition()[0] == y)
+											&& (bombList.get(k).getPosition()[1] == x)) {
+										bombList.get(k).detonate();
+										i = 0;
+									}
+								}
+
+							}
+							try {
+								if (bombField.getContent() == 1) {
+									exList.add(new int[2]);
+									exList.get(exList.size() - 1)[0] = bombList
+											.get(i).getPosition()[1];
+									exList.get(exList.size() - 1)[1] = bombList
+											.get(i).getPosition()[0] - j;
+								} else {
+									if (bombField.getContent() == 6) {
+										exList.add(new int[2]);
+										exList.get(exList.size() - 1)[0] = bombList
+												.get(i).getPosition()[1];
+										exList.get(exList.size() - 1)[1] = bombList
+												.get(i).getPosition()[0] - j;
+										bombField.setContent(1);
+										createRandomItem(x, y, iItemChance);
+									}
+
+									break;
+
+								}
+							} catch (Exception e) {
+							}
+						}
+					}
+					explosionList.add(new long[1]);
+					explosionList.get(0)[0] = Calendar.getInstance()
+							.getTimeInMillis() + 500;
+					exList = null;
+					gameField.removeBomb(bombList.get(i));
+					bombList.remove(i);
+					output1.writeUTF("exlist");
+					output2.writeUTF("exlist");
+					output1.writeObject(exList);
+					output2.writeObject(exList);
+					output1.writeUTF("map");
+					output2.writeUTF("map");
+					output1.writeObject(gameField);
+					output2.writeObject(gameField);
+					output1.flush();
+					output2.flush();
+					output1.reset();
+					output2.reset();
+				} catch (IOException e) {
+
+				}
+			}
+		}
+		for (int i = 0; i < explosionList.size(); i++) {
+
+			// abgelaufene explosionen werden entfernt
+			if (explosionList.get(i)[0] < (Calendar.getInstance()
+					.getTimeInMillis())) {
+				try {
+					output1.writeUTF("removeExplosion");
+					output2.writeUTF("removeExplosion");
+					output1.flush();
+					output2.flush();
+					output1.reset();
+					output2.reset();
+					explosionList.remove(0);
+				} catch (IOException e) {
+
+				}
 			}
 		}
 	}
@@ -355,6 +477,17 @@ public class Server extends Thread {
 				}
 				break;
 			}
+		}
+	}
+
+	private void createRandomItem(int pos1, int pos2, int chance) {
+		if ((Math.random() * 100) > chance) {
+			return;
+		}
+		if ((Math.random()) < 0.5) {
+			gameField.getField(pos1, pos2).setFireItem();
+		} else {
+			gameField.getField(pos1, pos2).setBombItem();
 		}
 	}
 }

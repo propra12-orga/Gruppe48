@@ -598,14 +598,24 @@ public class Game implements Runnable {
 	public void start() {
 		if (network) {
 			handleNetworkMovement();
-			// handleBombs();
 			if (client.getEvent()) {
-				gameField = client.getField();
-				player = client.getPlayer();
-				client.resetEvent();
-				gui.insertField(gameField);
-				gui.resize();
-				gui.repaint();
+				if (client.getEventType().equals("map")) {
+					gameField = client.getField();
+					gui.insertField(gameField);
+					gui.resize();
+					gui.repaint();
+					client.resetEvent();
+				}
+				if (client.getEventType().equals("exList")) {
+					gui.panel.addExplosions((ArrayList) client.getExList());
+					gui.repaint();
+					client.resetEvent();
+				}
+				if (client.getEventType().equals("removeExplosion")) {
+					gui.panel.removeExplosions();
+					gui.repaint();
+					client.resetEvent();
+				}
 
 			}
 
