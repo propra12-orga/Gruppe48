@@ -923,6 +923,18 @@ public class Game implements Runnable {
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1],
 								bombList.get(i).getPosition()[0] - j)
+								.isFireItem()) {
+							break;
+						}
+						if (gameField.getField(
+								bombList.get(i).getPosition()[1],
+								bombList.get(i).getPosition()[0] - j)
+								.isBombItem()) {
+							break;
+						}
+						if (gameField.getField(
+								bombList.get(i).getPosition()[1],
+								bombList.get(i).getPosition()[0] - j)
 								.getContent() == 1) {
 							exList.add(new int[2]);
 							exList.get(exList.size() - 1)[0] = bombList.get(i)
@@ -948,9 +960,7 @@ public class Game implements Runnable {
 										bombList.get(i).getPosition()[0] - j,
 										iItemChance);
 							}
-
 							break;
-
 						}
 					} catch (Exception e) {
 					}
@@ -980,6 +990,18 @@ public class Game implements Runnable {
 						}
 					}
 					try {
+						if (gameField.getField(
+								bombList.get(i).getPosition()[1],
+								bombList.get(i).getPosition()[0] + j)
+								.isFireItem()) {
+							break;
+						}
+						if (gameField.getField(
+								bombList.get(i).getPosition()[1],
+								bombList.get(i).getPosition()[0] + j)
+								.isBombItem()) {
+							break;
+						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1],
 								bombList.get(i).getPosition()[0] + j)
@@ -1041,6 +1063,16 @@ public class Game implements Runnable {
 						}
 					}
 					try {
+						if (gameField.getField(
+								bombList.get(i).getPosition()[1] - j,
+								bombList.get(i).getPosition()[0]).isFireItem()) {
+							break;
+						}
+						if (gameField.getField(
+								bombList.get(i).getPosition()[1] - j,
+								bombList.get(i).getPosition()[0]).isBombItem()) {
+							break;
+						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1] - j,
 								bombList.get(i).getPosition()[0]).getContent() == 1) {
@@ -1105,6 +1137,16 @@ public class Game implements Runnable {
 						}
 					}
 					try {
+						if (gameField.getField(
+								bombList.get(i).getPosition()[1] + j,
+								bombList.get(i).getPosition()[0]).isFireItem()) {
+							break;
+						}
+						if (gameField.getField(
+								bombList.get(i).getPosition()[1] + j,
+								bombList.get(i).getPosition()[0]).isBombItem()) {
+							break;
+						}
 						if (gameField.getField(
 								bombList.get(i).getPosition()[1] + j,
 								bombList.get(i).getPosition()[0]).getContent() == 1) {
