@@ -64,6 +64,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 	private JMenuItem loadgame;
 	private JMenuItem hostgame;
 	private JMenuItem joingame;
+	private JMenuItem turnmusicon;
+	private JMenuItem turnmusicoff;
 
 	/**
 	 * Erzeugt ein neues Objekt der Klasse GUI und initialisiert den zu
@@ -117,6 +119,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		hostgame.addActionListener(this);
 		joingame = new JMenuItem("Join Game");
 		joingame.addActionListener(this);
+		turnmusicon = new JMenuItem("Turn Music On");
+		turnmusicon.addActionListener(this);
+		turnmusicoff = new JMenuItem("Turn Music Off");
+		turnmusicoff.addActionListener(this);
 		gameMenu.add(savegame);
 		gameMenu.add(loadgame);
 		gameMenu.addSeparator();
@@ -126,6 +132,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		gameMenu.add(multiplayer);
 		gameMenu.add(hostgame);
 		gameMenu.add(joingame);
+		gameMenu.addSeparator();
+		gameMenu.add(turnmusicon);
+		gameMenu.add(turnmusicoff);
 		gameMenu.addSeparator();
 		gameMenu.add(quitItem);
 		menubar.add(gameMenu);
@@ -201,6 +210,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener,
 		}
 		if (object.getSource() == savegame) {
 			saveGame();
+
+		}
+		if (object.getSource() == turnmusicoff) {
+			Sound.LOOP.loopStop();
+
+		}
+		if (object.getSource() == turnmusicon) {
+			Sound.LOOP.loop();
 
 		}
 		if (object.getSource() == loadgame) {
