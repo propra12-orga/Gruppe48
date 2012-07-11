@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import Field.Field;
 import Objects.Player;
@@ -23,12 +24,16 @@ public class Client extends Thread {
 	String ip;
 	int port;
 	int clientNumber;
+	boolean won;;
 	Field localField;
 	Player localPlayer;
 	String event;
 	int eventCount;
 	String eventType;
 	ArrayList<int[]> exList;
+	boolean running;
+	long time;
+	long lastping;
 
 	/**
 	 * Erzeugt ein Objekt der Klasse Client
@@ -45,7 +50,11 @@ public class Client extends Thread {
 		this.port = port;
 		clientNumber = 0;
 		eventCount = 0;
-
+		eventType = " ";
+		running = true;
+		won = false;
+		time = Calendar.getInstance().getTimeInMillis();
+		lastping = time;
 	}
 
 	/**
@@ -66,55 +75,88 @@ public class Client extends Thread {
 		} catch (IOException e) {
 		} catch (ClassNotFoundException e) {
 		}
-		while (true) {
+		while (running) {
 			try {
-				if (input.nextEventAvailible()) {
+				time = Calendar.getInstance().getTimeInMillis();
+				if (input == null) {
+					eventType = "notConnected";
+					eventCount++;
+				} else {
+					if (input.nextEventAvailible()) {
 
-					event = input.getNextEvent();
-					if (event.equals("waiting")) {
-					}
-					if (event.equals("ready")) {
-						clientNumber = Integer.parseInt(input.getNextEvent());
-					}
-					if (event.equals("map")) {
-						eventType = "map";
-						try {
-							localField = (Field) input.getNextObject();
-						} catch (ClassNotFoundException e) {
-							e.printStackTrace();
+						event = input.getNextEvent();
+						if (event.equals("waiting")) {
 						}
-						eventCount++;
+						if (event.equals("timeout")) {
+							eventType = "timeout";
+							eventCount++;
+						}
+						if (event.equals("ping")) {
 
+						}
+						if (event.equals("ready")) {
+							clientNumber = Integer.parseInt(input
+									.getNextEvent());
+						}
+						if (event.equals("map")) {
+							eventType = "map";
+							try {
+								localField = (Field) input.getNextObject();
+							} catch (ClassNotFoundException e) {
+								e.printStackTrace();
+							}
+							eventCount++;
+
+						}
+						if (event.equals("initialized")) {
+							output.writeUTF("ok");
+							output.flush();
+							output.reset();
+							eventType = "initialized";
+							eventCount++;
+						}
+						if (event.equals("exList")) {
+							eventType = "exList";
+							try {
+								exList = (ArrayList) input.getNextObject();
+							} catch (ClassNotFoundException e) {
+								e.printStackTrace();
+							}
+							eventCount++;
+
+						}
+						if (event.equals("removeExplosion")) {
+							eventType = "removeExplosion";
+							eventCount++;
+						}
+						if (event.equals("pickup")) {
+							eventType = "pickup";
+							eventCount++;
+						}
+
+						if (event.equals("eoc")) {
+							eventType = "eoc";
+							eventCount++;
+						}
+						if (event.equals("gameover")) {
+							try {
+								if (input.getNextInt() == clientNumber) {
+									won = true;
+								}
+							} catch (ClassNotFoundException e) {
+							}
+							eventType = "gameover";
+							eventCount++;
+						}
+						if (event.equals("accepted")) {
+							output.reset();
+						}
 					}
-					if (event.equals("initialized")) {
-						output.writeUTF("ok");
+					if ((lastping + 10000) < time) {
+						output.writeUTF("ping");
 						output.flush();
-						output.reset();
-						eventType = "initialized";
-						eventCount++;
+						lastping = time;
 					}
-					if (event.equals("exList")) {
-						eventType = "exList";
-						try {
-							exList = (ArrayList) input.getNextObject();
-						} catch (ClassNotFoundException e) {
-							e.printStackTrace();
-						}
-						eventCount++;
-
-					}
-					if (event.equals("removeExplosion")) {
-						eventType = "removeExplosion";
-						eventCount++;
-					}
-					if (event.equals("pickup")) {
-						eventType = "pickup";
-						eventCount++;
-					}
-					if (event.equals("accepted")) {
-						output.reset();
-					}
-
 				}
 			} catch (IOException e) {
 			}
@@ -142,6 +184,11 @@ public class Client extends Thread {
 		eventCount--;
 	}
 
+	/**
+	 * Gibt die Art des vom Server erhaltenen Ereignisses zurück
+	 * 
+	 * @return Vom Server erhaltenes Ereignis;
+	 */
 	public String getEventType() {
 		return eventType;
 	}
@@ -195,7 +242,38 @@ public class Client extends Thread {
 		return localField;
 	}
 
+	/**
+	 * Gibt eine vom Server erhaltene Liste an anzuzegenden Explosionen zurück
+	 * 
+	 * @return Vom Server erhaltene Explosionsliste
+	 */
 	public ArrayList getExList() {
 		return exList;
+	}
+
+	/**
+	 * Stoppt den Client und gibt alle Streams wieder frei
+	 */
+	public void stopClient() {
+		try {
+			if (input != null) {
+				input.stopStream();
+
+				output.close();
+			}
+			running = false;
+		} catch (IOException e) {
+
+		}
+	}
+
+	/**
+	 * Gibt zurück, ob der Spieler gewonnen oder verloren hat
+	 * 
+	 * @return Gibt true zurück, falls der Spieler gewonnen hat. Gibt sonst
+	 *         false zurück
+	 */
+	public boolean getWon() {
+		return won;
 	}
 }

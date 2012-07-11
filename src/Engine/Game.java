@@ -331,6 +331,9 @@ public class Game implements Runnable {
 		return startProbability;
 	}
 
+	/**
+	 * Startet einen neuen Server
+	 */
 	public void startServer() {
 		server = new Server(gameField, player, player2);
 		server.start();
@@ -377,10 +380,9 @@ public class Game implements Runnable {
 	 */
 	public void joinGame(String ip) {
 		iNewPlayerCount = 2;
-		gameState = GameStates.STARTED;
-		connect(ip, 30000);
 		network = true;
-
+		connect(ip, 30000);
+		gameState = GameStates.STARTED;
 	}
 
 	/**
@@ -461,6 +463,7 @@ public class Game implements Runnable {
 	 * Explosionsueberreste
 	 */
 	public boolean restart() {
+
 		Field field;
 		Bomb.setBombMaxOnStart(0); // Setzt die Zahl maximal legbarer Bomben
 									// (Player1)am Spielstart auf eins;
@@ -528,8 +531,8 @@ public class Game implements Runnable {
 			gui.resize();
 			gui.repaint();
 			Sound.LOOP.loop();
-			networkstart = false;
 		}
+		networkstart = false;
 		gameState = GameStates.STARTED;
 		bAutoRestart = false;
 		return true;
@@ -613,6 +616,15 @@ public class Game implements Runnable {
 			}
 			handleNetworkMovement();
 			while (client.getEventCount() > 0) {
+				if (client.getEventType().equals("notConnected")) {
+					client.stopClient();
+					client = null;
+					network = false;
+					gameState = GameStates.STOP;
+					Sound.LOOP.loopStop();
+					gui.showError("The connection could not be established");
+					break;
+				}
 				if (client.getEventType().equals("initialized")) {
 					Sound.LOOP.loop();
 					gameField = client.getField();
@@ -640,8 +652,31 @@ public class Game implements Runnable {
 				if (client.getEventType().equals("pickup")) {
 					Sound.ITEM.play();
 				}
+				if (client.getEventType().equals("gameover")) {
+					if (client.getWon()) {
+						Sound.YOUWIN.play();
+						gui.showError("You have won!");
 
-				client.resetEvent();
+					} else {
+						gui.showError("You have lost.");
+					}
+
+				}
+				if (client.getEventType().equals("eoc")) {
+					client.stopClient();
+					client = null;
+					network = false;
+					Sound.LOOP.loopStop();
+					gameState = GameStates.STOP;
+					break;
+				}
+				if (client.getEventType().equals("timeout")) {
+					gui.showError("The other player has timed out.");
+					break;
+				}
+				if (client != null)
+					client.resetEvent();
+
 			}
 
 			try {

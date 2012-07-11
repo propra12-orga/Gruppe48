@@ -46,6 +46,11 @@ public class Server extends Thread {
 	long player1moved;
 	long player2moved;
 	int gameSpeed;
+	boolean stop;
+	boolean running;
+	long client1timeout;
+	long client2timeout;
+	long lastpingtimer;
 
 	/**
 	 * Erzeugt ein Objekt vom Typ Server und übergibt diesem ein Spielfeld sowie
@@ -68,6 +73,8 @@ public class Server extends Thread {
 		gameField = field;
 		moveArray = new int[2];
 		gameSpeed = 100;
+		stop = false;
+		running = true;
 		time = calendar.getInstance().getTimeInMillis();
 		player1moved = time;
 		player2moved = time;
@@ -78,31 +85,31 @@ public class Server extends Thread {
 	 * gesamte Spielmechanik
 	 */
 	public void run() {
+		if (stop) {
+			stopServer();
+		}
 		try {
+
 			server = new ServerSocket(30000);
-
+			server.setSoTimeout(30000);
 			timeout = calendar.getInstance().getTimeInMillis();
-			while (time < timeout + 60000) {
 
-				try {
-					client1 = server.accept();
-					output1 = new ObjectOutputStream(client1.getOutputStream());
-					output1.writeInt(1);
-					output1.flush();
-					input1 = new NetworkInputStream(new ObjectInputStream(
-							client1.getInputStream()));
-					input1.start();
-					input1.getNextInt();
-				} catch (IOException e) {
+			try {
+				client1 = server.accept();
+				output1 = new ObjectOutputStream(client1.getOutputStream());
+				output1.writeInt(1);
+				output1.flush();
+				input1 = new NetworkInputStream(new ObjectInputStream(
+						client1.getInputStream()));
+				input1.start();
+				input1.getNextInt();
+			} catch (IOException e) {
 
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (client1 != null)
-					break;
-				time = calendar.getInstance().getTimeInMillis();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			time = calendar.getInstance().getTimeInMillis();
 			if (client1 == null) {
 				return;
 			}
@@ -110,28 +117,34 @@ public class Server extends Thread {
 			output1.flush();
 			timeout = calendar.getInstance().getTimeInMillis();
 
-			while (time < timeout + 60000) {
-				try {
-					client2 = server.accept();
-					output2 = new ObjectOutputStream(client2.getOutputStream());
-					output2.writeInt(2);
-					output2.flush();
-					input2 = new NetworkInputStream(new ObjectInputStream(
-							client2.getInputStream()));
-					input2.start();
-					input2.getNextInt();
-				} catch (IOException e) {
+			try {
+				client2 = server.accept();
+				output2 = new ObjectOutputStream(client2.getOutputStream());
+				output2.writeInt(2);
+				output2.flush();
+				input2 = new NetworkInputStream(new ObjectInputStream(
+						client2.getInputStream()));
+				input2.start();
+				input2.getNextInt();
+			} catch (IOException e) {
+				if (client1 != null) {
+					try {
+						output1.writeUTF("timeout");
+						output1.writeUTF("eoc");
+						output1.flush();
+						output1.reset();
+					} catch (IOException ex) {
 
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
+					}
 				}
-				if (client2 != null)
-					break;
-				time = calendar.getInstance().getTimeInMillis();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
 			}
+			time = calendar.getInstance().getTimeInMillis();
 			if (client2 == null) {
 				try {
-					client1.close();
+					output1.writeUTF("timeout");
+					running = false;
 				} catch (IOException e) {
 
 				}
@@ -163,12 +176,34 @@ public class Server extends Thread {
 			}
 			input1.getNextEvent();
 			input2.getNextEvent();
+			client1timeout = time + 30000;
+			client2timeout = time + 30000;
+			lastpingtimer = time + 10000;
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			if (client1 != null) {
+				try {
+					output1.writeUTF("timeout");
+					output1.writeUTF("eoc");
+					output1.flush();
+					output1.reset();
+				} catch (IOException e) {
+
+				}
+				return;
+			}
 		}
 		explosionList = new ArrayList<long[]>();
-		while (true) {
+		while (running) {
 			try {
+				if ((client1timeout < time) || (client2timeout < time)) {
+					output1.writeUTF("timeout");
+					output2.writeUTF("timeout");
+					output1.flush();
+					output2.flush();
+					output1.reset();
+					output2.reset();
+					running = false;
+				}
 				time = calendar.getInstance().getTimeInMillis();
 				handleBombs();
 				if (((input1.nextEventAvailible()) || (input2
@@ -259,6 +294,13 @@ public class Server extends Thread {
 												output2.reset();
 											}
 										} else {
+											if (event.equals("ping")) {
+												if (input == input1) {
+													client1timeout = time + 30000;
+												} else {
+													client2timeout = time + 30000;
+												}
+											}
 										}
 									}
 								}
@@ -267,6 +309,7 @@ public class Server extends Thread {
 					}
 				}
 			} catch (IOException e) {
+				running = false;
 
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -278,6 +321,7 @@ public class Server extends Thread {
 			}
 			input = null;
 		}
+		stopServer();
 	}
 
 	private void setBomb(int playernumber) {
@@ -371,12 +415,18 @@ public class Server extends Thread {
 								// Überprueft Felder oberhalb der Bombe
 								output1.writeUTF("gameover");
 								output2.writeUTF("gameover");
-								output1.writeInt(bombField.getPlayer().getID());
-								output2.writeInt(bombField.getPlayer().getID());
+								if (bombField.getPlayer().getID() == 1) {
+									output1.writeInt(2);
+									output2.writeInt(2);
+								} else {
+									output1.writeInt(1);
+									output2.writeInt(1);
+								}
 								output1.flush();
 								output2.flush();
 								output1.reset();
 								output2.reset();
+								running = false;
 							}
 							if (bombField.getBomb() != null) {
 								int tmp[] = new int[2];
@@ -387,7 +437,6 @@ public class Server extends Thread {
 										i = 0;
 									}
 								}
-
 							}
 							try {
 								if (bombField.getContent() == 1) {
@@ -475,6 +524,19 @@ public class Server extends Thread {
 			}
 			if (gameField.getField(player.getPosition()[1] + direction[0],
 					player.getPosition()[0] + direction[1]).isExit()) {
+				try {
+					output1.writeUTF("gameover");
+					output2.writeUTF("gameover");
+					output1.writeInt(player.getID());
+					output2.writeInt(player.getID());
+					output1.flush();
+					output2.flush();
+					output1.reset();
+					output2.reset();
+					running = false;
+				} catch (IOException e) {
+
+				}
 				break;
 			}
 			if (gameField.getField(player.getPosition()[1] + direction[0],
@@ -566,6 +628,27 @@ public class Server extends Thread {
 			gameField.getField(pos1, pos2).setFireItem();
 		} else {
 			gameField.getField(pos1, pos2).setBombItem();
+		}
+	}
+
+	private void stopServer() {
+		try {
+			output1.writeUTF("eoc");
+			output2.writeUTF("eoc");
+			output1.flush();
+			output2.flush();
+			output1.reset();
+			output2.reset();
+			input1.stopStream();
+			input2.stopStream();
+			input1 = null;
+			input2 = null;
+			output1.close();
+			output2.close();
+			server.close();
+			client1.close();
+			client2.close();
+		} catch (IOException e) {
 		}
 	}
 }

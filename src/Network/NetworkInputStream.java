@@ -13,6 +13,7 @@ public class NetworkInputStream extends Thread {
 
 	ObjectInputStream input;
 	boolean streamStatus;
+	boolean running;
 
 	/**
 	 * Erstellt ein neues Objekt vom Typ NetworkInputStream
@@ -23,6 +24,7 @@ public class NetworkInputStream extends Thread {
 	 */
 	public NetworkInputStream(ObjectInputStream oStream) {
 		input = oStream;
+		running = true;
 	}
 
 	/**
@@ -30,7 +32,7 @@ public class NetworkInputStream extends Thread {
 	 */
 	public void run() {
 
-		while (true) {
+		while (running) {
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -88,5 +90,16 @@ public class NetworkInputStream extends Thread {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	/**
+	 * Gibt den Stream wieder frei und stoppt den Thread
+	 */
+	public void stopStream() {
+		try {
+			input.close();
+		} catch (IOException e) {
+		}
+		running = false;
 	}
 }
